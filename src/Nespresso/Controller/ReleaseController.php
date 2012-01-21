@@ -105,7 +105,7 @@ class ReleaseController extends BaseController
      * 
      * @return type
      */
-    public function createNewReleaseAction()
+    public function createNewReleaseAction($setup = false)
     {
 	$manager = $this->container->get("nespresso.manager");
 	$project = $manager->getProject();
@@ -120,14 +120,21 @@ class ReleaseController extends BaseController
 	    $name = $repository->getName();
 	    $deployTo = $repository->getDeployTo();
 	    $connection = $this->getConnection($repository);
-	    $lastRelease = $this->getLastRelease($repository);
+
+	    if ($setup == false) {
+		$lastRelease = $this->getLastRelease($repository);
+	    }
 
 	    $this->output->writeln("Create new release <info>$releaseId</info> on <info>$name</info>...");
 	    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s", $deployTo, $releaseId)));
 	    $this->ckeckReturn($outputSsh);
 
 	    if ($manager->getProject()->hasCopyTo()) {
-		$this->copy($repository, $lastRelease, $releaseId);
+		if ($setup == false) {
+		    $this->copy($repository, $lastRelease, $releaseId);
+		} else {
+		    $this->copySetup($repository, $releaseId);
+		}
 	    }
 
 	    if ($project->hasCache()) {
@@ -148,7 +155,7 @@ class ReleaseController extends BaseController
      * @param type $repository
      * @param type $releaseLast,
      */
-    public function copy($repository, $lastRelease, $newRelease)
+    public function copySetup($repository, $newRelease)
     {
 
 	$manager = $this->container->get("nespresso.manager");
@@ -169,7 +176,43 @@ class ReleaseController extends BaseController
 		    $output = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $newRelease, $prefixFile)));
 		    $this->ckeckReturn($output);
 		}
-		$output = trim($connection->exec(sprintf("cd %s/releases && %s/%s %s/%s", $deployTo, $lastRelease, $copy, $newRelease, $copy)));
+		
+		$output = trim($connection->exec(sprintf("cd %s/releases && touch %s/%s", $deployTo, $newRelease, $copy)));
+		$this->ckeckReturn($output);
+	    }
+	}
+    }
+
+
+    /**
+     * 
+     * @param type $repository
+     * @param type $releaseLast,
+     */
+    public function copy($repository, $lastRelease, $newRelease)
+    {
+
+	$manager = $this->container->get("nespresso.manager");
+	$copies = $manager->getProject()->getCopyTo();
+	$connection = $this->getConnection($repository);
+	$deployTo = $repository->getDeployTo();
+	$this->output->writeln(sprintf("Copy data on <comment>%s</comment>", $newRelease));
+
+	//create directory shared
+	foreach ($copies as $copy) {
+
+	    $eltClean = trim($copy, "/");
+	    if (!empty($eltClean)) {
+		$pos = strrpos($eltClean, '/');
+		$copy = $pos == FALSE ? $eltClean : substr($eltClean, $pos + 1);
+		$prefixFile = $pos == FALSE ? NULL : substr($eltClean, 0, $pos);
+
+		if ($prefixFile != NULL) {
+		    $output = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $newRelease, $prefixFile)));
+		    $this->ckeckReturn($output);
+		}
+		$this->output->writeln(sprintf("	    - <info>%s</info>", $copy));
+		$output = trim($connection->exec(sprintf("cd %s/releases && cp %s/%s %s/%s", $deployTo, $lastRelease, $copy, $newRelease, $copy)));
 		$this->ckeckReturn($output);
 	    }
 	}

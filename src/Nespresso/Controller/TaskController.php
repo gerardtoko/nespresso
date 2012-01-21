@@ -11,7 +11,6 @@
 
 namespace Nespresso\Controller;
 
-
 use Nespresso\Controller\Controller as BaseController;
 
 /**
@@ -47,9 +46,11 @@ class TaskController extends BaseController
 	$project = $manager->getProject();
 	$repositories = $project->getRepositories();
 	$connection = null;
-	$this->output->writeln("Executing tasks pre...");
 
-	
+	if ($project->hasCommonTasks()) {
+	    $this->output->writeln("Executing tasks pre...");
+	}
+
 	foreach ($repositories as $repository) {
 
 	    $connection = $this->getConnection($repository);
@@ -63,7 +64,7 @@ class TaskController extends BaseController
 		    foreach ($commonTasksPre as $commonCommandTaskPre) {
 			$command = $commonCommandTaskPre->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("	- Task <comment>%s</comment> <info>%s</info> <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
@@ -76,7 +77,7 @@ class TaskController extends BaseController
 		    foreach ($tasksPre as $commandTaskPre) {
 			$command = $commandTaskPre->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("	- Task <comment>%s</comment> <info>%s</info> <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
@@ -91,8 +92,10 @@ class TaskController extends BaseController
 	$project = $manager->getProject();
 	$repositories = $project->getRepositories();
 	$connection = null;
-	$this->output->writeln("Executing tasks post...");
 
+	if ($project->hasCommonTasks()) {
+	    $this->output->writeln("Executing tasks post...");
+	}
 
 	foreach ($repositories as $repository) {
 
@@ -102,12 +105,12 @@ class TaskController extends BaseController
 	    //executing common command
 	    if ($project->hasCommonTasks()) {
 		$commonTasks = $manager->getProject()->getCommonTasks();
-		if ($commonTasks->hasPost()) {		    
+		if ($commonTasks->hasPost()) {
 		    $commonTasksPost = $commonTasks->getPost();
 		    foreach ($commonTasksPost as $commonCommandTaskPost) {
 			$command = $commonCommandTaskPost->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("	- Task <comment>%s</comment> <info>%s</info> <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
@@ -116,16 +119,15 @@ class TaskController extends BaseController
 	    if ($repository->hasTasks()) {
 		$tasks = $repository->getTasks();
 		if ($tasks->hasPost()) {
-		    $tasksPost = $tasks->getPost();		    
+		    $tasksPost = $tasks->getPost();
 		    foreach ($tasksPost as $commandTaskPost) {
 			$command = $commandTaskPost->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("	- Task <comment>%s</comment> <info>%s</info> <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
 	}
-	
     }
 
 }

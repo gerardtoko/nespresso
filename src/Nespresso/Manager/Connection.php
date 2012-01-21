@@ -26,7 +26,9 @@ class Connection
     {
 
 	if (!is_null($output)) {
-	    $output->writeln("<comment>Connecting server...</comment> [<info>$user</info>][<info>$domain</info>][<info>$port</info>]");
+	    $output->writeln("<comment>Connecting on the server</comment> <info>$domain</info>");
+	    $output->writeln("	    - User: <info>$user</info>");
+	    $output->writeln("	    - Port: <info>$port</info>");
 	}
 
 	try {

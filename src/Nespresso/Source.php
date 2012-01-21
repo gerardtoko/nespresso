@@ -75,7 +75,7 @@ class Source
 	exec(sprintf("cd %s && %s 2>%s/nespresso.log", $tmp, $command, $tmp), $output, $code);
 	$this->ckeckReturn($code);
 	$this->isCloned = TRUE;
-	$this->output->writeln(sprintf("Project cloned in [<info>%s</info>]", $this->local));
+	$this->output->writeln(sprintf("Project cloned in <info>%s</info>", $this->local));
 
 	return $this->isCloned;
     }
@@ -88,7 +88,7 @@ class Source
     public function removeScm()
     {
 	if ($this->isCloned()) {
-	    $this->output->writeln(sprintf("Remove clone... [<info>%s</info>]", $this->getLocal()));
+	    $this->output->writeln(sprintf("Remove clone <info>%s</info>", $this->getLocal()));
 	    $this->exec(sprintf("rm -rf %s", $this->local));	    
 	    $this->local = NULL;
 	    return TRUE;

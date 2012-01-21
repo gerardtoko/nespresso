@@ -66,7 +66,7 @@ class SetupCommand extends Command
 	//control repositories
 	$releaseController = new ReleaseController($this->container);
 	$releaseController->setupAction();
-	$release = $releaseController->createNewReleaseAction();
+	$release = $releaseController->createNewReleaseAction(TRUE);
 
 	//control shared
 	$sharedController = new SharedController($this->container, $release);
