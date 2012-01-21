@@ -85,19 +85,7 @@ class DeployCommand extends Command
 	$releaseController->controlAction();
 	$newRelease = $releaseController->createNewReleaseAction();
 
-	//control shared
-	$sharedController = new SharedController($this->container, $newRelease);
-	$sharedController->controlAction();
-
-	$taskController = new TaskController($this->container, $newRelease);
-	$taskController->executePreCommand();
-
-	//deployement
-	$rsync = new Rsync($this->container, $newRelease);
-	$rsync->deploy();
-
-	//task post deployement
-	$taskController->executePostCommand();
+	$this->deploy($newRelease);
 
 	$releaseController->pushCommitFileAction($commitCheckout);
 	$releaseController->updateSymbolinkAction();
@@ -108,6 +96,31 @@ class DeployCommand extends Command
     }
 
 
+    /**
+     * 
+     * @param type $release
+     */
+    public function deploy($release)
+    {	
+	$sharedController = new SharedController($this->container, $release);
+	$taskController = new TaskController($this->container, $release);
+	$rsync = new Rsync($this->container, $release);
+		
+	$taskController->executePreCommand();	
+	$sharedController->sharedAction();	
+	$rsync->deploy();
+	$taskController->executePostCommand();
+    }
+
+
+    /**
+     * 
+     * @param type $source
+     * @param type $commit
+     * @param type $tag
+     * @param type $branch
+     * @return type
+     */
     public function checkout($source, $commit = null, $tag = null, $branch = null)
     {
 	//from commit

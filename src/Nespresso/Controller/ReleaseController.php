@@ -88,7 +88,7 @@ class ReleaseController extends BaseController
     {
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
-	$connection = null;	
+	$connection = null;
 
 	foreach ($repositories as $repository) {
 
@@ -115,16 +115,20 @@ class ReleaseController extends BaseController
 	$dateTime = new \DateTime();
 	$releaseId = $dateTime->format('y-m-d-H-i-s');
 	$this->newRelease = $releaseId;
-
 	foreach ($repositories as $repository) {
 
 	    $name = $repository->getName();
 	    $deployTo = $repository->getDeployTo();
 	    $connection = $this->getConnection($repository);
+	    $lastRelease = $this->getLastRelease($repository);
 
 	    $this->output->writeln("Create new release <info>$releaseId</info> on <info>$name</info>...");
 	    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s", $deployTo, $releaseId)));
 	    $this->ckeckReturn($outputSsh);
+
+	    if ($manager->getProject()->hasCopyTo()) {
+		$this->copy($repository, $lastRelease, $releaseId);
+	    }
 
 	    if ($project->hasCache()) {
 		$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $releaseId, $project->getCache())));
@@ -136,6 +140,39 @@ class ReleaseController extends BaseController
 	}
 
 	return $releaseId;
+    }
+
+
+    /**
+     * 
+     * @param type $repository
+     * @param type $releaseLast,
+     */
+    public function copy($repository, $lastRelease, $newRelease)
+    {
+
+	$manager = $this->container->get("nespresso.manager");
+	$copies = $manager->getProject()->getCopyTo();
+	$connection = $this->getConnection($repository);
+	$deployTo = $repository->getDeployTo();
+
+	//create directory shared
+	foreach ($copies as $copy) {
+
+	    $eltClean = trim($copy, "/");
+	    if (!empty($eltClean)) {
+		$pos = strrpos($eltClean, '/');
+		$copy = $pos == FALSE ? $eltClean : substr($eltClean, $pos + 1);
+		$prefixFile = $pos == FALSE ? NULL : substr($eltClean, 0, $pos);
+
+		if ($prefixFile != NULL) {
+		    $output = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $newRelease, $prefixFile)));
+		    $this->ckeckReturn($output);
+		}
+		$output = trim($connection->exec(sprintf("cd %s/releases && %s/%s %s/%s", $deployTo, $lastRelease, $copy, $newRelease, $copy)));
+		$this->ckeckReturn($output);
+	    }
+	}
     }
 
 

@@ -86,6 +86,10 @@ class ProjectBuilder implements BuilderInterface
 	if (!empty($projectFromJson->shared_file)) {
 	    $projectObject->setSharedFile($projectFromJson->shared_file);
 	}
+	
+	if (!empty($projectFromJson->copy_to)) {
+	    $projectObject->setCopyTo($projectFromJson->copy_to);
+	}
 
 	if (!empty($projectFromJson->cache)) {
 	    $projectObject->setCache($projectFromJson->cache);

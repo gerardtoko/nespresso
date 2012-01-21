@@ -90,6 +90,14 @@ class DiffCommand extends Command
     }
 
 
+    /**
+     * 
+     * @param type $source
+     * @param type $commit
+     * @param type $tag
+     * @param type $branch
+     * @return type
+     */
     public function checkout($source, $commit = null, $tag = null, $branch = null)
     {
 	//from commit

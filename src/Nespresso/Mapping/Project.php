@@ -57,6 +57,7 @@ class Project
 {
 
     protected $source;
+    protected $copyTo;
     protected $keepRelease;
     protected $repositories;
     protected $cache;
@@ -86,8 +87,39 @@ class Project
     {
 	return $this->repositories;
     }
+    /**
+     * 
+     * @param array $copyTo
+     * @return \Nespresso\Mapping\Project
+     */
+    public function setCopyTo(array $copyTo)
+    {
+	$this->copyTo = $copyTo;
+	return $this;
+    }
 
 
+    /**
+     * 
+     * @return type
+     */
+    public function getCopyTo()
+    {
+	return $this->copyTo;
+    }
+
+
+    
+
+    /**
+     * 
+     * @return type
+     */
+    public function hasCopyTo()
+    {
+	return !empty($this->copyTo) ? TRUE : FALSE;
+    }
+    
     /**
      * 
      * @param type $source

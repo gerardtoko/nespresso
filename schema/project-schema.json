@@ -42,6 +42,9 @@
 	"shared_file": {
 	    "type": "array"
 	},
+	"copy_to": {
+	    "type": "array"
+	},
 	"groups": {
 	    "type": "object",
 	    "description": "nodes connection for the deployement"

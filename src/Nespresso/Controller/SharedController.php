@@ -41,7 +41,7 @@ class SharedController extends BaseController
     }
 
 
-    public function controlAction()
+    public function sharedAction()
     {
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
