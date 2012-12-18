@@ -1,0 +1,10 @@
+{
+    "options": { 
+	"user": "rdeploy",
+	"key":  "rdeploy.key",
+	"color": true,
+	"backup": true,
+	"confirm": true,	
+	"confirm_with_diff": true 
+    }
+}
