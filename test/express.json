@@ -1,5 +1,5 @@
 {
-    "env":  { 
+    "envs":  { 
 	"git": 
 	[
 	{    
@@ -45,9 +45,9 @@
 	]
     }, 
     "excludes": ["var/*","media/*",".git*","app/configs/database.yml","app/configs/env.yml"], 
-    "node":  { 
+    "nodes":  {
 	"deploy_on_testing": "git:testing",
 	"deploy_on_staging": "tesging:staging",
 	"deploy_on_production": "staging:production" 
-    },
+    }
 }

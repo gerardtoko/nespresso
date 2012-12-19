@@ -15,7 +15,8 @@
 	"symfony/finder": "2.2.*@dev",
 	"symfony/config": "2.2.*@dev",
 	"symfony/console": "2.2.*@dev",
-	"symfony/serializer": "2.2.*@dev"
+	"symfony/serializer": "2.2.*@dev",
+	"seld/jsonlint": "dev-master"
     },
     "minimum-stability": "dev"
 }

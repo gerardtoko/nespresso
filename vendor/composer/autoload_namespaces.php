@@ -13,6 +13,7 @@ return array(
     'Symfony\\Component\\DependencyInjection\\' => $vendorDir . '/symfony/dependency-injection/',
     'Symfony\\Component\\Console\\' => $vendorDir . '/symfony/console/',
     'Symfony\\Component\\Config\\' => $vendorDir . '/symfony/config/',
+    'Seld\\JsonLint' => $vendorDir . '/seld/jsonlint/src/',
     'Net' => $vendorDir . '/phpseclib/phpseclib/phpseclib/',
     'Math' => $vendorDir . '/phpseclib/phpseclib/phpseclib/',
     'File' => $vendorDir . '/phpseclib/phpseclib/phpseclib/',

@@ -1,5 +1,15 @@
 <?php
 
+
+/*
+ * This file is part of the rdeploy package.
+ *
+ * (c) Gerard TOKO <gerard.toko@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -8,6 +18,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Description of CheckCommand
+ *
+ * @author gerardtoko
+ */
 class CkeckCommand extends Command
 {
 
@@ -17,7 +32,7 @@ class CkeckCommand extends Command
 	$this->setName('check')
 		->setDescription('control total release on a node project')
 		->addArgument(
-			'node', InputArgument::REQUIRED, 'specific node, example projetname:node'
+			'node', InputArgument::REQUIRED, 'specific node, example projectname:node'
 		)
 	;
     }
