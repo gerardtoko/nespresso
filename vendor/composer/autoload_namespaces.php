@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Component\\Yaml\\' => $vendorDir . '/symfony/yaml/',
+    'Symfony\\Component\\Serializer\\' => $vendorDir . '/symfony/serializer/',
     'Symfony\\Component\\Finder\\' => $vendorDir . '/symfony/finder/',
     'Symfony\\Component\\EventDispatcher' => $vendorDir . '/symfony/event-dispatcher/',
     'Symfony\\Component\\DependencyInjection\\' => $vendorDir . '/symfony/dependency-injection/',

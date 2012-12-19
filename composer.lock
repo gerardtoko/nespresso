@@ -1,5 +1,5 @@
 {
-    "hash": "59e7bba2d5c6acd2962258b8ed50a6a8",
+    "hash": "960c7777ae1c0386aa8f258fff79bdfc",
     "packages": [
         {
             "name": "phpseclib/phpseclib",
@@ -319,6 +319,54 @@
             "homepage": "http://symfony.com"
         },
         {
+            "name": "symfony/serializer",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Serializer",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Serializer",
+                "reference": "36e91eaa663826a6cbb4d3e94915aad16f667cca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/symfony/Serializer/archive/36e91eaa663826a6cbb4d3e94915aad16f667cca.zip",
+                "reference": "36e91eaa663826a6cbb4d3e94915aad16f667cca",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "2012-12-13 18:25:06",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Serializer\\": ""
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Serializer Component",
+            "homepage": "http://symfony.com"
+        },
+        {
             "name": "symfony/yaml",
             "version": "dev-master",
             "target-dir": "Symfony/Component/Yaml",
@@ -379,6 +427,7 @@
         "symfony/yaml": 20,
         "symfony/finder": 20,
         "symfony/config": 20,
-        "symfony/console": 20
+        "symfony/console": 20,
+        "symfony/serializer": 20
     }
 }
