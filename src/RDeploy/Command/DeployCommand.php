@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Command;
+namespace RDeploy\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,20 +20,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 
 /**
- * Description of RevertCommand
+ * Description of DeployCommand
  *
  * @author gerardtoko
  */
-class RevertCommand extends Command
+
+class DeployCommand extends Command
 {
 
 
     protected function configure()
     {
-	$this->setName('revert')
-		->setDescription('bascule the pointer on the latest version release')
+	$this->setName('deploy')
+		->setDescription('Deploy a project specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
+		)
+		->addOption(
+			'backup', null, InputOption::VALUE_REQUIRED, 'attribute backup (booleen value) example --backup=true'
 		)
 		->addOption(
 			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'

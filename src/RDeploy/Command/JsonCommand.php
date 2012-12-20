@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Command;
+namespace RDeploy\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

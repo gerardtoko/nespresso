@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Command;
+namespace RDeploy\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,24 +20,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 
 /**
- * Description of DeployCommand
+ * Description of RollbackCommand
  *
  * @author gerardtoko
  */
-
-class DeployCommand extends Command
+class RollbackCommand extends Command
 {
 
 
+    
     protected function configure()
     {
-	$this->setName('deploy')
-		->setDescription('Deploy a project specific')
+	$this->setName('rollback')
+		->setDescription('apply a return on a release specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
 		)
 		->addOption(
-			'backup', null, InputOption::VALUE_REQUIRED, 'attribute backup (booleen value) example --backup=true'
+			'release', null, InputOption::VALUE_REQUIRED, 'select release for the pointer (integer value), example --release=1'
 		)
 		->addOption(
 			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'

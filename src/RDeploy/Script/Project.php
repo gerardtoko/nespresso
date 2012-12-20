@@ -1,5 +1,7 @@
 <?php
 
+namespace RDeploy\Script;
+
 /*
  * This file is part of the rdeploy package.
  *

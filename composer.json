@@ -1,6 +1,17 @@
 {
-    "name": "rDeploy",
+    "name": "express/rdeploy",
     "description": "rDeploy projet",
+    "keywords": ["deploying", "server syncro", "auth deploy"],
+    "homepage": "http://express-projet.org/",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gérard TOKO",
+            "email": "gerard.toko@gmailcom",
+            "homepage": "http://gerardtoko.com"
+        }
+    ],
     "autoload": {
 	"psr-0": {
 	    "": "src/"
@@ -16,6 +27,7 @@
 	"symfony/config": "2.2.*@dev",
 	"symfony/console": "2.2.*@dev",
 	"symfony/serializer": "2.2.*@dev",
+	"justinrainbow/json-schema": "1.1.*",
 	"seld/jsonlint": "dev-master"
     },
     "minimum-stability": "dev"

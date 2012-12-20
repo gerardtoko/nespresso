@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Command;
+namespace RDeploy\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,20 +19,24 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Description of DiffCommand
+ * Description of CleanupCommand
  *
  * @author gerardtoko
  */
-class DiffCommand extends Command
+
+class CleanupCommand extends Command
 {
 
 
     protected function configure()
     {
-	$this->setName('rollback')
-		->setDescription('compare diff on a node')
+	$this->setName('cleanup')
+		->setDescription('remove all releases except release current on the project specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
+		)
+		->addOption(
+			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'
 		)
 	;
     }

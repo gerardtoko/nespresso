@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Command;
+namespace RDeploy\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,20 +18,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+
 /**
- * Description of CleanupCommand
+ * Description of RevertCommand
  *
  * @author gerardtoko
  */
-
-class CleanupCommand extends Command
+class RevertCommand extends Command
 {
 
 
     protected function configure()
     {
-	$this->setName('cleanup')
-		->setDescription('remove all releases except release current on the project specific')
+	$this->setName('revert')
+		->setDescription('bascule the pointer on the latest version release')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
 		)
