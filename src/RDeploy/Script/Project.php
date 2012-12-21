@@ -1,7 +1,5 @@
 <?php
 
-namespace RDeploy\Script;
-
 /*
  * This file is part of the rdeploy package.
  *
@@ -11,6 +9,8 @@ namespace RDeploy\Script;
  * file that was distributed with this source code.
  */
 
+namespace RDeploy\Script;
+
 /**
  * Description of Project
  *
@@ -19,28 +19,19 @@ namespace RDeploy\Script;
 class Project
 {
 
-    private $envs;
-    private $nodes;
-    private $excludes;
+    protected $data;
+    protected $nodeCurrent;
 
 
     /**
      * 
-     * @return type
+     * @param type $data
+     * @return \RDeploy\Script\Project
      */
-    public function getNodes()
+    public function setData($data)
     {
-	return $this->nodes;
-    }
-
-
-    /**
-     * 
-     * @param type $nodes
-     */
-    public function setNodes($nodes)
-    {
-	$this->nodes = $nodes;
+	$this->data = $data;
+	return $this;
     }
 
 
@@ -48,19 +39,21 @@ class Project
      * 
      * @return type
      */
-    public function getEnvs()
+    public function getData()
     {
-	return $this->envs;
+	return $this->data;
     }
 
 
     /**
      * 
-     * @param type $envs
+     * @param type $nodeCurrent
+     * @return \RDeploy\Script\Project
      */
-    public function setEnvs($envs)
+    public function setNodeCurrent($nodeCurrent)
     {
-	$this->envs = $envs;
+	$this->nodeCurrent = $nodeCurrent;
+	return $this;
     }
 
 
@@ -68,21 +61,9 @@ class Project
      * 
      * @return type
      */
-    public function getExcludes()
+    public function getNodeCurrent()
     {
-	return $this->excludes;
-    }
-
-
-    /**
-     * 
-     * @param type $excludes
-     */
-    public function setExcludes($excludes)
-    {
-	$this->excludes = $excludes;
+	return $this->nodeCurrent;
     }
 
 }
-
-
