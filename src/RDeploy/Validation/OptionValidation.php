@@ -36,13 +36,13 @@ class OptionValidation
 	$schema_file = $this->getShemaValidation();
 	if (!file_exists($schema_file)) {
 	    $basename = basename($schema_file);
-	    throw new \Exception("<error>shema $basename no exist in app directory");
+	    throw new \Exception("schema $basename no exist in app directory");
 	}
 
 	$option_file = $this->getOption();
 	if (!file_exists($option_file)) {
 	    $basename = basename($option_file);
-	    throw new \Exception("<error>shema $basename no exist");
+	    throw new \Exception("schema $basename no exist");
 	}
 
 	//shema valid

@@ -34,11 +34,11 @@ class NodeValidation
 	    $envs = array_keys((array) $projet->envs);
 
 	    if (!in_array($nodes[0], $envs)) {
-		throw new \Exception("<error>env $nodes[0] no exist");
+		throw new \Exception("env $nodes[0] no exist");
 	    }
 
 	    if (!in_array($nodes[1], $envs)) {
-		throw new \Exception("<error>env $nodes[1] no exist");
+		throw new \Exception("env $nodes[1] no exist");
 	    }
 	}
     }

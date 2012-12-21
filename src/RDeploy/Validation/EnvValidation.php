@@ -42,7 +42,7 @@ class EnvValidation
 		$schema_file = $this->getSchemaValidation();
 		if (!file_exists($schema_file)) {
 		    $basename = basename($schema_file);
-		    throw new \Exception("<error>shema $basename no exist in app directory");
+		    throw new \Exception("schema $basename no exist in app directory");
 		}
 
 		//shema valid
