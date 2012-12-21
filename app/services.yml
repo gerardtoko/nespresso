@@ -1,0 +1,8 @@
+## YAML Template.
+# app/services.yml
+parameters:
+    # ...   
+
+services:
+    validation:
+        class: RDeploy\Validation

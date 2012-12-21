@@ -11,11 +11,11 @@
 
 namespace RDeploy\Command;
 
-use Symfony\Component\Console\Command\Command;
+use RDeploy\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use RDeploy\Validation;
+
 
 /**
  * Description of JsonCommand
@@ -47,21 +47,11 @@ class JsonCommand extends Command
     {
 
 	$output->writeln("Starting rdeploy...");
-	//sleep(1);
-
-	$project_name = $input->getArgument("project");
-	$project_file = $this->getDirectoryProject() . $project_name . '.json';
-
-	//check file
-	if (!file_exists($project_file)) {
-	    $basename = basename($project_file);
-	    return $output->writeln("<error>file $basename does not exist </error>");
-	}
+	sleep(1);
 
 	try {
-	    $project_json = file_get_contents($project_file);
-	    $validation = new Validation();
-	    $validation->validJson($project_json);
+	    $project_json = $this->getJsonProjectByArg("project", $input);
+	    $this->getContainer()->get("validation")->valid($project_json);
 	} catch (\Exception $exc) {
 	    $message = $exc->getMessage();
 	    return $output->writeln("<error>Error file json: $message </error>");
@@ -70,17 +60,7 @@ class JsonCommand extends Command
 	$output->writeln($project_json);
 
 	sleep(0.5);
-	return $output->writeln("<info>project json $project_name is correct!</info>");
-    }
-
-
-    /**
-     * 
-     * @return type
-     */
-    public function getDirectoryProject()
-    {
-	return __DIR__ . '/../../../tests/';
+	return $output->writeln("<info>project json is correct!</info>");
     }
 
 }

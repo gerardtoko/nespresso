@@ -29,7 +29,7 @@ class Validation
      * 
      * @param type $json
      */
-    public function validJson($json)
+    public function valid($json)
     {
 
 	$parser = new JsonParser();
