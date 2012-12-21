@@ -1,0 +1,25 @@
+{
+    "name": "Package",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+	"server": {
+	    "type": "string",
+	    "description": "envs",
+	    "required": true
+	},
+	"repository": {
+	    "type": "string",
+	    "description": "repository",
+	    "required": true
+	},
+	"pre-cmd": {
+		"type": "array",
+	    "description": "pre-cmd"
+	},
+	"post-cmd": {
+	    "type": "array",
+	    "description": "post-cmd"
+	}
+    }
+}

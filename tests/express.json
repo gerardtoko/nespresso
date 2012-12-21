@@ -5,17 +5,17 @@
 	{    
 	    "server": "git@192.168.0.34" ,
 	    "repository": "/usr/share/nginx/html/example.projet.com", 
-	    "before": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
-	    "after": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+	    "pre-cmd": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+	    "post-cmd": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
 	}
 	],
-	"testing":  
+	"testing": 
 	[
 	{    
 	    "server": "www-data@192.168.0.34" ,
 	    "repository": "/usr/share/nginx/html/example.projet.com", 
-	    "before": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
-	    "after": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+	    "pre-cmd": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+	    "post-cmd": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
 	}
 	]
 	,
@@ -24,15 +24,15 @@
 	{    
 	    "server": "www-data@192.168.0.34" ,
 	    "repository": "/usr/share/nginx/html/example.projet.com", 
-	    "before": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
-	    "after": ["cd web","rm -rf cache/*","chmod -R 777 cache"],
+	    "pre-cmd": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+	    "post-cmd": ["cd web","rm -rf cache/*","chmod -R 777 cache"],
 	    "master": true
 	},
 	{    
 	    "server": "www-data@192.168.0.34" ,
 	    "repository": "/usr/share/nginx/html/example.projet.com", 
-	    "before": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
-	    "after": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+	    "pre-cmd": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+	    "post-cmd": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
 	}
 	],
 	"production": 
@@ -40,21 +40,21 @@
 	{    
 	    "server": "www-data@192.168.0.34" ,
 	    "repository": "/usr/share/nginx/html/example.projet.com", 
-	    "before": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
-	    "after": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+	    "pre-cmd": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+	    "post-cmd": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
 	},
 	{    
 	    "server": "www-data@gerardtoko.com" ,
 	    "repository": "/usr/share/nginx/html/example.projet.com", 
-	    "before": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
-	    "after": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+	    "pre-cmd": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+	    "post-cmd": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
 	}
 	]
     }, 
     "excludes": ["var/*","media/*",".git*","app/configs/database.yml","app/configs/env.yml"], 
     "nodes":  {
 	"testing": "scm:testing",
-	"staging": "tesging:staging",
+	"staging": "testing:staging",
 	"production": "staging:production" 
     }
 }

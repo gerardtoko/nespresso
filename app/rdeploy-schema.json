@@ -1,0 +1,21 @@
+{
+    "name": "Package",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+	"envs": {
+	    "type": "object",
+	    "description": "envs",
+	    "required": true
+	},
+	"excludes": {
+	    "type": "array",
+	    "description": "all excludes files"
+	},
+	"nodes": {
+	    "type": "object",
+	    "description": "nodes connection",
+	    "required": true
+	}
+    }
+}

@@ -1,6 +1,5 @@
 <?php
 
-
 /*
  * This file is part of the rdeploy package.
  *
@@ -16,7 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Seld\JsonLint\JsonParser;
+use RDeploy\Validation;
 
 /**
  * Description of JsonCommand
@@ -27,7 +26,6 @@ class JsonCommand extends Command
 {
 
 
-    
     protected function configure()
     {
 	$this->setName('json')
@@ -48,9 +46,8 @@ class JsonCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-	$parser = new JsonParser();
 	$output->writeln("Starting rdeploy...");
-	sleep(1);
+	//sleep(1);
 
 	$project_name = $input->getArgument("project");
 	$project_file = $this->getDirectoryProject() . $project_name . '.json';
@@ -61,13 +58,19 @@ class JsonCommand extends Command
 	    return $output->writeln("<error>file $basename does not exist </error>");
 	}
 
-	$project_json = file_get_contents($project_file);
-	//parse file
-	$parser->parse($project_json);
+	try {
+	    $project_json = file_get_contents($project_file);
+	    $validation = new Validation();
+	    $validation->validJson($project_json);
+	} catch (\Exception $exc) {
+	    $message = $exc->getMessage();
+	    return $output->writeln("<error>Error file json: $message </error>");
+	}
+
 	$output->writeln($project_json);
+
 	sleep(0.5);
 	return $output->writeln("<info>project json $project_name is correct!</info>");
-	
     }
 
 
@@ -77,7 +80,7 @@ class JsonCommand extends Command
      */
     public function getDirectoryProject()
     {
-	return __DIR__ . '/../../test/';
+	return __DIR__ . '/../../../tests/';
     }
 
 }

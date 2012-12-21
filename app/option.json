@@ -1,8 +1,0 @@
-{
-    "options": { 
-	"user": "rdeploy",
-	"key":  "rdeploy.key",
-	"backup": true,
-	"confirm": true
-    }
-}

@@ -11,7 +11,7 @@
 
 namespace RDeploy\Console;
 
-use Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Component\Console\Application as BaseApplication;
 use \RDeploy\Command\CkeckCommand;
 use \RDeploy\Command\CleanupCommand;
 use \RDeploy\Command\DeployCommand;
@@ -26,11 +26,8 @@ use \RDeploy\Command\RollbackCommand;
  *
  * @author gerardtoko
  */
-class Application extends BaseCommand
+class Application
 {
-
-
-    //put your code here
 
     public function __construct()
     {
@@ -41,17 +38,14 @@ class Application extends BaseCommand
 	if (function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get')) {
 	    date_default_timezone_set(@date_default_timezone_get());
 	}
-
-	ErrorHandler::register();
     }
 
 
     /**
      * Initializes all the rdeploy commands
      */
-    protected function getDefaultCommands()
+    protected function getCommands()
     {
-	$commands = parent::getDefaultCommands();
 	$commands[] = new CkeckCommand();
 	$commands[] = new DeployCommand();
 	$commands[] = new DiffCommand();
@@ -63,6 +57,18 @@ class Application extends BaseCommand
 	$commands[] = new CleanupCommand();
 
 	return $commands;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function run()
+    {
+	$application = new BaseApplication();
+	$application->addCommands($this->getCommands());
+	return $application->run();
     }
 
 }
