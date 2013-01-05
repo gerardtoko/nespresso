@@ -17,8 +17,7 @@ use \Nespresso\Command\CleanupCommand;
 use \Nespresso\Command\DeployCommand;
 use \Nespresso\Command\DiffCommand;
 use \Nespresso\Command\JsonCommand;
-use \Nespresso\Command\ReleaseCommand;
-use \Nespresso\Command\RevertCommand;
+use \Nespresso\Command\UpdateCommand;
 use \Nespresso\Command\RollbackCommand;
 
 /**
@@ -46,15 +45,13 @@ class Application
      */
     protected function getCommands()
     {
-	$commands[] = new CkeckCommand();
 	$commands[] = new DeployCommand();
-	$commands[] = new DiffCommand();
-	$commands[] = new JsonCommand();
-	$commands[] = new ReleaseCommand();
-	$commands[] = new RevertCommand();
-	$commands[] = new RevertCommand();
 	$commands[] = new RollbackCommand();
+	$commands[] = new UpdateCommand();
+	$commands[] = new DiffCommand();
 	$commands[] = new CleanupCommand();
+	$commands[] = new CkeckCommand();
+	$commands[] = new JsonCommand();
 
 	return $commands;
     }

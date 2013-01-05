@@ -23,13 +23,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author gerardtoko
  */
-class ReleaseCommand extends Command
+class UpdateCommand extends Command
 {
 
 
     protected function configure()
     {
-	$this->setName('release')
+	$this->setName('update')
 		->setDescription('create new release on a projet specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'

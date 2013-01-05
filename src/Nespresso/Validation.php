@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy;
+namespace Nespresso;
 
 use Seld\JsonLint\JsonParser;
-use RDeploy\Validation\EnvValidation;
-use RDeploy\Validation\OptionValidation;
-use RDeploy\Validation\NodeValidation;
+use Nespresso\Validation\RepositoryValidation;
+use Nespresso\Validation\OptionValidation;
 
 /**
  * Description of Validation
@@ -34,8 +33,7 @@ class Validation
 
 	$parser = new JsonParser();
 	$validator = new \JsonSchema\Validator();
-	$validation_env = new EnvValidation();
-	$validation_node = new NodeValidation();
+	$validation_repository = new RepositoryValidation();
 	$validation_option = new OptionValidation();
 
 	//errors
@@ -45,7 +43,7 @@ class Validation
 	$parser->parse($json);
 
 	//check file
-	$schema_file = $this->getSchemaValidation();
+	$schema_file = $this->getProjectSchemaValidation();
 	if (!file_exists($schema_file)) {
 	    $basename = basename($schema_file);
 	    throw new \Exception("schema $basename no exist in app directory");
@@ -66,18 +64,16 @@ class Validation
 	    throw new \Exception("JSON projet does not validate. Violations:\n $errors");
 	}
 
-	//validation nodes and env
-	$validation_env->valid($obj_json);
-	$validation_node->valid($obj_json);
-	
+	//validation repository
+	$validation_repository->valid($obj_json);
 	//validation option
 	$validation_option->valid();
     }
 
 
-    public function getSchemaValidation()
+    public function getProjectSchemaValidation()
     {
-	return __DIR__ . '/../../app/rdeploy-schema.json';
+	return __DIR__ . '/../../app/project-schema.json';
     }
 
 }

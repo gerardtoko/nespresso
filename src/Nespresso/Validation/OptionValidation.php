@@ -33,7 +33,7 @@ class OptionValidation
 	$errors = "";
 	
 	//check file
-	$schema_file = $this->getShemaValidation();
+	$schema_file = $this->getOptionSchemaValidation();
 	if (!file_exists($schema_file)) {
 	    $basename = basename($schema_file);
 	    throw new \Exception("schema $basename no exist in app directory");
@@ -61,16 +61,18 @@ class OptionValidation
 	    }
 	    throw new \Exception("JSON option does not validate. Violations:\n $errors");
 	}
+	
     }
+    
 
 
     /**
      * 
      * @return type
      */
-    public function getShemaValidation()
+    public function getOptionSchemaValidation()
     {
-	return __DIR__ . '/../../../app/rdeploy-option-schema.json';
+	return __DIR__ . '/../../../app/option-schema.json';
     }
 
 

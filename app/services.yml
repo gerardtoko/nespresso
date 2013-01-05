@@ -5,6 +5,6 @@ parameters:
 
 services:
     validation:
-        class: RDeploy\Validation
-    script.projet:
-        class: RDeploy\Script\Projet
+        class: Nespresso\Validation
+    nespresso.manager:
+        class: Nespresso\Manager

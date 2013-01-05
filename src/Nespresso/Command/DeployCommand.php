@@ -1,6 +1,5 @@
 <?php
 
-
 /*
  * This file is part of the rdeploy package.
  *
@@ -18,13 +17,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
  * Description of DeployCommand
  *
  * @author gerardtoko
  */
-
 class DeployCommand extends Command
 {
 
@@ -34,20 +31,59 @@ class DeployCommand extends Command
 	$this->setName('deploy')
 		->setDescription('Deploy a project specific')
 		->addArgument(
-			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
+			'project', InputArgument::REQUIRED, 'Specific project with a repository or group repository. Example nespresso:production'
 		)
 		->addOption(
-			'backup', null, InputOption::VALUE_REQUIRED, 'attribute backup (booleen value) example --backup=true'
+			'branch', null, InputOption::VALUE_REQUIRED, 'Deploy from a branch. Example --backup=master'
 		)
 		->addOption(
-			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'
+			'tag', null, InputOption::VALUE_REQUIRED, 'Deploy from a tag. Example --tag=v1.2'
+		)
+		->addOption(
+			'commit', null, InputOption::VALUE_REQUIRED, 'Deploy from a commit. Example --commit=b0a1b9a3adc5e583'
+		)
+		->addOption(
+			'group', null, InputOption::VALUE_NONE, 'if you want deployed on a group of directory, add this attribute'
 		)
 	;
     }
 
 
+    /**
+     * 
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+	$output->writeln("starting nespresso...");
+
+	//get Data from the request
+	$project = $this->getProjectByArg("project", $input);
+	$repository = $this->getRepositoryByArg("project", $input);
+	$commit = $input->getOption('commit');
+	$tag = $input->getOption('tag');
+	$branch = $input->getOption('branch');
+
+	$output->writeln("validation <info>$project</info> project");
+	$this->validJson($input, $output);
+
+	$project_object = json_decode($this->getJsonProjectByArg("project", $input));
+	$manager = $this->getContainer()->get("nespresso.manager");
+	
+	//add project in the manager
+	$manager->setProject($project_object);
+	
+	exec("touch mrdd");
+	
+	if (NULL != $commit) {
+
+	}
+	var_dump($commit);
+	var_dump(json_decode($project_json));
+
+	exit;
 	$name = $input->getArgument('name');
 	if ($name) {
 	    $text = 'Hello ' . $name;

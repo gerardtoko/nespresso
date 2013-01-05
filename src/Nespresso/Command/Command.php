@@ -16,7 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Console\Input\InputInterface;
-
+use Symfony\Component\Console\Output\OutputInterface;
+use Nespresso\Script\Project;
 /**
  * Description of JsonCommand
  *
@@ -55,7 +56,7 @@ class Command extends BaseCommand
     public function getJsonProjectByArg($arg, InputInterface $input)
     {
 
-	$this->validProjectNode($arg);
+	$this->validProjectRepository($arg);
 	$project_name = $this->getProjectByArg($arg, $input);
 	$project_file = $this->getDirectoryProject() . $project_name . '.json';
 
@@ -78,15 +79,15 @@ class Command extends BaseCommand
      * @return type
      * @throws \Exception
      */
-    public function getNodeByArg($arg, InputInterface $input)
+    public function getRepositoryByArg($arg, InputInterface $input)
     {
 
 	$arg_project = $input->getArgument($arg);
-	$this->validProjectNode($arg_project);
+	$this->validProjectRepository($arg_project);
 	if (!preg_match("#.+:.+#", $arg_project)) {
-	    throw new \Exception("Arg $arg_project error parsing, no found node data. Example : nameProject:nameNode");
+	    throw new \Exception("Arg $arg_project error parsing, no found repository data. Example : nespresso:production");
 	}
-	return strstr($arg_project, ':');
+	return substr(strstr($arg_project, ':'), 1);
     }
 
 
@@ -100,7 +101,7 @@ class Command extends BaseCommand
     {
 	$arg_project = $input->getArgument($arg);
 	//validation data
-	$this->validProjectNode($arg_project);
+	$this->validProjectRepository($arg_project);
 	return preg_match("#.+:.+#", $arg_project) ? strstr($arg_project, ':', true) : $arg_project;
     }
 
@@ -110,13 +111,28 @@ class Command extends BaseCommand
      * @param type $arg_project
      * @throws \Exception
      */
-    public function validProjectNode($arg_project)
+    public function validProjectRepository($arg_project)
     {
 	if (substr_count($arg_project, ':') > 1) {
-	    throw new \Exception("Arg $arg_project error parsing, Example : nameProject:nameNode");
+	    throw new \Exception("Arg $arg_project error parsing, Example : nespresso:production");
 	}
     }
 
+    /**
+     * 
+     * @return type
+     */
+    public function validJson(InputInterface $input, OutputInterface $output)
+    {
+	try {
+	    $project_json = $this->getJsonProjectByArg("project", $input);
+	    $this->getContainer()->get("validation")->valid($project_json);
+	} catch (\Exception $exc) {
+	    $message = $exc->getMessage();
+	    return $output->writeln("<error>Error file json: $message </error>");
+	}
+    }
+    
 
     /**
      * 

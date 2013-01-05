@@ -12,6 +12,10 @@
 	    "type": "string",
 	    "description": "key",
 	    "required": true
+	},
+	"tmp": {
+	    "type": "string",
+	    "description": "key"
 	}
     }
 }

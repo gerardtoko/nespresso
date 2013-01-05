@@ -18,10 +18,9 @@
 	    "description": "repository git",
 	    "required": true
 	},
-	"nodes": {
+	"group": {
 	    "type": "object",
-	    "description": "nodes connection for the deployement",
-	    "required": true
+	    "description": "nodes connection for the deployement"
 	}
     }
 }

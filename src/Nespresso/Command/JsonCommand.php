@@ -16,7 +16,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
  * Description of JsonCommand
  *
@@ -31,7 +30,7 @@ class JsonCommand extends Command
 	$this->setName('json')
 		->setDescription('control json on a project specific')
 		->addArgument(
-			'project', InputArgument::REQUIRED, 'specific node, example projectname'
+			'project', InputArgument::REQUIRED, 'specific project, example nespresso'
 		)
 	;
     }
@@ -45,22 +44,9 @@ class JsonCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-	$output->writeln("Starting rdeploy...");
-	sleep(1);
-
-	try {
-	    $project_json = $this->getJsonProjectByArg("project", $input);
-	    $this->getContainer()->get("validation")->valid($project_json);
-	} catch (\Exception $exc) {
-	    $message = $exc->getMessage();
-	    return $output->writeln("<error>Error file json: $message </error>");
-	}
-
-	$output->writeln($project_json);
-
-	sleep(0.5);
-	return $output->writeln("<info>project json is correct!</info>");
+	$output->writeln("Starting nespresso...");
+	$this->validJson($input, $output);
+	return $output->writeln("<info>project is correct!</info>");
     }
 
 }

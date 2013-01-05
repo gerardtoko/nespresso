@@ -1,4 +1,5 @@
 {
-    "user": "rdeploy",
-    "key":  "rdeploy.key",
+    "user": "gerardtoko",
+    "key":  "/Users/gerardtoko/.ssh/id_rsa",
+    "tmp":  "/tmp"
 }
