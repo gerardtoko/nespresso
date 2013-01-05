@@ -3,7 +3,7 @@
 
 require __DIR__.'/../src/bootstrap.php';
 
-use RDeploy\Console\Application;
+use Nespresso\Console\Application;
 
 error_reporting(-1);
 

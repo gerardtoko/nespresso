@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Command;
+namespace Nespresso\Command;
 
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

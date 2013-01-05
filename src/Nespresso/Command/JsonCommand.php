@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Command;
+namespace Nespresso\Command;
 
-use RDeploy\Command\Command;
+use Nespresso\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

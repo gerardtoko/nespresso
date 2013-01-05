@@ -10,37 +10,29 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Command;
+namespace Nespresso\Command;
 
-use RDeploy\Command\Command;
+use Nespresso\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
- * Description of RollbackCommand
+ * Description of CheckCommand
  *
  * @author gerardtoko
  */
-class RollbackCommand extends Command
+class CkeckCommand extends Command
 {
 
 
-    
     protected function configure()
     {
-	$this->setName('rollback')
-		->setDescription('apply a return on a release specific')
+	$this->setName('check')
+		->setDescription('control total release on a node project')
 		->addArgument(
-			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
-		)
-		->addOption(
-			'release', null, InputOption::VALUE_REQUIRED, 'select release for the pointer (integer value), example --release=1'
-		)
-		->addOption(
-			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'
+			'node', InputArgument::REQUIRED, 'specific node, example projectname:node'
 		)
 	;
     }

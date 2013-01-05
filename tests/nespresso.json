@@ -1,0 +1,20 @@
+{
+    "repositories":  { 
+	"testing": 
+	{    
+	    "user": "www-data" ,
+	    "domain": "gerardtoko.com",
+	    "port": "22",
+	    "deploy_to": "/home/www-data/testing/nespresso",
+	    "tasks": {		    
+		"pre": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+		"post": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+	    }
+	}	
+    }, 
+    "git": "git@github.com:gerardtoko/nespresso.git",	
+    "keep_release": "3",	
+    "nodes":  {
+	"testing": ["testing"]
+    }
+}

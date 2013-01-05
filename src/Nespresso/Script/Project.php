@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Script;
+namespace Nespresso\Script;
 
 /**
  * Description of Project
@@ -26,7 +26,7 @@ class Project
     /**
      * 
      * @param type $data
-     * @return \RDeploy\Script\Project
+     * @return \Nespresso\Script\Project
      */
     public function setData($data)
     {
@@ -48,7 +48,7 @@ class Project
     /**
      * 
      * @param type $nodeCurrent
-     * @return \RDeploy\Script\Project
+     * @return \Nespresso\Script\Project
      */
     public function setNodeCurrent($nodeCurrent)
     {

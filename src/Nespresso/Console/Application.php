@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Console;
+namespace Nespresso\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use \RDeploy\Command\CkeckCommand;
-use \RDeploy\Command\CleanupCommand;
-use \RDeploy\Command\DeployCommand;
-use \RDeploy\Command\DiffCommand;
-use \RDeploy\Command\JsonCommand;
-use \RDeploy\Command\ReleaseCommand;
-use \RDeploy\Command\RevertCommand;
-use \RDeploy\Command\RollbackCommand;
+use \Nespresso\Command\CkeckCommand;
+use \Nespresso\Command\CleanupCommand;
+use \Nespresso\Command\DeployCommand;
+use \Nespresso\Command\DiffCommand;
+use \Nespresso\Command\JsonCommand;
+use \Nespresso\Command\ReleaseCommand;
+use \Nespresso\Command\RevertCommand;
+use \Nespresso\Command\RollbackCommand;
 
 /**
  * Description of Application

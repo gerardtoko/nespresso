@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Validation;
+namespace Nespresso\Validation;
 
 /**
  * Description of Node

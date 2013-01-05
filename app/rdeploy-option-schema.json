@@ -12,16 +12,6 @@
 	    "type": "string",
 	    "description": "key",
 	    "required": true
-	},
-	"backup": {
-	    "type": "boolean",
-	    "default": false,
-	    "description": "backup configuration"	    
-	},
-	"confirm": {
-	    "type": "boolean",
-	    "default": false,
-	    "description": "confirm configuration"	    
 	}
     }
 }

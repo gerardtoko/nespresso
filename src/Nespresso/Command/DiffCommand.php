@@ -10,32 +10,29 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Command;
+namespace Nespresso\Command;
 
-use RDeploy\Command\Command;
+use Nespresso\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Description of ReleaseCommand
+ * Description of DiffCommand
  *
  * @author gerardtoko
  */
-class ReleaseCommand extends Command
+class DiffCommand extends Command
 {
 
 
     protected function configure()
     {
-	$this->setName('release')
-		->setDescription('create new release on a projet specific')
+	$this->setName('rollback')
+		->setDescription('compare diff on a node')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
-		)
-		->addOption(
-			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'
 		)
 	;
     }

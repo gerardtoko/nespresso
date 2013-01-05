@@ -3,18 +3,24 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-	"envs": {
+	"repositories": {
 	    "type": "object",
-	    "description": "envs",
+	    "description": "repositories for the deployement",
 	    "required": true
 	},
-	"excludes": {
-	    "type": "array",
-	    "description": "all excludes files"
+	"keep_release": {
+	    "type": "integer",
+	    "description": "number of deployement guarded",
+	    "required": true
+	},
+	"git": {
+	    "type": "string",
+	    "description": "repository git",
+	    "required": true
 	},
 	"nodes": {
 	    "type": "object",
-	    "description": "nodes connection",
+	    "description": "nodes connection for the deployement",
 	    "required": true
 	}
     }

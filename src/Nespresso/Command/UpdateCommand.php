@@ -10,34 +10,29 @@
  * file that was distributed with this source code.
  */
 
-namespace RDeploy\Command;
+namespace Nespresso\Command;
 
-use RDeploy\Command\Command;
+use Nespresso\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
- * Description of DeployCommand
+ * Description of ReleaseCommand
  *
  * @author gerardtoko
  */
-
-class DeployCommand extends Command
+class ReleaseCommand extends Command
 {
 
 
     protected function configure()
     {
-	$this->setName('deploy')
-		->setDescription('Deploy a project specific')
+	$this->setName('release')
+		->setDescription('create new release on a projet specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
-		)
-		->addOption(
-			'backup', null, InputOption::VALUE_REQUIRED, 'attribute backup (booleen value) example --backup=true'
 		)
 		->addOption(
 			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'
