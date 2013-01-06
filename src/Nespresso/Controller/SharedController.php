@@ -75,7 +75,7 @@ class SharedController extends BaseController implements ControllerInterface
 			$pos = strrpos($sharedDirectoryClean, '/');
 
 			$directory = $pos == FALSE ? $sharedDirectoryClean : substr($sharedDirectoryClean, $pos + 1);
-			$prefixDirectory = $pos == FALSE ? $sharedDirectoryClean : substr($sharedDirectoryClean, 0, $pos);
+			$prefixDirectory = $pos == FALSE ? NULL : substr($sharedDirectoryClean, 0, $pos);
 
 			// control releases directory
 			$outputSsh = trim($connection->exec(sprintf("cd %s/shared/%s", $deployTo, $sharedDirectoryClean)));
@@ -84,7 +84,7 @@ class SharedController extends BaseController implements ControllerInterface
 			    $this->isError($outputSsh);
 			}
 
-			if ($pos != FALSE) {
+			if ($prefixDirectory != FALSE) {
 			    //check sub directory
 			    $outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s", $deployTo, $this->releaseId, $prefixDirectory)));
 			    if ($this->isError($outputSsh)) {
@@ -96,7 +96,7 @@ class SharedController extends BaseController implements ControllerInterface
 			$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->releaseId, $sharedDirectoryClean)));
 			if (!$this->isError($outputSsh)) {
 			    //create symbolink
-			    if ($pos == FALSE) {
+			    if ($prefixDirectory == NULL) {
 				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $this->releaseId, $deployTo, $sharedDirectoryClean, $directory)));
 			    } else {
 				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $this->releaseId, $prefixDirectory, $deployTo, $sharedDirectoryClean, $directory)));
