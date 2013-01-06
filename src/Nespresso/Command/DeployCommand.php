@@ -15,6 +15,7 @@ use Nespresso\Command\Command;
 use Nespresso\Builder\ProjectBuilder;
 use Nespresso\Builder\ConfigBuilder;
 use Nespresso\Controller\RepositoryController;
+use Nespresso\Controller\SharedController;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -94,8 +95,13 @@ class DeployCommand extends Command
 
 	//control repositories
 	$controllerRepository = new RepositoryController($this->container, $output);
-	$controllerRepository->action();
+	$controllerRepository->controlAction();
+	$releaseId = $controllerRepository->createNewReleaseAction();
 
+	//control shared
+	$controllerShared = new SharedController($this->container, $output, $releaseId);
+	$controllerShared->controlAction();
+	
 	//clonning of git	
 	$manager->cloneGit($output);
 

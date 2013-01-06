@@ -84,9 +84,9 @@ class ProjectBuilder implements BuilderInterface
 	if (!empty($projectFromJson->cache)) {
 	    $projectObject->setCache($projectFromJson->cache);
 	    if (!empty($projectFromJson->cache_mode)) {
-		$projectObject->setCache($projectFromJson->cache_mode);
+		$projectObject->setCacheMode($projectFromJson->cache_mode);
 	    } else {
-		$projectObject->setCache("777");
+		$projectObject->setCacheMode("777");
 	    }
 	}
 

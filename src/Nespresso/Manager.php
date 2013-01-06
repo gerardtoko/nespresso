@@ -35,8 +35,8 @@ class Manager implements Manager\ManagerInterface
 	$this->repositoryGit = uniqid();
 
 	$output->writeln("<comment>cloning project...</comment> [<info>$scm</info>]");
-	$output_exec = exec(sprintf("cd %s && git clone %s %s", $tmp, $scm, $this->repositoryGit));
-	$output->writeln(trim($output_exec));
+	$outputExec = exec(sprintf("cd %s && git clone %s %s", $tmp, $scm, $this->repositoryGit));
+	$output->writeln(trim($outputExec));
 	$output->writeln(sprintf("Project cloned in [<info>%s/%s</info>]", $tmp, $this->repositoryGit));
     }
 
@@ -54,9 +54,9 @@ class Manager implements Manager\ManagerInterface
 	$tmp = $this->config->getTmp();
 	$gitRepo = $this->repositoryGit;
 	$output->writeln(sprintf("<comment>remove clone...</comment> [<info>%s/%s</info>]", $tmp, $gitRepo));
-	$output_exec = exec(sprintf("rm -rf %s/%s", $tmp, $gitRepo));
-	if ($output_exec != NULL) {
-	    $output->writeln("<error>$output_exec</error>");
+	$outputExec = exec(sprintf("rm -rf %s/%s", $tmp, $gitRepo));
+	if ($outputExec != NULL) {
+	    $output->writeln("<error>$outputExec</error>");
 	}
 	$output->writeln("<comment>Clone removed!</comment>");
 	$this->repositoryGit = NULL;

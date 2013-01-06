@@ -22,7 +22,7 @@ use Nespresso\Builder\BuilderInterface;
 class ConfigBuilder implements BuilderInterface
 {
 
-    protected $optionFile;
+    protected $configFile;
     protected $repository;
     protected $group;
 
@@ -34,25 +34,28 @@ class ConfigBuilder implements BuilderInterface
      */
     public function build()
     {
-	$optionFile = $this->getConfig();
-	if (!file_exists($optionFile)) {
-	    $basename = basename($optionFile);
+	$configFile = $this->getConfig();
+	if (!file_exists($configFile)) {
+	    $basename = basename($configFile);
 	    throw new \Exception("schema $basename no exist");
 	}
 
-	$configJson = json_decode(file_get_contents($optionFile));
-	$optionObject = new ConfigMapping();
+	$configJson = json_decode(file_get_contents($configFile));
+	$configObject = new ConfigMapping();
 
 	if (!empty($configJson->key)) {
-	    $optionObject->setKey($configJson->key);
-	}else{
+	    $configObject->setKey($configJson->key);
+	} else {
 	    throw new \Exception("key in config.json is undefined or incorrect");
 	}
-	
-	$tmp = !empty($this->option->tmp) ? rtrim($this->option->port, "/") : "/tmp";
-	$optionObject->setTmp($tmp);
 
-	return $optionObject;
+	$optionRsync = !empty($configJson->option_rsync) ? trim($configJson->option_rsync, "-") : "azv";
+	$configObject->setOptionRsync($optionRsync);
+
+	$tmp = !empty($configJson->tmp) ? rtrim($configJson->tmp, "/") : "/tmp";
+	$configObject->setTmp($tmp);
+
+	return $configObject;
     }
 
 

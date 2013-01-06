@@ -11,6 +11,10 @@
 	"tmp": {
 	    "type": "string",
 	    "description": "key"
+	},
+	"option_rsync": {
+	    "type": "string",
+	    "description": "key"
 	}
     }
 }

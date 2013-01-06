@@ -14,6 +14,7 @@ namespace Nespresso;
 use Seld\JsonLint\JsonParser;
 use Nespresso\Validation\RepositoryValidation;
 use Nespresso\Validation\ConfigValidation;
+use Nespresso\Validation\ReleaseValidation;
 
 /**
  * Description of Validation
@@ -74,6 +75,17 @@ class Validation
     public function getProjectSchemaValidation()
     {
 	return __DIR__ . '/../../app/project-schema.json';
+    }
+
+
+    /**
+     * 
+     * @param type $json
+     */
+    public function isValidRelease($release)
+    {
+	$releaseValidation = new ReleaseValidation();
+	return $releaseValidation->valid($release);
     }
 
 }

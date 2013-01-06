@@ -25,6 +25,7 @@ class Repository
     protected $deployTo;
     protected $port;
     protected $tasks;
+    protected $connection;
 
 
     /**
@@ -71,11 +72,11 @@ class Repository
     }
 
 
-   /**
-    * 
-    * @param type $domain
-    * @return \Nespresso\Mapping\Project\Repository
-    */
+    /**
+     * 
+     * @param type $domain
+     * @return \Nespresso\Mapping\Project\Repository
+     */
     public function setDomain($domain)
     {
 	$this->domain = trim($domain, ":");
@@ -156,6 +157,38 @@ class Repository
     public function getPort()
     {
 	return $this->port;
+    }
+
+
+    /**
+     * 
+     * @param type $connection
+     * @return \Nespresso\Mapping\Project\Repository
+     */
+    public function setConnection($connection)
+    {
+	$this->connection = $connection;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getConnection()
+    {
+	return $this->connection;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function hasConnection()
+    {
+	return !empty($this->connection) ? TRUE : FALSE;
     }
 
 }

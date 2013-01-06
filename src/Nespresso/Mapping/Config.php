@@ -21,6 +21,7 @@ class Config
 
     protected $key;
     protected $tmp;
+    protected $optionRsync;
 
 
     /**
@@ -64,6 +65,28 @@ class Config
     public function getTmp()
     {
 	return $this->tmp;
+    }
+
+
+    /**
+     * 
+     * @param type $tmp
+     * @return \Nespresso\Mapping\Config
+     */
+    public function setOptionRsync($optionRsync)
+    {
+	$this->optionRsync = $optionRsync;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getOptionRsync()
+    {
+	return $this->optionRsync;
     }
 
 }

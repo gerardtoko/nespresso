@@ -198,9 +198,19 @@ class Project
      * 
      * @return type
      */
-    public function hasShared()
+    public function isShared()
     {
 	return !empty($this->shared) ? TRUE : FALSE;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getShared()
+    {
+	return $this->shared;
     }
 
 

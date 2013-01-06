@@ -33,26 +33,26 @@ class RepositoryValidation implements ValidationInterface
 	//errors
 	$errors = "";
 
-	foreach ($projet->repositories as $key_repository => $value_repository) {
+	foreach ($projet->repositories as $keyRepository => $valueRepository) {
 
 	    //check file
-	    $schema_file = $this->getRepositorySchemaValidation();
-	    if (!file_exists($schema_file)) {
-		$basename = basename($schema_file);
+	    $schemaFile = $this->getRepositorySchemaValidation();
+	    if (!file_exists($schemaFile)) {
+		$basename = basename($schemaFile);
 		throw new \Exception("schema $basename no exist in app directory");
 	    }
 
 	    //shema valid
-	    $schema_json = file_get_contents($schema_file);
-	    $obj_schema = json_decode($schema_json);
-	    $validator->check($value_repository, $obj_schema);
+	    $schemaJson = file_get_contents($schemaFile);
+	    $objSchema = json_decode($schemaJson);
+	    $validator->check($valueRepository, $objSchema);
 	    if (!$validator->isValid()) {
 		foreach ($validator->getErrors() as $error) {
 		    if (isset($error["property"]) && isset($error["message"])) {
 			$errors .= sprintf("%s: %s\n", $error["property"], $error["message"]);
 		    }
 		}
-		throw new \Exception("JSON of $key_repository does not validate. Violations:\n $errors");
+		throw new \Exception("JSON of $keyRepository does not validate. Violations:\n $errors");
 	    }
 	}
     }

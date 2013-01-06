@@ -9,14 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso\Controller;
+
 /**
+ * Description of Task
  *
  * @author gerardtoko
  */
-interface ControllerInterface
+class Task
 {
 
-    public function controlAction();
+    //put your code here
 
 }
