@@ -11,8 +11,6 @@
 
 namespace Nespresso;
 
-use Nespresso\Builder\OptionBuilder;
-
 /**
  * Description of Manager
  *
