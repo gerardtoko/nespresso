@@ -8,7 +8,7 @@ use Nespresso\Console\Application;
 error_reporting(-1);
 
 if (function_exists('ini_set')) {
-    @ini_set('display_errors', 1);
+    @ini_set('display_errors', true);
 
     $memoryInBytes = function ($value) {
         $unit = strtolower(substr($value, -1, 1));

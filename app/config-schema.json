@@ -3,11 +3,6 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-	"user": {
-	    "type": "string",
-	    "description": "user",
-	    "required": true
-	},
 	"key": {
 	    "type": "string",
 	    "description": "key",
@@ -16,10 +11,6 @@
 	"tmp": {
 	    "type": "string",
 	    "description": "key"
-	},
-	"port": {
-	    "type": "integer",
-	    "description": "port"
 	}
     }
 }

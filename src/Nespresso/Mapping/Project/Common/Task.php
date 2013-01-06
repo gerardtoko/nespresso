@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso\Script\Project\Repository;
+namespace Nespresso\Mapping\Project\Common;
 
 /**
- * Description of Repository
+ * Description of Common
  *
  * @author gerardtoko
  */
@@ -25,8 +25,8 @@ class Task
 
     /**
      * 
-     * @param type $pre
-     * @return \Nespresso\Project\Repository\Task
+     * @param array $pre
+     * @return \Nespresso\Mapping\Project\Common\Task
      */
     public function setPre(array $pre)
     {
@@ -47,8 +47,8 @@ class Task
 
     /**
      * 
-     * @param type $post
-     * @return \Nespresso\Project\Repository\Task
+     * @param array $post
+     * @return \Nespresso\Mapping\Project\Common\Task
      */
     public function setPost(array $post)
     {

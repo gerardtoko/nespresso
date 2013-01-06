@@ -11,14 +11,15 @@
 
 namespace Nespresso\Builder;
 
-use Nespresso\Script\Option as OptionObject;
+use Nespresso\Mapping\Config as ConfigMapping;
 use Nespresso\Builder\BuilderInterface;
+
 /**
  * Description of Deploy
  *
  * @author gerardtoko
  */
-class OptionBuilder implements BuilderInterface
+class ConfigBuilder implements BuilderInterface
 {
 
     protected $optionFile;
@@ -26,30 +27,30 @@ class OptionBuilder implements BuilderInterface
     protected $group;
 
 
-
-   /**
-    * 
-    * @return \Nespresso\Script\Option
-    * @throws \Exception
-    */
+    /**
+     * 
+     * @return \Nespresso\Mapping\Config
+     * @throws \Exception
+     */
     public function build()
     {
-	$optionFile = $this->getOption();
+	$optionFile = $this->getConfig();
 	if (!file_exists($optionFile)) {
 	    $basename = basename($optionFile);
 	    throw new \Exception("schema $basename no exist");
 	}
 
-	$option_json = json_decode(file_get_contents($optionFile));		
-	$optionObject = new OptionObject;
-	$optionObject->setUser($option_json->user);
-	$optionObject->setKey($option_json->key);
+	$configJson = json_decode(file_get_contents($optionFile));
+	$optionObject = new ConfigMapping();
+
+	if (!empty($configJson->key)) {
+	    $optionObject->setKey($configJson->key);
+	}else{
+	    throw new \Exception("key in config.json is undefined or incorrect");
+	}
 	
-	$tmp = !empty($this->option->tmp) ? rtrim($this->option->port, "/") :"/tmp";
+	$tmp = !empty($this->option->tmp) ? rtrim($this->option->port, "/") : "/tmp";
 	$optionObject->setTmp($tmp);
-	
-	$port = !empty($this->option->port) ? trim($this->option->port) : "22";
-	$optionObject->setPort($port);
 
 	return $optionObject;
     }
@@ -59,9 +60,9 @@ class OptionBuilder implements BuilderInterface
      * 
      * @return type
      */
-    private function getOption()
+    private function getConfig()
     {
-	return __DIR__ . '/../../../tests/option.json';
+	return __DIR__ . '/../../../tests/config.json';
     }
 
 }

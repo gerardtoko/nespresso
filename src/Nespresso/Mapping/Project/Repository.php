@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso\Script\Project;
+namespace Nespresso\Mapping\Project;
 
 /**
  * Description of Repository
@@ -20,6 +20,7 @@ class Repository
 {
 
     protected $user;
+    protected $name;
     protected $domain;
     protected $deployTo;
     protected $port;
@@ -28,8 +29,30 @@ class Repository
 
     /**
      * 
+     * @param type $name
+     * @return \Nespresso\Mapping\Project\Repository
+     */
+    public function setName($name)
+    {
+	$this->name = $name;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getName()
+    {
+	return $this->name;
+    }
+
+
+    /**
+     * 
      * @param type $user
-     * @return \Nespresso\Project\Repository
+     * @return \Nespresso\Mapping\Project\Repository
      */
     public function setUser($user)
     {
@@ -48,14 +71,14 @@ class Repository
     }
 
 
-    /**
-     * 
-     * @param type $domain
-     * @return \Nespresso\Project\Repository
-     */
+   /**
+    * 
+    * @param type $domain
+    * @return \Nespresso\Mapping\Project\Repository
+    */
     public function setDomain($domain)
     {
-	$this->domain = $domain;
+	$this->domain = trim($domain, ":");
 	return $this;
     }
 
@@ -73,11 +96,11 @@ class Repository
     /**
      * 
      * @param type $deployTo
-     * @return \Nespresso\Project\Repository
+     * @return \Nespresso\Mapping\Project\Repository
      */
     public function setDeployTo($deployTo)
     {
-	$this->deployTo = $deployTo;
+	$this->deployTo = rtrim($deployTo, "/");
 	return $this;
     }
 
@@ -95,7 +118,7 @@ class Repository
     /**
      * 
      * @param type $tasks
-     * @return \Nespresso\Project\Repository
+     * @return \Nespresso\Mapping\Project\Repository
      */
     public function setTasks($tasks)
     {
@@ -117,7 +140,7 @@ class Repository
     /**
      * 
      * @param type $port
-     * @return \Nespresso\Project\Repository
+     * @return \Nespresso\Mapping\Project\Repository
      */
     public function setPort($port)
     {

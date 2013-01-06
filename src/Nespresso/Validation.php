@@ -13,7 +13,7 @@ namespace Nespresso;
 
 use Seld\JsonLint\JsonParser;
 use Nespresso\Validation\RepositoryValidation;
-use Nespresso\Validation\OptionValidation;
+use Nespresso\Validation\ConfigValidation;
 
 /**
  * Description of Validation
@@ -33,8 +33,8 @@ class Validation
 
 	$parser = new JsonParser();
 	$validator = new \JsonSchema\Validator();
-	$validation_repository = new RepositoryValidation();
-	$validation_option = new OptionValidation();
+	$validationRepository = new RepositoryValidation();
+	$validationConfig = new ConfigValidation();
 
 	//errors
 	$errors = "";
@@ -43,18 +43,18 @@ class Validation
 	$parser->parse($json);
 
 	//check file
-	$schema_file = $this->getProjectSchemaValidation();
-	if (!file_exists($schema_file)) {
-	    $basename = basename($schema_file);
+	$schemaFile = $this->getProjectSchemaValidation();
+	if (!file_exists($schemaFile)) {
+	    $basename = basename($schemaFile);
 	    throw new \Exception("schema $basename no exist in app directory");
 	}
 
 	//shema valid
-	$schema_json = file_get_contents($schema_file);
-	$obj_json = json_decode($json);
-	$obj_schema = json_decode($schema_json);
+	$schemaJson = file_get_contents($schemaFile);
+	$objJson = json_decode($json);
+	$objSchema = json_decode($schemaJson);
 
-	$validator->check($obj_json, $obj_schema);
+	$validator->check($objJson, $objSchema);
 	if (!$validator->isValid()) {
 	    foreach ($validator->getErrors() as $error) {
 		if (isset($error["property"]) && isset($error["message"])) {
@@ -65,9 +65,9 @@ class Validation
 	}
 
 	//validation repository
-	$validation_repository->valid($obj_json);
+	$validationRepository->valid($objJson);
 	//validation option
-	$validation_option->valid();
+	$validationConfig->valid();
     }
 
 

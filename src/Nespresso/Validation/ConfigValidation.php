@@ -19,7 +19,7 @@ use Nespresso\Validation\ValidationInterface;
  *
  * @author gerardtoko
  */
-class OptionValidation implements ValidationInterface
+class ConfigValidation implements ValidationInterface
 {
 
     /**
@@ -62,6 +62,7 @@ class OptionValidation implements ValidationInterface
 		}
 	    }
 	    throw new \Exception("JSON option does not validate. Violations:\n $errors");
+
 	}
 	
     }
@@ -74,7 +75,7 @@ class OptionValidation implements ValidationInterface
      */
     public function getOptionSchemaValidation()
     {
-	return __DIR__ . '/../../../app/option-schema.json';
+	return __DIR__ . '/../../../app/config-schema.json';
     }
 
 
@@ -84,7 +85,7 @@ class OptionValidation implements ValidationInterface
      */
     public function getOption()
     {
-	return __DIR__ . '/../../../tests/option.json';
+	return __DIR__ . '/../../../tests/config.json';
     }
 
 }

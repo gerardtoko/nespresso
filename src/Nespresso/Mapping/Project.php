@@ -26,14 +26,14 @@
   },
   "git": "git@github.com:gerardtoko/nespresso-test.git",
   "keepRelease": "3",
-  "no_copy" : ["var/logs", "var/cache"],
+  "cache" : "var/cache",
   "groups":  {
   "testing_cluster": ["testing"]
   }
   }
  */
 
-namespace Nespresso\Script;
+namespace Nespresso\Mapping;
 
 /**
  * Description of Repository
@@ -46,13 +46,16 @@ class Project
     protected $git;
     protected $keepRelease;
     protected $repositories;
-    protected $noCopy;
+    protected $cache;
+    protected $cacheMode;
+    protected $shared;
+    protected $commonTasks;
 
 
     /**
      * 
      * @param array $repositories
-     * @return \Nespresso\Manager
+     * @return \Nespresso\Mapping\Project
      */
     public function setRepositories(array $repositories)
     {
@@ -73,8 +76,8 @@ class Project
 
     /**
      * 
-     * @param type $domain
-     * @return \Nespresso\Project\Repository
+     * @param type $git
+     * @return \Nespresso\Mapping\Project
      */
     public function setGit($git)
     {
@@ -96,7 +99,7 @@ class Project
     /**
      * 
      * @param type $keepRelease
-     * @return \Nespresso\Project\Repository
+     * @return \Nespresso\Mapping\Project
      */
     public function setKeepRelease($keepRelease)
     {
@@ -114,7 +117,8 @@ class Project
 	return $this->keepRelease;
     }
 
-     /**
+
+    /**
      * 
      * @return type
      */
@@ -123,14 +127,15 @@ class Project
 	return !empty($this->keepRelease) ? TRUE : FALSE;
     }
 
+
     /**
      * 
-     * @param type $noCopy
-     * @return \Nespresso\Project\Repository
+     * @param type $cache
+     * @return \Nespresso\Mapping\Project
      */
-    public function setNoCopy($noCopy)
+    public function setCache($cache)
     {
-	$this->noCopy = $noCopy;
+	$this->cache = $cache;
 	return $this;
     }
 
@@ -139,9 +144,9 @@ class Project
      * 
      * @return type
      */
-    public function getNoCopy()
+    public function getCache()
     {
-	return $this->noCopy;
+	return $this->cache;
     }
 
 
@@ -149,9 +154,85 @@ class Project
      * 
      * @return type
      */
-    public function hasNoCopy()
+    public function hasCache()
     {
-	return !empty($this->noCopy) ? TRUE : FALSE;
+	return !empty($this->cache) ? TRUE : FALSE;
+    }
+
+
+    /**
+     * 
+     * @param type $cache
+     * @return \Nespresso\Mapping\Project
+     */
+    public function setCacheMode($cache)
+    {
+	$this->cacheMode = $cache;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getCacheMode()
+    {
+	return $this->cacheMode;
+    }
+
+
+    /**
+     * 
+     * @param type $shared
+     * @return \Nespresso\Mapping\Project
+     */
+    public function setShared($shared)
+    {
+	$this->shared = $shared;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function hasShared()
+    {
+	return !empty($this->shared) ? TRUE : FALSE;
+    }
+
+
+    /**
+     * 
+     * @param type $commonTask
+     * @return \Nespresso\Mapping\Project
+     */
+    public function setCommonTasks($commonTask)
+    {
+	$this->commonTasks = $commonTask;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getCommonTasks()
+    {
+	return $this->commonTasks;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function hasCommonTasks()
+    {
+	return !empty($this->commonTasks) ? TRUE : FALSE;
     }
 
 }

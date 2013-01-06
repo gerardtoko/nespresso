@@ -13,7 +13,7 @@ namespace Nespresso\Command;
 
 use Nespresso\Command\Command;
 use Nespresso\Builder\ProjectBuilder;
-use Nespresso\Builder\OptionBuilder;
+use Nespresso\Builder\ConfigBuilder;
 use Nespresso\Controller\RepositoryController;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -80,26 +80,25 @@ class DeployCommand extends Command
 	$projectFromJson = json_decode($this->getJsonProjectByArg("project", $input));
 
 	//Builder
+
+	$builderOption = new ConfigBuilder();
+	$optionObject = $builderOption->build();
+
 	$builderProject = new ProjectBuilder($projectFromJson, $repository, $group);
 	$projectObject = $builderProject->build();
-
-	$builderOption = new OptionBuilder();
-	$optionObject = $builderOption->build();
 
 	//manager service
 	$manager = $this->getContainer()->get("nespresso.manager");
 	$manager->setProject($projectObject);
-	$manager->setOption($optionObject);
-	$manager->connectManager($output);
+	$manager->setConfig($optionObject);
 
 	//control repositories
 	$controllerRepository = new RepositoryController($this->container, $output);
 	$controllerRepository->action();
 
-	//clonning of git
+	//clonning of git	
 	$manager->cloneGit($output);
 
-	
 	//from commit
 	if (NULL != $commit) {
 	    

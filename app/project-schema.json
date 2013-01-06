@@ -18,14 +18,22 @@
 	    "description": "repository git",
 	    "required": true
 	},
+	"cache": {
+	    "type": "string"
+	},
+	"cache_mode": {
+	    "type": "string"
+	},
+	
+	"shared": {
+	    "type": "string"
+	},
 	"groups": {
 	    "type": "object",
 	    "description": "nodes connection for the deployement"
-	},
-	
-	"no_copy": {
-	    "type": "array",
-	    "description": "directory no copy and create after"
+	},	
+	"common_tasks": {
+	    "type": "object"
 	}
     }
 }

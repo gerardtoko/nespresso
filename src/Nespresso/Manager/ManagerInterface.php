@@ -19,10 +19,10 @@ interface ManagerInterface
 {
 
 
-    public function getOption();
+    public function getConfig();
 
 
-    public function setOption($option);
+    public function setConfig($config);
 
 
     public function getProject();

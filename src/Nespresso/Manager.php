@@ -20,25 +20,8 @@ class Manager implements Manager\ManagerInterface
 {
 
     protected $project;
-    private $option;
+    private $config;
     private $repositoryGit;
-    private $sshManagerConnection;
-
-
-    /**
-     * 
-     * @param type $output
-     */
-    public function connectManager($output)
-    {
-	$optionObject = $this->option;
-	$output->writeln("<comment>Connecting nespresso manager...</comment>");
-	$this->sshManagerConnection = new Manager\Connection(
-			$optionObject->getUser(),
-			'127.0.0.1',
-			$optionObject->getPort(),
-			$optionObject->getKey(), $output);
-    }
 
 
     /**
@@ -48,13 +31,12 @@ class Manager implements Manager\ManagerInterface
     public function cloneGit($output)
     {
 	$scm = $this->project->getGit();
-	$tmp = $this->option->getTmp();
+	$tmp = $this->config->getTmp();
 	$this->repositoryGit = uniqid();
-	$ssh = $this->sshManagerConnection;
 
-	$output->writeln("<comment>Cloning project...</comment> [<info>$scm</info>]");
-	$output_ssh = $ssh->exec(sprintf("cd %s && git clone %s %s", $tmp, $scm, $this->repositoryGit));
-	$output->writeln(trim($output_ssh));
+	$output->writeln("<comment>cloning project...</comment> [<info>$scm</info>]");
+	$output_exec = exec(sprintf("cd %s && git clone %s %s", $tmp, $scm, $this->repositoryGit));
+	$output->writeln(trim($output_exec));
 	$output->writeln(sprintf("Project cloned in [<info>%s/%s</info>]", $tmp, $this->repositoryGit));
     }
 
@@ -65,15 +47,19 @@ class Manager implements Manager\ManagerInterface
      */
     public function removeCloneGit($output)
     {
-	$tmp = $this->option->getTmp();
+	if (empty($this->repositoryGit)) {
+	    throw new Exception("Repository Git uncloned");
+	}
+
+	$tmp = $this->config->getTmp();
 	$gitRepo = $this->repositoryGit;
-	$ssh = $this->sshManagerConnection;
-	$output->writeln(sprintf("<comment>Remove clone...</comment> [<info>%s/%s</info>]", $tmp, $gitRepo));
-	$output_ssh = $ssh->exec(sprintf("rm -rf %s/%s", $tmp, $gitRepo));
-	if ($output_ssh != NULL) {
-	    $output->writeln("<error>$output_ssh</error>");
+	$output->writeln(sprintf("<comment>remove clone...</comment> [<info>%s/%s</info>]", $tmp, $gitRepo));
+	$output_exec = exec(sprintf("rm -rf %s/%s", $tmp, $gitRepo));
+	if ($output_exec != NULL) {
+	    $output->writeln("<error>$output_exec</error>");
 	}
 	$output->writeln("<comment>Clone removed!</comment>");
+	$this->repositoryGit = NULL;
     }
 
 
@@ -101,12 +87,12 @@ class Manager implements Manager\ManagerInterface
 
     /**
      * 
-     * @param type $option
+     * @param type $config
      * @return \Nespresso\Manager
      */
-    public function setOption($option)
+    public function setConfig($config)
     {
-	$this->option = $option;
+	$this->config = $config;
 	return $this;
     }
 
@@ -115,9 +101,9 @@ class Manager implements Manager\ManagerInterface
      * 
      * @return type
      */
-    public function getOption()
+    public function getConfig()
     {
-	return $this->option;
+	return $this->config;
     }
 
 }

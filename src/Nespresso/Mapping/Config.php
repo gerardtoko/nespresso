@@ -9,48 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso\Script;
+namespace Nespresso\Mapping;
 
 /**
  * Description of Key
  *
  * @author gerardtoko
  */
-class Option
+class Config
 {
 
-    protected $user;
     protected $key;
-    protected $port;
     protected $tmp;
 
 
     /**
      * 
-     * @param type $user
-     * @return \Nespresso\Script\Option
-     */
-    public function setUser($user)
-    {
-	$this->user = $user;
-	return $this;
-    }
-
-
-    /**
-     * 
-     * @return type
-     */
-    public function getUser()
-    {
-	return $this->user;
-    }
-
-
-    /**
-     * 
      * @param type $key
-     * @return \Nespresso\Script\Option
+     * @return \Nespresso\Mapping\Config
      */
     public function setKey($key)
     {
@@ -72,7 +48,7 @@ class Option
     /**
      * 
      * @param type $tmp
-     * @return \Nespresso\Script\Option
+     * @return \Nespresso\Mapping\Config
      */
     public function setTmp($tmp = "/tmp")
     {
@@ -88,28 +64,6 @@ class Option
     public function getTmp()
     {
 	return $this->tmp;
-    }
-
-
-    /**
-     * 
-     * @param type $port
-     * @return \Nespresso\Script\Option
-     */
-    public function setPort($port = "22")
-    {
-	$this->port = $port;
-	return $this;
-    }
-
-
-    /**
-     * 
-     * @return type
-     */
-    public function getPort()
-    {
-	return $this->port;
     }
 
 }

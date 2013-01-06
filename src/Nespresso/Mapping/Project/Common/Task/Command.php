@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso\Script\Project\Repository\Task;
+namespace Nespresso\Mapping\Project\Common\Task;
 
 /**
- * Description of Repository
+ * Description of Common
  *
  * @author gerardtoko
  */
@@ -25,7 +25,7 @@ class Command
     /**
      * 
      * @param type $command
-     * @return \Nespresso\Project\Repository\Task
+     * @return \Nespresso\Mapping\Project\Common\Task\Command
      */
     public function setCommand($command)
     {
