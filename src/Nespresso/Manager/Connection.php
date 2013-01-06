@@ -21,8 +21,13 @@ class Connection
 
     private $ssh;
 
-    public function __construct($user, $domain, $port, $key_file)
+
+    public function __construct($user, $domain, $port, $key_file, $output = null)
     {
+
+	if (!is_null($output)) {
+	    $output->writeln("<comment>connecting Server...</comment> [<info>$user</info>][<info>$domain</info>][<info>$port</info>]");
+	}
 
 	$ssh = new \Net_SSH2($domain, $port);
 	$key = new \Crypt_RSA();
@@ -35,11 +40,11 @@ class Connection
     }
 
 
-   /**
-    * 
-    * @param type $command
-    * @return type
-    */
+    /**
+     * 
+     * @param type $command
+     * @return type
+     */
     public function exec($command)
     {
 	return $this->ssh->exec($command);

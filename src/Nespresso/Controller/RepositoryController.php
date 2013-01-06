@@ -12,6 +12,7 @@
 namespace Nespresso\Controller;
 
 use Nespresso\Controller\ControllerInterface;
+use Nespresso\Manager\Connection;
 
 /**
  * Description of RepositoryControl
@@ -24,6 +25,7 @@ class RepositoryController implements ControllerInterface
     protected $container;
     protected $output;
 
+
     public function __construct($container, $output)
     {
 	$this->container = $container;
@@ -35,13 +37,17 @@ class RepositoryController implements ControllerInterface
     {
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
-	
-	$this->output->writeln("<info>Control repositories</info>");
-	foreach ($repositories as $repository) {
-	    
-	}
-	$this->output->writeln("<info>project is correct!</info>");
 
+	$this->output->writeln("<comment>control repositories</comment>");
+
+	foreach ($repositories as $repository) {
+	    $connection = new Connection(
+			    $repository->getUser(),
+			    $repository->getDomain(),
+			    $repository->getPort(),
+			    $manager->getOption()->getKey(), $this->output);
+	}
+	
     }
 
 }

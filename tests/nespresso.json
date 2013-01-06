@@ -2,9 +2,9 @@
     "repositories":  { 
 	"testing": 
 	{    
-	    "user": "www-data" ,
+	    "user": "gerardtoko" ,
 	    "domain": "gerardtoko.com",
-	    "port": "22",
+	    "port": "3041",
 	    "deploy_to": "/home/www-data/testing/nespresso-test",
 	    "tasks": {		    
 		"pre": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
