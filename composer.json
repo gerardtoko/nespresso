@@ -1,6 +1,6 @@
 {
-    "name": "express/rdeploy",
-    "description": "rDeploy projet",
+    "name": "gerardtoko/nespresso",
+    "description": "Nespresso project",
     "keywords": ["deploying", "server syncro", "auth deploy"],
     "homepage": "http://express-projet.org/",
     "type": "library",
