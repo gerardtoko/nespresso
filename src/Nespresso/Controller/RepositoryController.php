@@ -12,15 +12,15 @@
 namespace Nespresso\Controller;
 
 use Nespresso\Controller\ControllerInterface;
-use Nespresso\Manager\Connection;
 use Nespresso\Builder\RsyncCopyReleaseBuilder;
+use Nespresso\Controller\Controller as BaseController;
 
 /**
  * Description of RepositoryControl
  *
  * @author gerardtoko
  */
-class RepositoryController implements ControllerInterface
+class RepositoryController extends BaseController implements ControllerInterface
 {
 
     protected $container;
@@ -56,32 +56,6 @@ class RepositoryController implements ControllerInterface
 
 	    // control current symbolink
 	    $this->isError(trim($connection->exec(sprintf("cd %s/current", $deployTo))));
-
-	    if ($manager->getProject()->isShared()) {
-		// control releases directory
-		$outputSsh = trim($connection->exec(sprintf("cd %s/shared", $deployTo)));
-		if ($this->isError($outputSsh)) {
-		    $this->output->writeln(sprintf("<comment>For the reasons of performance, used the shared directory</comment>", $repository->getName()));
-		    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/shared", $deployTo)));
-		    $this->isError($outputSsh);
-		}
-	    }
-	}
-    }
-
-
-    /**
-     * 
-     * @param type $outputSsh
-     * @return boolean
-     */
-    protected function isError($outputSsh)
-    {
-	if ($outputSsh) {
-	    $this->output->writeln("<error>Error: $outputSsh</error>");
-	    return true;
-	} else {
-	    return false;
 	}
     }
 
@@ -101,22 +75,27 @@ class RepositoryController implements ControllerInterface
 	    $name = $repository->getName();
 	    $LastReleaseId = $this->getLastRelease($repository);
 	    $deployTo = $repository->getDeployTo();
-
-	    $this->output->writeln("Create new release <info>$releaseId</info> from <comment>$LastReleaseId</comment> on <info>$name</info>...");
-	    $rsyncCopyReleaseBuilder = new RsyncCopyReleaseBuilder($this->container, $repository, $releaseId, $LastReleaseId);
-	    $command = $rsyncCopyReleaseBuilder->build();
-
 	    $connection = $this->getConnection($repository);
-	    $outputSsh = trim($connection->exec($command));
-	    $this->isError($outputSsh);
 
-	    $project = $this->container->get("nespresso.manager")->getProject();
-	    if ($project->hasCache()) {
-		$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $releaseId, $project->getCache())));
-		if (!$this->isError($outputSsh)) {
-		    $outputSsh = trim($connection->exec(sprintf("chmod -R %s %s/releases/%s/%s", $project->getCacheMode(), $deployTo, $releaseId, $project->getCache())));
-		    $this->isError($outputSsh);
+	    if (!empty($LastReleaseId)) {
+		$this->output->writeln("Create new release <info>$releaseId</info> from <comment>$LastReleaseId</comment> on <info>$name</info>...");
+		$rsyncCopyReleaseBuilder = new RsyncCopyReleaseBuilder($this->container, $repository, $releaseId, $LastReleaseId);
+		$command = $rsyncCopyReleaseBuilder->build();
+
+		$outputSsh = trim($connection->exec($command));
+		$this->isError($outputSsh);
+
+		$project = $this->container->get("nespresso.manager")->getProject();
+		if ($project->hasCache()) {
+		    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $releaseId, $project->getCache())));
+		    if (!$this->isError($outputSsh)) {
+			$outputSsh = trim($connection->exec(sprintf("chmod -R %s %s/releases/%s/%s", $project->getCacheMode(), $deployTo, $releaseId, $project->getCache())));
+			$this->isError($outputSsh);
+		    }
 		}
+	    } else {
+		$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s", $deployTo, $releaseId)));
+		$this->isError($outputSsh);
 	    }
 	}
 
@@ -147,27 +126,6 @@ class RepositoryController implements ControllerInterface
 	    }
 	}
 	return $lastRelease;
-    }
-
-
-    /**
-     * 
-     * @param type $repository
-     * @return \Nespresso\Manager\Connection
-     */
-    protected function getConnection($repository)
-    {
-	if ($repository->hasConnection()) {
-	    $connection = $repository->getConnection();
-	} else {
-	    $connection = new Connection(
-			    $repository->getUser(),
-			    $repository->getDomain(),
-			    $repository->getPort(),
-			    $this->container->get("nespresso.manager")->getConfig()->getKey(), $this->output);
-	    $repository->setConnection($connection);
-	}
-	return $connection;
     }
 
 }
