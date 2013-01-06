@@ -1,5 +1,6 @@
 {
     "user": "gerardtoko",
     "key":  "/Users/gerardtoko/.ssh/id_rsa",
-    "tmp":  "/tmp"
+    "tmp":  "/tmp",
+    "port":  "22"
 }

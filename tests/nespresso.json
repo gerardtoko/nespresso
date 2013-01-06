@@ -14,7 +14,7 @@
     }, 
     "git": "git@github.com:gerardtoko/nespresso-test.git",	
     "keep_release": "3",	
-    "group":  {
+    "groups":  {
 	"testing_cluster": ["testing"]
     }
 }

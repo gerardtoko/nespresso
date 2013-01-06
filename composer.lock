@@ -1,5 +1,5 @@
 {
-    "hash": "fb16a19381f1a62a868fd2d81b726223",
+    "hash": "792be9967ca597036a15e77c78004688",
     "packages": [
         {
             "name": "justinrainbow/json-schema",
@@ -59,16 +59,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "dev-master",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib",
-                "reference": "29c69808ae858223d99659f7d8a1928e28c2976c"
+                "reference": "0.3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpseclib/phpseclib/archive/29c69808ae858223d99659f7d8a1928e28c2976c.zip",
-                "reference": "29c69808ae858223d99659f7d8a1928e28c2976c",
+                "url": "https://github.com/phpseclib/phpseclib/archive/0.3.1.zip",
+                "reference": "0.3.1",
                 "shasum": ""
             },
             "require": {
@@ -79,9 +79,9 @@
                 "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
                 "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP >= 4.3.3."
             },
-            "time": "2013-01-05 03:05:04",
+            "time": "2012-11-20 03:10:22",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Crypt": "phpseclib/",
@@ -525,7 +525,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "phpseclib/phpseclib": 20,
         "symfony/dependency-injection": 20,
         "symfony/event-dispatcher": 20,
         "symfony/yaml": 20,

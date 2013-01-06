@@ -16,6 +16,10 @@
 	"tmp": {
 	    "type": "string",
 	    "description": "key"
+	},
+	"port": {
+	    "type": "integer",
+	    "description": "port"
 	}
     }
 }

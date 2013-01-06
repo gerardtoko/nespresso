@@ -11,6 +11,8 @@
 
 namespace Nespresso;
 
+use Nespresso\Builder\OptionBuilder;
+
 /**
  * Description of Manager
  *
@@ -20,35 +22,58 @@ class Manager
 {
 
     protected $project;
-    private $connection;
+    private $option;
+    private $repositoryGit;
+    private $sshManagerConnection;
 
 
     public function __construct()
     {
 
-	$option_file = $this->getOption();
-	if (!file_exists($option_file)) {
-	    $basename = basename($option_file);
-	    throw new \Exception("schema $basename no exist");
+	$builderOption = new OptionBuilder();
+	$optionObject = $builderOption->build();
+	$this->option = $optionObject;
+	$this->sshManagerConnection = new Manager\Connection(
+			$optionObject->getUser(),
+			'127.0.0.1',
+			$optionObject->getPort(),
+			$optionObject->getKey());
+    }
+
+
+    /**
+     * 
+     * @param type $ouput
+     */
+    public function cloneGit($output)
+    {
+	$scm = $this->project->getGit();
+	$tmp = $this->option->getTmp();
+	$this->repositoryGit = uniqid();
+	$ssh = $this->sshManagerConnection;
+
+	$output->writeln("<comment>Cloning project...</comment> [<info>$scm</info>]");
+	$output_ssh = $ssh->exec(sprintf("cd %s && git clone %s %s", $tmp, $scm, $this->repositoryGit));
+	$output->writeln(trim($output_ssh));
+	$output->writeln(sprintf("Project cloned in [<info>%s/%s</info>]", $tmp, $this->repositoryGit));
+    }
+
+
+    /**
+     * 
+     * @param type $output
+     */
+    public function removeCloneGit($output)
+    {
+	$tmp = $this->option->getTmp();
+	$gitRepo = $this->repositoryGit;
+	$ssh = $this->sshManagerConnection;
+	$output->writeln(sprintf("<comment>Remove clone...</comment> [<info>%s/%s</info>]", $tmp, $gitRepo));
+	$output_ssh = $ssh->exec(sprintf("rm -rf %s/%s", $tmp, $gitRepo));
+	if ($output_ssh != NULL) {
+	    $output->writeln("<error>$output_ssh</error>");
 	}
-
-	$option_json = file_get_contents($option_file);
-	$obj_json = json_decode($option_json);
-
-exit;
-	$ssh = new \Net_SSH2('localhost');
-	exit;
-	$key = new \Crypt_RSA();
-	$key->loadKey(file_get_contents($obj_json->key));
-	if (!$ssh->login($obj_json->user, $key)) {
-	    exit('Login Failed');
-	}
-
-	echo $ssh->exec('pwd');
-	echo $ssh->exec('ls -la');
-	print_r($obj_json);
-
-	exit;
+	$output->writeln("<comment>Clone removed!</comment>");
     }
 
 
@@ -76,11 +101,23 @@ exit;
 
     /**
      * 
+     * @param type $option
+     * @return \Nespresso\Manager
+     */
+    public function setOption($option)
+    {
+	$this->option = $option;
+	return $this;
+    }
+
+
+    /**
+     * 
      * @return type
      */
     public function getOption()
     {
-	return __DIR__ . '/../../tests/option.json';
+	return $this->option;
     }
 
 }

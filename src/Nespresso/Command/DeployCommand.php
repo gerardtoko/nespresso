@@ -12,6 +12,8 @@
 namespace Nespresso\Command;
 
 use Nespresso\Command\Command;
+use Nespresso\Builder\ProjectBuilder;
+use Nespresso\Project as ProjectObject;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -57,7 +59,7 @@ class DeployCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-	$output->writeln("starting nespresso...");
+	$output->writeln("<info>Starting nespresso...</info>");
 
 	//get Data from the request
 	$project = $this->getProjectByArg("project", $input);
@@ -65,37 +67,28 @@ class DeployCommand extends Command
 	$commit = $input->getOption('commit');
 	$tag = $input->getOption('tag');
 	$branch = $input->getOption('branch');
+	$group = $input->getOption('group');
 
 	$output->writeln("validation <info>$project</info> project");
 	$this->validJson($input, $output);
 
-	$project_object = json_decode($this->getJsonProjectByArg("project", $input));
+	if (NULL == $repository || (NULL == $commit && NULL == $tag && NULL == $branch)) {
+	    throw new \Exception("option undefined");
+	}
+
+	$projectFromJson = json_decode($this->getJsonProjectByArg("project", $input));
+
+	$builderProject = new ProjectBuilder($projectFromJson, $repository, $group);
+	$projectObject = $builderProject->build();
 	$manager = $this->getContainer()->get("nespresso.manager");
+	$manager->setProject($projectObject);
 	
-	//add project in the manager
-	$manager->setProject($project_object);
-	
-	exec("touch mrdd");
-	
+	$manager->cloneGit($output);
 	if (NULL != $commit) {
-
-	}
-	var_dump($commit);
-	var_dump(json_decode($project_json));
-
-	exit;
-	$name = $input->getArgument('name');
-	if ($name) {
-	    $text = 'Hello ' . $name;
-	} else {
-	    $text = 'Hello';
+	    
 	}
 
-	if ($input->getOption('yell')) {
-	    $text = strtoupper($text);
-	}
-
-	$output->writeln($text);
+	$manager->removeCloneGit($output);
     }
 
 }

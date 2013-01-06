@@ -17,7 +17,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Nespresso\Script\Project;
+
 /**
  * Description of JsonCommand
  *
@@ -118,6 +118,7 @@ class Command extends BaseCommand
 	}
     }
 
+
     /**
      * 
      * @return type
@@ -132,7 +133,7 @@ class Command extends BaseCommand
 	    return $output->writeln("<error>Error file json: $message </error>");
 	}
     }
-    
+
 
     /**
      * 
@@ -152,5 +153,4 @@ class Command extends BaseCommand
     {
 	return __DIR__ . '/../../../app/';
     }
-
 }

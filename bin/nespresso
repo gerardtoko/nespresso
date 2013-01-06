@@ -4,7 +4,7 @@
 require __DIR__.'/../src/bootstrap.php';
 
 use Nespresso\Console\Application;
-
+	
 error_reporting(-1);
 
 if (function_exists('ini_set')) {
