@@ -117,6 +117,11 @@ class ProjectBuilder implements BuilderInterface
     }
 
 
+    /**
+     * 
+     * @param type $repo
+     * @return \Nespresso\Script\Project\Repository
+     */
     protected function getRepositoryObject($repo)
     {
 	$repositoryObject = New RepositoryObject();

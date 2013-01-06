@@ -13,8 +13,8 @@ namespace Nespresso\Command;
 
 use Nespresso\Command\Command;
 use Nespresso\Builder\ProjectBuilder;
+use Nespresso\Builder\OptionBuilder;
 use Nespresso\Controller\RepositoryController;
-use Nespresso\Command\CommandInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -70,31 +70,42 @@ class DeployCommand extends Command
 	$branch = $input->getOption('branch');
 	$group = $input->getOption('group');
 
-	$output->writeln("validation <info>$project</info> project");
-	$this->validJson($input, $output);
-
 	if (NULL == $repository || (NULL == $commit && NULL == $tag && NULL == $branch)) {
 	    throw new \Exception("option undefined");
 	}
 
+	//validation json schema
+	$output->writeln("validation <info>$project</info> project");
+	$this->validJson($input, $output);
 	$projectFromJson = json_decode($this->getJsonProjectByArg("project", $input));
 
+	//Builder
 	$builderProject = new ProjectBuilder($projectFromJson, $repository, $group);
 	$projectObject = $builderProject->build();
+
+	$builderOption = new OptionBuilder();
+	$optionObject = $builderOption->build();
+
+	//manager service
 	$manager = $this->getContainer()->get("nespresso.manager");
 	$manager->setProject($projectObject);
+	$manager->setOption($optionObject);
+	$manager->connectManager($output);
 
-	//control repository
+	//control repositories
 	$controllerRepository = new RepositoryController($this->container, $output);
 	$controllerRepository->action();
-	
+
+	//clonning of git
 	$manager->cloneGit($output);
 
-	//fram commit
+	
+	//from commit
 	if (NULL != $commit) {
 	    
 	}
 
+	//remove clone git
 	$manager->removeCloneGit($output);
     }
 

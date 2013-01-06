@@ -12,6 +12,7 @@
 namespace Nespresso;
 
 use Nespresso\Builder\OptionBuilder;
+
 /**
  * Description of Manager
  *
@@ -26,17 +27,19 @@ class Manager implements Manager\ManagerInterface
     private $sshManagerConnection;
 
 
-    public function __construct()
+    /**
+     * 
+     * @param type $output
+     */
+    public function connectManager($output)
     {
-
-	$builderOption = new OptionBuilder();
-	$optionObject = $builderOption->build();
-	$this->option = $optionObject;
+	$optionObject = $this->option;
+	$output->writeln("<comment>Connecting nespresso manager...</comment>");
 	$this->sshManagerConnection = new Manager\Connection(
 			$optionObject->getUser(),
 			'127.0.0.1',
 			$optionObject->getPort(),
-			$optionObject->getKey());
+			$optionObject->getKey(), $output);
     }
 
 
