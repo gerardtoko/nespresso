@@ -10,7 +10,7 @@
  */
 
 /*
- * {
+  {
   "repositories":  {
   "testing":
   {
@@ -26,6 +26,7 @@
   },
   "git": "git@github.com:gerardtoko/nespresso-test.git",
   "keepRelease": "3",
+  "no_copy" : ["var/logs", "var/cache"],
   "groups":  {
   "testing_cluster": ["testing"]
   }
@@ -45,6 +46,7 @@ class Project
     protected $git;
     protected $keepRelease;
     protected $repositories;
+    protected $noCopy;
 
 
     /**
@@ -107,9 +109,49 @@ class Project
      * 
      * @return type
      */
-    public function getKeeepRelease()
+    public function getKeepRelease()
     {
 	return $this->keepRelease;
+    }
+
+     /**
+     * 
+     * @return type
+     */
+    public function hasKeepRelease()
+    {
+	return !empty($this->keepRelease) ? TRUE : FALSE;
+    }
+
+    /**
+     * 
+     * @param type $noCopy
+     * @return \Nespresso\Project\Repository
+     */
+    public function setNoCopy($noCopy)
+    {
+	$this->noCopy = $noCopy;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getNoCopy()
+    {
+	return $this->noCopy;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function hasNoCopy()
+    {
+	return !empty($this->noCopy) ? TRUE : FALSE;
     }
 
 }

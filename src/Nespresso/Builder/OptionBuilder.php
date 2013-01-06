@@ -12,13 +12,13 @@
 namespace Nespresso\Builder;
 
 use Nespresso\Script\Option as OptionObject;
-
+use Nespresso\Builder\BuilderInterface;
 /**
  * Description of Deploy
  *
  * @author gerardtoko
  */
-class OptionBuilder
+class OptionBuilder implements BuilderInterface
 {
 
     protected $optionFile;

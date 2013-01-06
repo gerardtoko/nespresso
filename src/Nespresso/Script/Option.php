@@ -25,7 +25,6 @@ class Option
     protected $tmp;
 
 
-
     /**
      * 
      * @param type $user
@@ -75,7 +74,7 @@ class Option
      * @param type $tmp
      * @return \Nespresso\Script\Option
      */
-    public function setTmp($tmp)
+    public function setTmp($tmp = "/tmp")
     {
 	$this->tmp = $tmp;
 	return $this;
@@ -112,8 +111,5 @@ class Option
     {
 	return $this->port;
     }
-
-
-    
 
 }

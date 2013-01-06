@@ -9,18 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace Nespresso\Validation;
 
-namespace Nespresso\Control;
 /**
- * Description of RepositoryControl
  *
  * @author gerardtoko
  */
-class RepositoryControl
+interface ValidationInterface
 {
 
-    public function ckeck(){
-	
-    }
+    public function valid($valid);
 
 }

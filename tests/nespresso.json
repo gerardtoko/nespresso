@@ -13,7 +13,8 @@
 	}
     }, 
     "git": "git@github.com:gerardtoko/nespresso-test.git",	
-    "keep_release": "3",	
+    "keep_release": "3",
+    "no_copy" : ["var/logs", "var/cache"],
     "groups":  {
 	"testing_cluster": ["testing"]
     }

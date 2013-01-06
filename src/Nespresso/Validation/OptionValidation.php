@@ -11,21 +11,23 @@
 
 namespace Nespresso\Validation;
 
+
+use Nespresso\Validation\ValidationInterface;
+
 /**
  * Description of Projet
  *
  * @author gerardtoko
  */
-class OptionValidation
+class OptionValidation implements ValidationInterface
 {
-
 
     /**
      * 
      * @param type $projet
      * @throws \Exception
      */
-    public function valid()
+    public function valid($option = null)
     {
 
 	$validator = new \JsonSchema\Validator();
@@ -86,5 +88,3 @@ class OptionValidation
     }
 
 }
-
-

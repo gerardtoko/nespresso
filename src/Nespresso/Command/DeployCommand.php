@@ -13,7 +13,8 @@ namespace Nespresso\Command;
 
 use Nespresso\Command\Command;
 use Nespresso\Builder\ProjectBuilder;
-use Nespresso\Project as ProjectObject;
+use Nespresso\Controller\RepositoryController;
+use Nespresso\Command\CommandInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -82,8 +83,14 @@ class DeployCommand extends Command
 	$projectObject = $builderProject->build();
 	$manager = $this->getContainer()->get("nespresso.manager");
 	$manager->setProject($projectObject);
+
+	//control repository
+	$controllerRepository = new RepositoryController($this->container, $output);
+	$controllerRepository->action();
 	
 	$manager->cloneGit($output);
+
+	//fram commit
 	if (NULL != $commit) {
 	    
 	}

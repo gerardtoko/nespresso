@@ -12,13 +12,12 @@
 namespace Nespresso;
 
 use Nespresso\Builder\OptionBuilder;
-
 /**
  * Description of Manager
  *
  * @author gerardtoko
  */
-class Manager
+class Manager implements Manager\ManagerInterface
 {
 
     protected $project;

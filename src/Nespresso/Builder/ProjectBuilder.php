@@ -8,25 +8,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Nespresso\Builder;
 
 use Nespresso\Script\Project as ProjectObject;
 use Nespresso\Script\Project\Repository as RepositoryObject;
 use Nespresso\Script\Project\Repository\Task as TaskObject;
 use Nespresso\Script\Project\Repository\Task\Command as CommandObject;
-
+use Nespresso\Builder\BuilderInterface;
 
 /**
  * Description of Deploy
  *
  * @author gerardtoko
  */
-class ProjectBuilder
+class ProjectBuilder implements BuilderInterface
 {
 
     protected $projectFromJson;
     protected $repository;
     protected $group;
+    protected $no_copy;
 
 
     //put your code here
@@ -55,6 +57,9 @@ class ProjectBuilder
 	$repositories = $this->getRepositories($projectFromJson, $repository, $group);
 	$projectObject->setRepositories($repositories);
 
+	if (!empty($projectFromJson->no_copy)) {
+	    $projectObject->setNoCopy($projectFromJson->no_copy);
+	}
 	if (!empty($projectFromJson->keepRelease)) {
 	    $projectObject->setKeepRelease($projectFromJson->keepRelease);
 	}

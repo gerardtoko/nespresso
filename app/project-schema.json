@@ -21,6 +21,11 @@
 	"groups": {
 	    "type": "object",
 	    "description": "nodes connection for the deployement"
+	},
+	
+	"no_copy": {
+	    "type": "array",
+	    "description": "directory no copy and create after"
 	}
     }
 }

@@ -11,12 +11,13 @@
 
 namespace Nespresso\Validation;
 
+use Nespresso\Validation\ValidationInterface;
 /**
  * Description of Projet
  *
  * @author gerardtoko
  */
-class RepositoryValidation
+class RepositoryValidation implements ValidationInterface
 {
 
 
