@@ -11,7 +11,6 @@
 
 namespace Nespresso\Controller;
 
-use Nespresso\Controller\ControllerInterface;
 use Nespresso\Controller\Controller as BaseController;
 
 /**
@@ -19,7 +18,7 @@ use Nespresso\Controller\Controller as BaseController;
  *
  * @author gerardtoko
  */
-class SharedController extends BaseController implements ControllerInterface
+class SharedController extends BaseController 
 {
 
     protected $container;
@@ -92,11 +91,8 @@ class SharedController extends BaseController implements ControllerInterface
 
 			if ($prefixDirectory != FALSE) {
 			    //check sub directory
-			    $outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s", $deployTo, $this->releaseId, $prefixDirectory)));
-			    if ($this->isError($outputSsh)) {
-				$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->releaseId, $prefixDirectory)));
-				$this->isError($outputSsh);
-			    }
+			    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->releaseId, $prefixDirectory)));
+			    $this->isError($outputSsh);
 			}
 
 			$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->releaseId, $sharedDirectoryClean)));

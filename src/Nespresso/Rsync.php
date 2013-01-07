@@ -11,12 +11,13 @@
 
 namespace Nespresso;
 
+use Nespresso\Builder\RsyncDeployBuilder;
 /**
  * Description of Task
  *
  * @author gerardtoko
  */
-class Task
+class Rsync
 {
 
     protected $container;
@@ -38,27 +39,26 @@ class Task
     }
 
 
-    
     /**
      * 
      * @return boolean
      */
     public function deploy()
     {
-
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
-	$connection = null;
-
+	$tmp = $manager->getConfig()->getTmp();
+	$code = null;
+	$outputExec = null;
+	
 	$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
-	    $connection = $this->getConnection($repository);
-	    $rsyncCopyReleaseBuilder = new RsyncCopyReleaseBuilder($this->container, $repository, $this->releaseId);
-	    $command = $rsyncCopyReleaseBuilder->build();
-	    
-	    $this->output->writeln("<comment>Deployement on</comment> <info>$repository</info><comment>...</comment>");
-	    $outputSsh = trim($connection->exec($command));
-	    $this->isError($outputSsh);
+	    $rsyncReleaseDeploy = new RsyncDeployBuilder($this->container, $repository, $this->releaseId);
+	    $command = $rsyncReleaseDeploy->build();
+	    $name = $repository->getName();
+	    $this->output->writeln("<comment>Deployement on</comment> <info>$name</info><comment>...</comment>");
+	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
+	    $this->isError($code);
 	}
 	return true;
     }
@@ -87,16 +87,21 @@ class Task
 
     /**
      * 
-     * @param type $outputSsh
-     * @return boolean
+     * @param type $code
+     * @throws \Exception
      */
-    protected function isError($outputSsh)
+    protected function isError($code)
     {
-	if ($outputSsh) {
-	    $this->output->writeln("<error>Error: $outputSsh</error>");
-	    return true;
-	} else {
-	    return false;
+	if ($code) {
+
+	    $manager = $this->container->get("nespresso.manager");
+	    $tmp = $manager->getConfig()->getTmp();
+	    $log = file_get_contents($tmp . "/nespresso.log");
+
+	    if ($this->repositoryGit) {
+		$this->removeCloneGit();
+	    }
+	    throw new \Exception("Error Rsync processing... code($code) \n $log");
 	}
     }
 

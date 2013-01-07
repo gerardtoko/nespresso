@@ -11,12 +11,13 @@
 
 namespace Nespresso\Command;
 
-use Nespresso\Task;
 use Nespresso\Git;
+use Nespresso\Rsync;
 use Nespresso\Command\Command;
 use Nespresso\Builder\ProjectBuilder;
 use Nespresso\Builder\ConfigBuilder;
-use Nespresso\Controller\RepositoryController;
+use Nespresso\Controller\TaskController;
+use Nespresso\Controller\ReleaseController;
 use Nespresso\Controller\SharedController;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,9 +73,11 @@ class DeployCommand extends Command
 	$tag = $input->getOption('tag');
 	$branch = $input->getOption('branch');
 	$group = $input->getOption('group');
+	$checked = FALSE;
+	$commitCheckout = NULL;
 
-	if (NULL == $repository || (NULL == $commit && NULL == $tag && NULL == $branch)) {
-	    throw new \Exception("option undefined");
+	if ($repository == NULL) {
+	    throw new \Exception("repository undefined");
 	}
 
 	//validation json schema
@@ -83,7 +86,6 @@ class DeployCommand extends Command
 	$projectFromJson = json_decode($this->getJsonProjectByArg("project", $input));
 
 	//Builder
-
 	$builderOption = new ConfigBuilder();
 	$optionObject = $builderOption->build();
 
@@ -103,36 +105,37 @@ class DeployCommand extends Command
 	$git->cloneGit();
 
 	//control repositories
-	$controllerRepository = new RepositoryController($this->container, $output);
-	$controllerRepository->controlAction();
-	$releaseId = $controllerRepository->createNewReleaseAction();
+	$releaseController = new ReleaseController($this->container, $output);
+	$releaseController->controlAction();
+	$releaseId = $releaseController->createNewReleaseAction();
 
 	//control shared
-	$controllerShared = new SharedController($this->container, $output, $releaseId);
-	$controllerShared->controlAction();
+	$sharedController = new SharedController($this->container, $output, $releaseId);
+	$sharedController->controlAction();
 
-	$task = new Task($this->container, $output, $releaseId);
-	//task pre deployement
-	$task->executePreCommand();
+	$taskController = new TaskController($this->container, $output, $releaseId);
+	$taskController->executePreCommand();
 
 	//from commit
 	if (NULL != $commit && $git->isCommitExist($commit)) {
-	    $git->ckeckout($commit, "commit");
-	    $branch == NULL;
-	    $tag = NULL;
+	    $commitCheckout = $git->ckeckout($commit, "commit");
+	    $checked = TRUE;
 	}
 
 	//from tag
-	if (NULL != $tag && $git->isTagExist($tag)) {
-	    $git->ckeckout($tag, "tag");
-	    $branch == NULL;
+	if ($tag != NULL && $git->isTagExist($tag) && $checked == FALSE) {
+	    $commitCheckout = $git->ckeckout($tag, "tag");
+	    $checked = TRUE;
 	}
 
 	//from branch
-	if (NULL != $branch && $git->isBranchExist($branch)) {
-	    $git->ckeckout($branch, "branch");
-	} else {
-	    $git->ckeckout("master", "branch");
+	if ($branch != NULL && $git->isBranchExist($branch) && $checked == FALSE) {
+	    $commitCheckout = $git->ckeckout($branch, "branch");
+	    $checked = TRUE;
+	}
+
+	if ($checked == FALSE) {
+	    $commitCheckout = $git->ckeckout("master", "branch");
 	}
 
 	//deployement
@@ -140,15 +143,13 @@ class DeployCommand extends Command
 	$rsync->deploy();
 
 	//task post deployement
-	$task->executePostCommand();
+	$taskController->executePostCommand();
 
-	//update symbolink
-	$controllerRepository->updateSymbolinkAction();
-	$output->writeln("<info>Deployement finish...</info>");
-
-	//remove clone git
+	$releaseController->updateSymbolinkAction();
 	$git->removeCloneGit();
-	$controllerRepository->ckeckRelease();
+	$releaseController->ckeckRelease();
+	$output->writeln("<info>Deployement finish!</info>");
+
     }
 
 }

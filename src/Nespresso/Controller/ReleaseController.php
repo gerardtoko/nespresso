@@ -11,16 +11,15 @@
 
 namespace Nespresso\Controller;
 
-use Nespresso\Controller\ControllerInterface;
 use Nespresso\Builder\RsyncCopyReleaseBuilder;
 use Nespresso\Controller\Controller as BaseController;
 
 /**
- * Description of RepositoryControl
+ * Description of ReleaseController
  *
  * @author gerardtoko
  */
-class RepositoryController extends BaseController implements ControllerInterface
+class ReleaseController extends BaseController 
 {
 
     protected $container;
@@ -77,16 +76,49 @@ class RepositoryController extends BaseController implements ControllerInterface
 
 	    $deployTo = $repository->getDeployTo();
 	    $connection = $this->getConnection($repository);
-	    
 	    $this->output->writeln(sprintf("toggle <info>%s</info> on <comment>%s</comment>", $repository->getName(), $this->releaseId));
-	    $this->isError(trim($connection->exec(sprintf("cd %s/ && ln -s releases/%s current", $deployTo, $this->releaseId))));
 	    $this->isError(trim($connection->exec(sprintf("rm -rf %s/current", $deployTo))));
+	    $this->isError(trim($connection->exec(sprintf("cd %s && ln -s %s/releases/%s current", $deployTo, $deployTo, $this->releaseId))));
 	}
-	
     }
 
 
     public function createNewReleaseAction()
+    {
+	$manager = $this->container->get("nespresso.manager");
+	$project = $manager->getProject();
+	$repositories = $project->getRepositories();
+	$connection = null;
+
+	$dateTime = new \DateTime();
+	$releaseId = $dateTime->format('y-m-d-H-i-s');
+	$this->releaseId = $releaseId;
+
+	//$this->output->writeln("Control repositories");
+	foreach ($repositories as $repository) {
+
+	    $name = $repository->getName();
+	    $deployTo = $repository->getDeployTo();
+	    $connection = $this->getConnection($repository);
+
+	    $this->output->writeln("Create new release <info>$releaseId</info> on <info>$name</info>...");
+	    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s", $deployTo, $releaseId)));
+	    $this->isError($outputSsh);
+
+	    if ($project->hasCache()) {
+		$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $releaseId, $project->getCache())));
+		if (!$this->isError($outputSsh)) {
+		    $outputSsh = trim($connection->exec(sprintf("chmod -R %s %s/releases/%s/%s", $project->getCacheMode(), $deployTo, $releaseId, $project->getCache())));
+		    $this->isError($outputSsh);
+		}
+	    }
+	}
+
+	return $releaseId;
+    }
+
+
+    public function updateAction()
     {
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
@@ -160,7 +192,7 @@ class RepositoryController extends BaseController implements ControllerInterface
      * 
      * @return null
      */
-    protected function ckeckRelease()
+    public function ckeckRelease()
     {
 
 	$manager = $this->container->get("nespresso.manager");
@@ -180,10 +212,17 @@ class RepositoryController extends BaseController implements ControllerInterface
 	    $releases = array_reverse(explode("\n", $outputSsh));
 	    $validation = $this->container->get("validation");
 	    $AllReleases = array();
+	    
 	    //validation release
 	    foreach ($releases as $release) {
 		if ($validation->isValidRelease($release)) {
-		    $AllReleases[] = $release;
+		    if (!empty($this->releaseId)) {
+			if ($this->releaseId != $release) {
+			    $AllReleases[] = $release;
+			}
+		    } else {
+			$AllReleases[] = $release;
+		    }
 		}
 	    }
 

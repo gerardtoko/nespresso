@@ -9,14 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso;
+namespace Nespresso\Controller;
+
+
+use Nespresso\Controller\Controller as BaseController;
 
 /**
  * Description of Task
  *
  * @author gerardtoko
  */
-class Task
+class TaskController extends BaseController
 {
 
     protected $container;
@@ -127,43 +130,6 @@ class Task
 		    }
 		}
 	    }
-	}
-    }
-
-
-    /**
-     * 
-     * @param type $repository
-     * @return \Nespresso\Manager\Connection
-     */
-    protected function getConnection($repository)
-    {
-	if ($repository->hasConnection()) {
-	    $connection = $repository->getConnection();
-	} else {
-	    $connection = new Connection(
-			    $repository->getUser(),
-			    $repository->getDomain(),
-			    $repository->getPort(),
-			    $this->container->get("nespresso.manager")->getConfig()->getKey(), $this->output);
-	    $repository->setConnection($connection);
-	}
-	return $connection;
-    }
-
-
-    /**
-     * 
-     * @param type $outputSsh
-     * @return boolean
-     */
-    protected function isError($outputSsh)
-    {
-	if ($outputSsh) {
-	    $this->output->writeln("<error>Error: $outputSsh</error>");
-	    return true;
-	} else {
-	    return false;
 	}
     }
 

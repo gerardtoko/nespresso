@@ -51,7 +51,7 @@ class Git
 	$this->output->writeln("<comment>cloning project...</comment> [<info>$scm</info>]");
 	$code = null;
 	$outputExec = null;
-	exec(sprintf("cd %s && git clone %s %s 2>&1", $tmp, $scm, $this->repositoryGit), $outputExec, $code);
+	exec(sprintf("cd %s && git clone %s %s 2>%s/nespresso.log", $tmp, $scm, $this->repositoryGit, $tmp), $outputExec, $code);
 	$this->isError($code);
 	$this->output->writeln(sprintf("Project cloned in [<info>%s/%s</info>]", $tmp, $this->repositoryGit));
     }
@@ -64,14 +64,10 @@ class Git
     public function removeCloneGit()
     {
 	$this->IsInitialized();
-	$manager = $this->container->get("nespresso.manager");
-	$tmp = $manager->getConfig()->getTmp();
-	$gitRepo = $this->repositoryGit;
-	$this->output->writeln(sprintf("<comment>remove clone...</comment> [<info>%s/%s</info>]", $tmp, $gitRepo));
-
+	$this->output->writeln(sprintf("<comment>remove clone...</comment> [<info>%s</info>]", $this->getTmpGit()));
 	$code = null;
 	$outputExec = null;
-	exec(sprintf("rm -rf %s/%s", $tmp, $gitRepo), $outputExec, $code);
+	exec(sprintf("rm -rf %s", $this->getTmpGit()), $outputExec, $code);
 	$this->isError($code);
 
 	if ($outputExec != NULL) {
@@ -126,13 +122,13 @@ class Git
     protected function execExecute($command)
     {
 	$this->IsInitialized();
-
-	$code = null;
-	$outputExec = null;
 	$manager = $this->container->get("nespresso.manager");
 	$tmp = $manager->getConfig()->getTmp();
-	$gitRepo = $this->repositoryGit;
-	exec(sprintf("cd %s/%s && git %s 2>%s/nespresso.log", $tmp, $gitRepo, $command, $tmp), $outputExec, $code);
+	$tmpGit = $this->getTmpGit();
+	$code = null;
+	$outputExec = null;
+	
+	exec(sprintf("cd %s && git %s 2>%s/nespresso.log", $tmpGit, $command, $tmp), $outputExec, $code);
 	$this->isError($code);
 	return true;
     }
@@ -158,14 +154,15 @@ class Git
     public function ckeckout($commit, $type = null)
     {
 	$this->IsInitialized();
-	$type = $type == null ? NULL : "the " . $type;
-	$this->output->writeln("<comment>Ckeckout on $type</comment> <info>$commit</info><comment>...</comment>");
-	$code = null;
-	$outputExec = null;
 	$manager = $this->container->get("nespresso.manager");
 	$tmp = $manager->getConfig()->getTmp();
-	$gitRepo = $this->repositoryGit;
-	exec(sprintf("cd %s/%s && git checkout %s 2>&1", $tmp, $gitRepo, $commit), $outputExec, $code);
+	$tmpGit = $this->getTmpGit();
+	$type = $type == null ? NULL : "the " . $type;
+	$code = null;
+	$outputExec = null;
+
+	$this->output->writeln("<comment>Ckeckout on $type</comment> <info>$commit</info><comment>...</comment>");
+	exec(sprintf("cd %s && git checkout %s 2>%s/nespresso.log", $tmpGit, $commit, $tmp), $outputExec, $code);
 	$this->isError($code);
     }
 
@@ -186,7 +183,7 @@ class Git
 	    if ($this->repositoryGit) {
 		$this->removeCloneGit();
 	    }
-	    throw new \Exception("Error Git processing. code($code) \n $log");
+	    throw new \Exception("Error Git processing... code($code) \n $log");
 	}
     }
 
@@ -198,10 +195,7 @@ class Git
     public function hasGitignore()
     {
 	$this->IsInitialized();
-	$manager = $this->container->get("nespresso.manager");
-	$tmp = $manager->getConfig()->getTmp();
-	$gitRepo = $this->repositoryGit;
-	$gitignoreFile = sprintf("%s/%s/.gitignore", $tmp, $gitRepo);
+	$gitignoreFile = sprintf("%s/.gitignore", $this->getTmpGit());
 	return file_exists($gitignoreFile) ? TRUE : FALSE;
     }
 
@@ -214,10 +208,7 @@ class Git
     {
 	$this->IsInitialized();
 	$excluded = array();
-	$manager = $this->container->get("nespresso.manager");
-	$tmp = $manager->getConfig()->getTmp();
-	$gitRepo = $this->repositoryGit;
-	$gitignoreFile = sprintf("%s/%s/.gitignore", $tmp, $gitRepo);
+	$gitignoreFile = sprintf("%s/.gitignore", $this->getTmpGit());
 	if (file_exists($gitignoreFile)) {
 	    $excludeData = explode("\n", file_get_contents($gitignoreFile));
 	    foreach ($excludeData as $exclude) {
@@ -228,6 +219,18 @@ class Git
 	    }
 	}
 	return $excluded;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getTmpGit()
+    {
+	$this->IsInitialized();
+	$manager = $this->container->get("nespresso.manager");
+	return sprintf("%s/%s", $manager->getConfig()->getTmp(), $this->repositoryGit);
     }
 
 }
