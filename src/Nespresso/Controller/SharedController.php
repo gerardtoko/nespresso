@@ -28,6 +28,12 @@ class SharedController extends BaseController implements ControllerInterface
     protected $performanceShared;
 
 
+    /**
+     * 
+     * @param type $container
+     * @param type $output
+     * @param type $releaseId
+     */
     public function __construct($container, $output, $releaseId)
     {
 	$this->container = $container;

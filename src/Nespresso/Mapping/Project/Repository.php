@@ -138,6 +138,16 @@ class Repository
     }
 
 
+    
+    /**
+     * 
+     * @return type
+     */
+    public function hasTasks()
+    {
+	return !empty($this->tasks) ? TRUE : FALSE;
+    }
+
     /**
      * 
      * @param type $port

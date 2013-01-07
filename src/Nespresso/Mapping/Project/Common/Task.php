@@ -47,6 +47,16 @@ class Task
 
     /**
      * 
+     * @return type
+     */
+    public function hasPre()
+    {
+	return !empty($this->pre) ? TRUE : FALSE;
+    }
+
+
+    /**
+     * 
      * @param array $post
      * @return \Nespresso\Mapping\Project\Common\Task
      */
@@ -64,6 +74,16 @@ class Task
     public function getPost()
     {
 	return $this->post;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function hasPost()
+    {
+	return !empty($this->post) ? TRUE : FALSE;
     }
 
 }

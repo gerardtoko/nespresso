@@ -27,6 +27,11 @@ class RepositoryController extends BaseController implements ControllerInterface
     protected $output;
 
 
+    /**
+     * 
+     * @param type $container
+     * @param type $output
+     */
     public function __construct($container, $output)
     {
 	$this->container = $container;
@@ -67,7 +72,7 @@ class RepositoryController extends BaseController implements ControllerInterface
 	$connection = null;
 
 	$dateTime = new \DateTime();
-	$releaseId = $dateTime->format('y-m-d-G-i-s');
+	$releaseId = $dateTime->format('y-m-d-H-i-s');
 
 	//$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {

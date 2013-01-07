@@ -11,6 +11,8 @@
 
 namespace Nespresso\Command;
 
+use Nespresso\Task;
+use Nespresso\Git;
 use Nespresso\Command\Command;
 use Nespresso\Builder\ProjectBuilder;
 use Nespresso\Builder\ConfigBuilder;
@@ -88,10 +90,17 @@ class DeployCommand extends Command
 	$builderProject = new ProjectBuilder($projectFromJson, $repository, $group);
 	$projectObject = $builderProject->build();
 
+	//git init
+	$git = new Git($this->container, $output);
+
 	//manager service
 	$manager = $this->getContainer()->get("nespresso.manager");
 	$manager->setProject($projectObject);
 	$manager->setConfig($optionObject);
+	$manager->setGit($git);
+
+	//cloning git
+	$git->cloneGit();
 
 	//control repositories
 	$controllerRepository = new RepositoryController($this->container, $output);
@@ -101,17 +110,39 @@ class DeployCommand extends Command
 	//control shared
 	$controllerShared = new SharedController($this->container, $output, $releaseId);
 	$controllerShared->controlAction();
-	
-	//clonning of git	
-	$manager->cloneGit($output);
+
+	$task = new Task($this->container, $output, $releaseId);
+	$task->executePreCommand();
 
 	//from commit
-	if (NULL != $commit) {
-	    
+	if (NULL != $commit && $git->isCommitExist($commit)) {
+	    $git->ckeckout($commit, "commit");
+	    $tag = NULL;
+	    $branch == NULL;
 	}
 
+	//from tag
+	if (NULL != $tag && $git->isTagExist($tag)) {
+	    $git->ckeckout($tag, "tag");
+	    $branch == NULL;
+	}
+
+	//from branch
+	if (NULL != $branch && $git->isBranchExist($branch)) {
+	    $git->ckeckout($branch, "branch");
+	}else{
+	    $git->ckeckout("master", "branch");
+	}
+
+	//deployement
+	$rsync = new Rsync($this->container, $output, $releaseId);
+	$rsync->deploy();
+
+	$task->executePostCommand();
+
 	//remove clone git
-	$manager->removeCloneGit($output);
+	$git->removeCloneGit();
+	//$controllerRepository->ckeckRelease();
     }
 
 }
