@@ -118,8 +118,8 @@ class DeployCommand extends Command
 	//from commit
 	if (NULL != $commit && $git->isCommitExist($commit)) {
 	    $git->ckeckout($commit, "commit");
-	    $tag = NULL;
 	    $branch == NULL;
+	    $tag = NULL;
 	}
 
 	//from tag
@@ -131,7 +131,7 @@ class DeployCommand extends Command
 	//from branch
 	if (NULL != $branch && $git->isBranchExist($branch)) {
 	    $git->ckeckout($branch, "branch");
-	}else{
+	} else {
 	    $git->ckeckout("master", "branch");
 	}
 
@@ -141,6 +141,10 @@ class DeployCommand extends Command
 
 	//task post deployement
 	$task->executePostCommand();
+
+	//update symbolink
+	$controllerRepository->updateSymbolinkAction();
+	$output->writeln("<info>Deployement finish...</info>");
 
 	//remove clone git
 	$git->removeCloneGit();

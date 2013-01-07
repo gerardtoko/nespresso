@@ -25,6 +25,7 @@ class RepositoryController extends BaseController implements ControllerInterface
 
     protected $container;
     protected $output;
+    protected $releaseId;
 
 
     /**
@@ -65,6 +66,26 @@ class RepositoryController extends BaseController implements ControllerInterface
     }
 
 
+    public function updateSymbolinkAction()
+    {
+	$manager = $this->container->get("nespresso.manager");
+	$repositories = $manager->getProject()->getRepositories();
+	$connection = null;
+	$this->output->writeln("Toggle release");
+
+	foreach ($repositories as $repository) {
+
+	    $deployTo = $repository->getDeployTo();
+	    $connection = $this->getConnection($repository);
+	    
+	    $this->output->writeln(sprintf("toggle <info>%s</info> on <comment>%s</comment>", $repository->getName(), $this->releaseId));
+	    $this->isError(trim($connection->exec(sprintf("cd %s/ && ln -s releases/%s current", $deployTo, $this->releaseId))));
+	    $this->isError(trim($connection->exec(sprintf("rm -rf %s/current", $deployTo))));
+	}
+	
+    }
+
+
     public function createNewReleaseAction()
     {
 	$manager = $this->container->get("nespresso.manager");
@@ -73,6 +94,7 @@ class RepositoryController extends BaseController implements ControllerInterface
 
 	$dateTime = new \DateTime();
 	$releaseId = $dateTime->format('y-m-d-H-i-s');
+	$this->releaseId = $releaseId;
 
 	//$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
