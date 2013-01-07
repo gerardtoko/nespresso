@@ -11,7 +11,6 @@
 
 namespace Nespresso\Builder;
 
-use Nespresso\Mapping\Config as ConfigMapping;
 use Nespresso\Builder\BuilderInterface;
 
 /**

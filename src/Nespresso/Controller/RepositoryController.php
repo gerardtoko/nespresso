@@ -133,4 +133,47 @@ class RepositoryController extends BaseController implements ControllerInterface
 	return $lastRelease;
     }
 
+
+    /**
+     * 
+     * @return null
+     */
+    protected function ckeckRelease()
+    {
+
+	$manager = $this->container->get("nespresso.manager");
+	$repositories = $manager->getProject()->getRepositories();
+	$keepRelease = $manager->getProject()->getKeepRelease();
+	$connection = null;
+
+
+	//$this->output->writeln("Control repositories");
+	foreach ($repositories as $repository) {
+
+	    $this->output->writeln(sprintf("Checking releases on <info>%s</info>", $repository->getName()));
+
+	    $connection = $this->getConnection($repository);
+	    $deployTo = $repository->getDeployTo();
+	    $outputSsh = trim($connection->exec(sprintf("ls %s/releases", $deployTo)));
+	    $releases = array_reverse(explode("\n", $outputSsh));
+	    $validation = $this->container->get("validation");
+	    $AllReleases = array();
+	    //validation release
+	    foreach ($releases as $release) {
+		if ($validation->isValidRelease($release)) {
+		    $AllReleases[] = $release;
+		}
+	    }
+
+	    if (count($AllReleases) > $keepRelease) {
+		$releasesRemove = array_slice($AllReleases, $keepRelease);
+		foreach ($releasesRemove as $removing) {
+		    $this->output->writeln(sprintf("<comment>deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
+		    $outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
+		    $this->isError($outputSsh);
+		}
+	    }
+	}
+    }
+
 }

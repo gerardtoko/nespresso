@@ -37,8 +37,30 @@ class Task
 	$this->releaseId = $releaseId;
     }
 
-    public function deploy(){
-	
+
+    
+    /**
+     * 
+     * @return boolean
+     */
+    public function deploy()
+    {
+
+	$manager = $this->container->get("nespresso.manager");
+	$repositories = $manager->getProject()->getRepositories();
+	$connection = null;
+
+	$this->output->writeln("Control repositories");
+	foreach ($repositories as $repository) {
+	    $connection = $this->getConnection($repository);
+	    $rsyncCopyReleaseBuilder = new RsyncCopyReleaseBuilder($this->container, $repository, $this->releaseId);
+	    $command = $rsyncCopyReleaseBuilder->build();
+	    
+	    $this->output->writeln("<comment>Deployement on</comment> <info>$repository</info><comment>...</comment>");
+	    $outputSsh = trim($connection->exec($command));
+	    $this->isError($outputSsh);
+	}
+	return true;
     }
 
 

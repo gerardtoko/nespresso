@@ -112,6 +112,7 @@ class DeployCommand extends Command
 	$controllerShared->controlAction();
 
 	$task = new Task($this->container, $output, $releaseId);
+	//task pre deployement
 	$task->executePreCommand();
 
 	//from commit
@@ -138,11 +139,12 @@ class DeployCommand extends Command
 	$rsync = new Rsync($this->container, $output, $releaseId);
 	$rsync->deploy();
 
+	//task post deployement
 	$task->executePostCommand();
 
 	//remove clone git
 	$git->removeCloneGit();
-	//$controllerRepository->ckeckRelease();
+	$controllerRepository->ckeckRelease();
     }
 
 }

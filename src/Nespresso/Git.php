@@ -118,6 +118,11 @@ class Git
     }
 
 
+    /**
+     * 
+     * @param type $command
+     * @return boolean
+     */
     protected function execExecute($command)
     {
 	$this->IsInitialized();
@@ -145,6 +150,11 @@ class Git
     }
 
 
+    /**
+     * 
+     * @param type $commit
+     * @param type $type
+     */
     public function ckeckout($commit, $type = null)
     {
 	$this->IsInitialized();
@@ -178,6 +188,46 @@ class Git
 	    }
 	    throw new \Exception("Error Git processing. code($code) \n $log");
 	}
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function hasGitignore()
+    {
+	$this->IsInitialized();
+	$manager = $this->container->get("nespresso.manager");
+	$tmp = $manager->getConfig()->getTmp();
+	$gitRepo = $this->repositoryGit;
+	$gitignoreFile = sprintf("%s/%s/.gitignore", $tmp, $gitRepo);
+	return file_exists($gitignoreFile) ? TRUE : FALSE;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getGitignore()
+    {
+	$this->IsInitialized();
+	$excluded = array();
+	$manager = $this->container->get("nespresso.manager");
+	$tmp = $manager->getConfig()->getTmp();
+	$gitRepo = $this->repositoryGit;
+	$gitignoreFile = sprintf("%s/%s/.gitignore", $tmp, $gitRepo);
+	if (file_exists($gitignoreFile)) {
+	    $excludeData = explode("\n", file_get_contents($gitignoreFile));
+	    foreach ($excludeData as $exclude) {
+		$exclude = trim($exclude);
+		if (!preg_match("#^\##", $exclude)) {
+		    $excluded[] = $exclude;
+		}
+	    }
+	}
+	return $excluded;
     }
 
 }
