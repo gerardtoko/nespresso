@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * This file is part of the rdeploy package.
  *
@@ -14,39 +15,46 @@ namespace Nespresso\Command;
 use Nespresso\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Description of JsonCommand
+ * Description of ReleaseCommand
  *
  * @author gerardtoko
  */
-class JsonCommand extends Command
+class SetupCommand extends Command
 {
 
 
     protected function configure()
     {
-	$this->setName('json')
-		->setDescription('control json on a project specific')
+	$this->setName('setup')
+		->setDescription('setup project')
 		->addArgument(
-			'project', InputArgument::REQUIRED, 'specific project, example nespresso'
+			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
+		)
+		->addOption(
+			'confirm', null, InputOption::VALUE_REQUIRED, 'attribute confirmation (booleen value), example --confirm=true'
 		)
 	;
     }
 
 
-    /**
-     * 
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @return type
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-	$output->writeln("<info>Starting nespresso...</info>");
-	$this->validationJson($input, $output);
-	return $output->writeln("<info>project is valided!</info>");
+	$name = $input->getArgument('name');
+	if ($name) {
+	    $text = 'Hello ' . $name;
+	} else {
+	    $text = 'Hello';
+	}
+
+	if ($input->getOption('yell')) {
+	    $text = strtoupper($text);
+	}
+
+	$output->writeln($text);
     }
 
 }

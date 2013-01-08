@@ -58,7 +58,7 @@ class Rsync
 	    $name = $repository->getName();
 	    $this->output->writeln("<comment>Deployement on</comment> <info>$name</info><comment>...</comment>");
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
-	    $this->isError($code);
+	    $this->ckeckReturn($code);
 	}
 	return true;
     }
@@ -90,7 +90,7 @@ class Rsync
      * @param type $code
      * @throws \Exception
      */
-    protected function isError($code)
+    protected function ckeckReturn($code)
     {
 	if ($code) {
 

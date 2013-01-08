@@ -50,6 +50,10 @@ class RsyncDeployBuilder implements BuilderInterface
     }
 
 
+    /**
+     * 
+     * @return type
+     */
     public function getExclude()
     {
 	$manager = $this->container->get("nespresso.manager");

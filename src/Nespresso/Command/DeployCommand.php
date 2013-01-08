@@ -67,14 +67,13 @@ class DeployCommand extends Command
 	$output->writeln("<info>Starting nespresso...</info>");
 
 	//get Data from the request
-	$project = $this->getProjectByArg("project", $input);
-	$repository = $this->getRepositoryByArg("project", $input);
+	$project = $this->getProjectArg("project", $input);
+	$repository = $this->getRepositoryArg("project", $input);
 	$commit = $input->getOption('commit');
 	$tag = $input->getOption('tag');
 	$branch = $input->getOption('branch');
 	$group = $input->getOption('group');
-	$checked = FALSE;
-	$commitCheckout = NULL;
+
 
 	if ($repository == NULL) {
 	    throw new \Exception("repository undefined");
@@ -82,8 +81,8 @@ class DeployCommand extends Command
 
 	//validation json schema
 	$output->writeln("validation <info>$project</info> project");
-	$this->validJson($input, $output);
-	$projectFromJson = json_decode($this->getJsonProjectByArg("project", $input));
+	$this->validationJson($input, $output);
+	$projectFromJson = json_decode($this->getJsonProject("project", $input));
 
 	//Builder
 	$builderOption = new ConfigBuilder();
@@ -107,49 +106,51 @@ class DeployCommand extends Command
 	//control repositories
 	$releaseController = new ReleaseController($this->container, $output);
 	$releaseController->controlAction();
-	$releaseId = $releaseController->createNewReleaseAction();
+	$newRelease = $releaseController->createNewReleaseAction();
 
 	//control shared
-	$sharedController = new SharedController($this->container, $output, $releaseId);
+	$sharedController = new SharedController($this->container, $output, $newRelease);
 	$sharedController->controlAction();
 
-	$taskController = new TaskController($this->container, $output, $releaseId);
+	$taskController = new TaskController($this->container, $output, $newRelease);
 	$taskController->executePreCommand();
 
-	//from commit
-	if (NULL != $commit && $git->isCommitExist($commit)) {
-	    $commitCheckout = $git->ckeckout($commit, "commit");
-	    $checked = TRUE;
-	}
-
-	//from tag
-	if ($tag != NULL && $git->isTagExist($tag) && $checked == FALSE) {
-	    $commitCheckout = $git->ckeckout($tag, "tag");
-	    $checked = TRUE;
-	}
-
-	//from branch
-	if ($branch != NULL && $git->isBranchExist($branch) && $checked == FALSE) {
-	    $commitCheckout = $git->ckeckout($branch, "branch");
-	    $checked = TRUE;
-	}
-
-	if ($checked == FALSE) {
-	    $commitCheckout = $git->ckeckout("master", "branch");
-	}
+	$commitCheckout = $this->Checkout($git, $commit, $tag, $branch);
 
 	//deployement
-	$rsync = new Rsync($this->container, $output, $releaseId);
+	$rsync = new Rsync($this->container, $output, $newRelease);
 	$rsync->deploy();
 
 	//task post deployement
 	$taskController->executePostCommand();
 
+	$releaseController->pushCommitFileAction($commitCheckout);
 	$releaseController->updateSymbolinkAction();
 	$git->removeCloneGit();
 	$releaseController->ckeckRelease();
+	
 	$output->writeln("<info>Deployement finish!</info>");
+    }
 
+
+    public function Checkout($git, $commit = null, $tag = null, $branch = null)
+    {
+	//from commit
+	if (NULL != $commit && $git->isCommitExist($commit)) {
+	    return $git->ckeckout($commit, "commit");
+	}
+
+	//from tag
+	if ($tag != NULL && $git->isTagExist($tag)) {
+	    return $git->ckeckout($tag, "tag");
+	}
+
+	//from branch
+	if ($branch != NULL && $git->isBranchExist($branch)) {
+	    return $git->ckeckout($branch, "branch");
+	}
+
+	return $git->ckeckout("master", "branch");
     }
 
 }

@@ -19,6 +19,7 @@ use \Nespresso\Command\DiffCommand;
 use \Nespresso\Command\JsonCommand;
 use \Nespresso\Command\UpdateCommand;
 use \Nespresso\Command\RollbackCommand;
+use Nespresso\Command\SetupCommand;
 
 /**
  * Description of Application
@@ -52,6 +53,7 @@ class Application
 	$commands[] = new CleanupCommand();
 	$commands[] = new CkeckCommand();
 	$commands[] = new JsonCommand();
+	$commands[] = new SetupCommand();
 
 	return $commands;
     }

@@ -60,7 +60,7 @@ class SharedController extends BaseController
 
 		// control releases directory
 		$outputSsh = trim($connection->exec(sprintf("cd %s/shared", $deployTo)));
-		if ($this->isError($outputSsh)) {
+		if ($this->ckeckReturn($outputSsh)) {
 
 		    if (!$this->performanceShared) {
 			$this->output->writeln(sprintf("<comment>For the reasons of performance, used the shared directory</comment>", $repository->getName()));
@@ -68,7 +68,7 @@ class SharedController extends BaseController
 		    }
 
 		    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/shared", $deployTo)));
-		    $this->isError($outputSsh);
+		    $this->ckeckReturn($outputSsh);
 		}
 
 		//create directory shared
@@ -84,26 +84,26 @@ class SharedController extends BaseController
 
 			// control releases directory
 			$outputSsh = trim($connection->exec(sprintf("cd %s/shared/%s", $deployTo, $sharedDirectoryClean)));
-			if ($this->isError($outputSsh)) {
+			if ($this->ckeckReturn($outputSsh)) {
 			    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/shared/%s", $deployTo, $sharedDirectoryClean)));
-			    $this->isError($outputSsh);
+			    $this->ckeckReturn($outputSsh);
 			}
 
 			if ($prefixDirectory != FALSE) {
 			    //check sub directory
 			    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->releaseId, $prefixDirectory)));
-			    $this->isError($outputSsh);
+			    $this->ckeckReturn($outputSsh);
 			}
 
 			$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->releaseId, $sharedDirectoryClean)));
-			if (!$this->isError($outputSsh)) {
+			if (!$this->ckeckReturn($outputSsh)) {
 			    //create symbolink
 			    if ($prefixDirectory == NULL) {
 				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $this->releaseId, $deployTo, $sharedDirectoryClean, $directory)));
 			    } else {
 				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $this->releaseId, $prefixDirectory, $deployTo, $sharedDirectoryClean, $directory)));
 			    }
-			    $this->isError($outputSsh);
+			    $this->ckeckReturn($outputSsh);
 			}
 		    }
 		}

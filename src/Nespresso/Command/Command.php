@@ -53,11 +53,11 @@ class Command extends BaseCommand
      * @return type
      * @throws \Exception
      */
-    public function getJsonProjectByArg($arg, InputInterface $input)
+    public function getJsonProject($arg, InputInterface $input)
     {
 
-	$this->validProjectRepository($arg);
-	$project_name = $this->getProjectByArg($arg, $input);
+	$this->checkProjectNotationArg($arg);
+	$project_name = $this->getProjectArg($arg, $input);
 	$project_file = $this->getDirectoryProject() . $project_name . '.json';
 
 	//check file
@@ -67,7 +67,6 @@ class Command extends BaseCommand
 	}
 
 	$project_json = file_get_contents($project_file);
-
 	return $project_json;
     }
 
@@ -79,11 +78,11 @@ class Command extends BaseCommand
      * @return type
      * @throws \Exception
      */
-    public function getRepositoryByArg($arg, InputInterface $input)
+    public function getRepositoryArg($arg, InputInterface $input)
     {
 
 	$arg_project = $input->getArgument($arg);
-	$this->validProjectRepository($arg_project);
+	$this->checkProjectNotationArg($arg_project);
 	if (!preg_match("#.+:.+#", $arg_project)) {
 	    throw new \Exception("Arg $arg_project error parsing, no found repository data. Example : nespresso:production");
 	}
@@ -97,11 +96,11 @@ class Command extends BaseCommand
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @return type
      */
-    public function getProjectByArg($arg, InputInterface $input)
+    public function getProjectArg($arg, InputInterface $input)
     {
 	$arg_project = $input->getArgument($arg);
 	//validation data
-	$this->validProjectRepository($arg_project);
+	$this->checkProjectNotationArg($arg_project);
 	return preg_match("#.+:.+#", $arg_project) ? strstr($arg_project, ':', true) : $arg_project;
     }
 
@@ -111,7 +110,7 @@ class Command extends BaseCommand
      * @param type $arg_project
      * @throws \Exception
      */
-    public function validProjectRepository($arg_project)
+    public function checkProjectNotationArg($arg_project)
     {
 	if (substr_count($arg_project, ':') > 1) {
 	    throw new \Exception("Arg $arg_project error parsing, Example : nespresso:production");
@@ -123,10 +122,10 @@ class Command extends BaseCommand
      * 
      * @return type
      */
-    public function validJson(InputInterface $input, OutputInterface $output)
+    public function validationJson(InputInterface $input, OutputInterface $output)
     {
 	try {
-	    $project_json = $this->getJsonProjectByArg("project", $input);
+	    $project_json = $this->getJsonProject("project", $input);
 	    $this->getContainer()->get("validation")->valid($project_json);
 	} catch (\Exception $exc) {
 	    $message = $exc->getMessage();

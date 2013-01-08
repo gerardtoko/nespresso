@@ -11,6 +11,7 @@
 
 namespace Nespresso;
 
+
 /**
  * Description of Task
  *
@@ -52,7 +53,7 @@ class Git
 	$code = null;
 	$outputExec = null;
 	exec(sprintf("cd %s && git clone %s %s 2>%s/nespresso.log", $tmp, $scm, $this->repositoryGit, $tmp), $outputExec, $code);
-	$this->isError($code);
+	$this->ckeckReturn($code);
 	$this->output->writeln(sprintf("Project cloned in [<info>%s/%s</info>]", $tmp, $this->repositoryGit));
     }
 
@@ -68,7 +69,7 @@ class Git
 	$code = null;
 	$outputExec = null;
 	exec(sprintf("rm -rf %s", $this->getTmpGit()), $outputExec, $code);
-	$this->isError($code);
+	$this->ckeckReturn($code);
 
 	if ($outputExec != NULL) {
 	    $this->output->writeln("<error>$outputExec</error>");
@@ -127,9 +128,9 @@ class Git
 	$tmpGit = $this->getTmpGit();
 	$code = null;
 	$outputExec = null;
-	
+
 	exec(sprintf("cd %s && git %s 2>%s/nespresso.log", $tmpGit, $command, $tmp), $outputExec, $code);
-	$this->isError($code);
+	$this->ckeckReturn($code);
 	return true;
     }
 
@@ -163,7 +164,12 @@ class Git
 
 	$this->output->writeln("<comment>Ckeckout on $type</comment> <info>$commit</info><comment>...</comment>");
 	exec(sprintf("cd %s && git checkout %s 2>%s/nespresso.log", $tmpGit, $commit, $tmp), $outputExec, $code);
-	$this->isError($code);
+	$this->ckeckReturn($code);
+
+	//get LastCommit
+	exec(sprintf('cd %s && git log -1 --format="%H" 2>%s/nespresso.log', $tmpGit, $tmp), $outputExec, $code);
+	$this->ckeckReturn($code);
+	return file_get_contents($tmp . "/nespresso.log");	
     }
 
 
@@ -172,7 +178,7 @@ class Git
      * @param type $code
      * @throws \Exception
      */
-    protected function isError($code)
+    protected function ckeckReturn($code)
     {
 	if ($code) {
 

@@ -51,7 +51,7 @@ class Controller
      * @param type $outputSsh
      * @return boolean
      */
-    protected function isError($outputSsh)
+    protected function ckeckReturn($outputSsh)
     {
 	if ($outputSsh) {
 	    $this->output->writeln("<error>Error: $outputSsh</error>");
