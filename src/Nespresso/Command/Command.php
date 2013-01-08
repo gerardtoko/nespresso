@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Nespresso\Command;
 
 use Symfony\Component\Console\Command\Command as BaseCommand;
@@ -121,15 +122,11 @@ class Command extends BaseCommand
      * 
      * @return type
      */
-    public function validationJson(InputInterface $input, OutputInterface $output)
+    public function jsonValidation(InputInterface $input)
     {
-	try {
-	    $project_json = $this->getJsonProject("project", $input);
-	    $this->getContainer()->get("validation")->valid($project_json);
-	} catch (\Exception $exc) {
-	    $message = $exc->getMessage();
-	    return $output->writeln("<error>Error file json: $message </error>");
-	}
+
+	$project_json = $this->getJsonProject("project", $input);
+	$this->getContainer()->get("validation")->valid($project_json);
     }
 
 
@@ -151,4 +148,5 @@ class Command extends BaseCommand
     {
 	return __DIR__ . '/../../../app/';
     }
+
 }

@@ -81,7 +81,7 @@ class DeployCommand extends Command
 
 	//validation json schema
 	$output->writeln("validation <info>$project</info> project");
-	$this->validationJson($input, $output);
+	$this->jsonValidation($input);
 	$projectFromJson = json_decode($this->getJsonProject("project", $input));
 
 	//Builder

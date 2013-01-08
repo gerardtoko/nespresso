@@ -75,7 +75,7 @@ class ConfigValidation implements ValidationInterface
      */
     public function getOptionSchemaValidation()
     {
-	return __DIR__ . '/../../../app/config-schema.json';
+	return __DIR__ . '/../../../schema/config-schema.json';
     }
 
 

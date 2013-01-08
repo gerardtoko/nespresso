@@ -60,7 +60,7 @@ class RepositoryValidation implements ValidationInterface
 
     public function getRepositorySchemaValidation()
     {
-	return __DIR__ . '/../../../app/repository-schema.json';
+	return __DIR__ . '/../../../schema/repository-schema.json';
     }
 
 }
