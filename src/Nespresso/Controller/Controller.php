@@ -18,7 +18,7 @@ use Nespresso\Manager\Connection;
  *
  * @author gerardtoko
  */
-class Controller 
+class Controller
 {
 
     protected $container;
@@ -54,10 +54,12 @@ class Controller
     protected function ckeckReturn($outputSsh)
     {
 	if ($outputSsh) {
-	    $this->output->writeln("<error>Error: $outputSsh</error>");
-	    return true;
+	    $manager = $this->container->get("nespresso.manager");
+	    $manager->getGit()->removeCloneGit();
+	    $this->output->writeln("<error>Error Ssh processing... $outputSsh</error>");
+	    return TRUE;
 	} else {
-	    return false;
+	    return FALSE;
 	}
     }
 

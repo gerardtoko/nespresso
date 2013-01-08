@@ -12,6 +12,7 @@
 namespace Nespresso;
 
 use Nespresso\Builder\RsyncDeployBuilder;
+
 /**
  * Description of Task
  *
@@ -50,38 +51,17 @@ class Rsync
 	$tmp = $manager->getConfig()->getTmp();
 	$code = null;
 	$outputExec = null;
-	
+
 	$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
-	    $rsyncReleaseDeploy = new RsyncDeployBuilder($this->container, $repository, $this->releaseId);
-	    $command = $rsyncReleaseDeploy->build();
+	    $rsyncDeployBuilder = new RsyncDeployBuilder($this->container, $repository, $this->releaseId);
+	    $command = $rsyncDeployBuilder->build();
 	    $name = $repository->getName();
 	    $this->output->writeln("<comment>Deployement on</comment> <info>$name</info><comment>...</comment>");
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
 	    $this->ckeckReturn($code);
 	}
 	return true;
-    }
-
-
-    /**
-     * 
-     * @param type $repository
-     * @return \Nespresso\Manager\Connection
-     */
-    protected function getConnection($repository)
-    {
-	if ($repository->hasConnection()) {
-	    $connection = $repository->getConnection();
-	} else {
-	    $connection = new Connection(
-			    $repository->getUser(),
-			    $repository->getDomain(),
-			    $repository->getPort(),
-			    $this->container->get("nespresso.manager")->getConfig()->getKey(), $this->output);
-	    $repository->setConnection($connection);
-	}
-	return $connection;
     }
 
 
@@ -97,10 +77,7 @@ class Rsync
 	    $manager = $this->container->get("nespresso.manager");
 	    $tmp = $manager->getConfig()->getTmp();
 	    $log = file_get_contents($tmp . "/nespresso.log");
-
-	    if ($this->repositoryGit) {
-		$this->removeCloneGit();
-	    }
+	    $manager->getGit()->removeCloneGit();
 	    throw new \Exception("Error Rsync processing... code($code) \n $log");
 	}
     }

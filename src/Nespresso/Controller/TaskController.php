@@ -49,7 +49,7 @@ class TaskController extends BaseController
 	$connection = null;
 	$this->output->writeln("<comment>Executing tasks pre...</comment>");
 
-
+	
 	foreach ($repositories as $repository) {
 
 	    $connection = $this->getConnection($repository);
@@ -63,7 +63,6 @@ class TaskController extends BaseController
 		    $commonTasksPre = $commonTasks->getPre();
 		    foreach ($commonTasksPre as $commonCommandTaskPre) {
 			$command = $commonCommandTaskPre->getCommand();
-
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
 			$this->output->writeln(sprintf("[<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
@@ -110,7 +109,6 @@ class TaskController extends BaseController
 		    $commonTasksPost = $commonTasks->getPost();
 		    foreach ($commonTasksPost as $commonCommandTaskPost) {
 			$command = $commonCommandTaskPost->getCommand();
-
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
 			$this->output->writeln(sprintf("[<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
