@@ -55,21 +55,20 @@ class SharedController extends BaseController
 	    foreach ($repositories as $repository) {
 
 		$name = $repository->getName();
-		$newRelease = $this->newRelease;
 		$connection = $this->getConnection($repository);
-		$this->output->writeln("Control shared of repository <info>$name</info> [<comment>Release:$newRelease</comment>]");
+		$this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $repository->getName(), $this->newRelease));
 		$deployTo = $repository->getDeployTo();
 
 		// control releases directory
-		$outputSsh = trim($connection->exec("cd $deployTo/shared"));
+		$outputSsh = trim($connection->exec(sprintf("cd %s/shared", $deployTo)));
 		if ($this->ckeckReturn($outputSsh)) {
 
 		    if (!$this->performanceShared) {
-			$this->output->writeln("<comment>For the reasons of performance, used the shared directory</comment>");
+			$this->output->writeln(sprintf("<comment>For the reasons of performance, used the shared directory</comment>", $repository->getName()));
 			$this->performanceShared = TRUE;
 		    }
 
-		    $outputSsh = trim($connection->exec("mkdir -p $deployTo/shared"));
+		    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/shared", $deployTo)));
 		    $this->ckeckReturn($outputSsh);
 		}
 
@@ -93,17 +92,17 @@ class SharedController extends BaseController
 
 			if ($prefixDirectory != FALSE) {
 			    //check sub directory
-			    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $newRelease, $prefixDirectory)));
+			    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->newRelease, $prefixDirectory)));
 			    $this->ckeckReturn($outputSsh);
 			}
 
-			$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $newRelease, $sharedDirectoryClean)));
+			$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->newRelease, $sharedDirectoryClean)));
 			if (!$this->ckeckReturn($outputSsh)) {
 			    //create symbolink
 			    if ($prefixDirectory == NULL) {
-				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $newRelease, $deployTo, $sharedDirectoryClean, $directory)));
+				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $this->newRelease, $deployTo, $sharedDirectoryClean, $directory)));
 			    } else {
-				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $newRelease, $prefixDirectory, $deployTo, $sharedDirectoryClean, $directory)));
+				$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $this->newRelease, $prefixDirectory, $deployTo, $sharedDirectoryClean, $directory)));
 			    }
 			    $this->ckeckReturn($outputSsh);
 			}

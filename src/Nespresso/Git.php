@@ -11,6 +11,7 @@
 
 namespace Nespresso;
 
+
 /**
  * Description of Task
  *
@@ -128,7 +129,7 @@ class Git
 	$code = null;
 	$outputExec = null;
 
-	exec("cd $tmpGit && git $command 2>$tmp/nespresso.log", $outputExec, $code);
+	exec(sprintf("cd %s && git %s 2>%s/nespresso.log", $tmpGit, $command, $tmp), $outputExec, $code);
 	$this->ckeckReturn($code);
 	return true;
     }
@@ -162,13 +163,13 @@ class Git
 	$outputExec = null;
 
 	$this->output->writeln("<comment>Ckeckout on $type</comment> <info>$commit</info><comment>...</comment>");
-	exec("cd $tmpGit && git checkout $commit 2>$tmp/nespresso.log", $outputExec, $code);
+	exec(sprintf("cd %s && git checkout %s 2>%s/nespresso.log", $tmpGit, $commit, $tmp), $outputExec, $code);
 	$this->ckeckReturn($code);
 
 	//get LastCommit
 	exec("cd $tmpGit && git log -1 --format='%H' 2>$tmp/nespresso.log", $outputExec, $code);
 	$this->ckeckReturn($code);
-	return file_get_contents($tmp . "/nespresso.log");
+	return file_get_contents($tmp . "/nespresso.log");	
     }
 
 
