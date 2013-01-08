@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the rdeploy package.
+ * This file is part of Nespresso.
  *
  * (c) Gerard TOKO <gerard.toko@gmail.com>
  *
