@@ -73,7 +73,7 @@ class Config
      * @param type $tmp
      * @return \Nespresso\Mapping\Config
      */
-    public function setOptionRsync($optionRsync)
+    public function setOptionRsync($optionRsync = "az")
     {
 	$this->optionRsync = $optionRsync;
 	return $this;
