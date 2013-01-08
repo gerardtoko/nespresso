@@ -6,17 +6,18 @@
     "type": "library",
     "license": "MIT",
     "authors": [
-        {
-            "name": "Gérard TOKO",
-            "email": "gerard.toko@gmailcom",
-            "homepage": "http://gerardtoko.com"
-        }
+    {
+	"name": "Gérard TOKO",
+	"email": "gerard.toko@gmailcom",
+	"homepage": "http://gerardtoko.com"
+    }
     ],
     "autoload": {
 	"psr-0": {
 	    "": "src/"
 	}
     },
+    "bin": ["bin/nespresso"],
     "require": {
 	"php": ">=5.3.3",
 	"phpseclib/phpseclib": "0.3.1",
