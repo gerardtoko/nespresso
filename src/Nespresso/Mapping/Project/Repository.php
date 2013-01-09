@@ -153,9 +153,9 @@ class Repository
      * @param type $port
      * @return \Nespresso\Mapping\Project\Repository
      */
-    public function setPort($port)
+    public function setPort($port = 22)
     {
-	$this->port = $port;
+	$this->port = (int) $port;
 	return $this;
     }
 

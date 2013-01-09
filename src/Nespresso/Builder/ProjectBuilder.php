@@ -54,8 +54,8 @@ class ProjectBuilder implements BuilderInterface
 	$group = $this->group;
 
 	$projectObject = new ProjectMapping();
-	if (!empty($projectFromJson->git)) {
-	    $projectObject->setGit($projectFromJson->git);
+	if (!empty($projectFromJson->source)) {
+	    $projectObject->setGit($projectFromJson->source);
 	} else {
 	    throw new \Exception("repository git is undefined or incorrect");
 	}
@@ -75,8 +75,8 @@ class ProjectBuilder implements BuilderInterface
 	    $projectObject->setKeepRelease(5);
 	}
 
-	if (!empty($projectFromJson->shared)) {
-	    $projectObject->setShared($projectFromJson->shared);
+	if (!empty($projectFromJson->shared_directory)) {
+	    $projectObject->setShared($projectFromJson->shared_directory);
 	} else {
 	    $projectObject->setShared(true);
 	}

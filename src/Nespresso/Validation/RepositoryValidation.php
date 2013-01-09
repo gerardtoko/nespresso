@@ -12,6 +12,7 @@
 namespace Nespresso\Validation;
 
 use Nespresso\Validation\ValidationInterface;
+
 /**
  * Description of Projet
  *
@@ -19,6 +20,14 @@ use Nespresso\Validation\ValidationInterface;
  */
 class RepositoryValidation implements ValidationInterface
 {
+
+    protected $schema;
+
+
+    public function __construct()
+    {
+	$this->schema = __DIR__ . '/../../../schema/repository-schema.json';
+    }
 
 
     /**
@@ -58,9 +67,25 @@ class RepositoryValidation implements ValidationInterface
     }
 
 
+    /**
+     * 
+     * @param type $schema
+     * @return \Nespresso\Validation\ProjectValidation
+     */
+    public function setRepositorySchemaValidation($schema)
+    {
+	$this->schema = $schema;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
     public function getRepositorySchemaValidation()
     {
-	return __DIR__ . '/../../../schema/repository-schema.json';
+	return $this->schema;
     }
 
 }

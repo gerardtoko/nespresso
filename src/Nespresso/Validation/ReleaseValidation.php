@@ -29,7 +29,7 @@ class ReleaseValidation implements ValidationInterface
      */
     public function valid($release)
     {
-	return preg_match("#^([-]?[0-9]{2}){6}$#", $release);
+	return preg_match("#^[0-9]{2}([-][0-9]{2}){5}$#", $release);
     }
 
 }

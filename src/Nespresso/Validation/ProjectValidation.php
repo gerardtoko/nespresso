@@ -22,6 +22,14 @@ use Nespresso\Validation\ValidationInterface;
 class ProjectValidation implements ValidationInterface
 {
 
+    protected $schema;
+
+
+    public function __construct()
+    {
+	$this->schema = __DIR__ . '/../../../schema/project-schema.json';
+    }
+
 
     /**
      * 
@@ -43,7 +51,7 @@ class ProjectValidation implements ValidationInterface
 	    $basename = basename($schemaFile);
 	    throw new \Exception("schema $basename no exist in app directory");
 	}
-	
+
 
 	//shema valid
 	$schemaJson = file_get_contents($schemaFile);
@@ -66,9 +74,25 @@ class ProjectValidation implements ValidationInterface
     }
 
 
+    /**
+     * 
+     * @param type $schema
+     * @return \Nespresso\Validation\ProjectValidation
+     */
+    public function setProjectSchemaValidation($schema)
+    {
+	$this->schema = $schema;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
     public function getProjectSchemaValidation()
     {
-	return __DIR__ . '/../../../schema/project-schema.json';
+	return $this->schema;
     }
 
 }

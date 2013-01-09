@@ -11,7 +11,6 @@
 
 namespace Nespresso\Validation;
 
-
 use Nespresso\Validation\ValidationInterface;
 
 /**
@@ -22,18 +21,28 @@ use Nespresso\Validation\ValidationInterface;
 class ConfigValidation implements ValidationInterface
 {
 
+    protected $configFile;
+    protected $schema;
+
+
+    public function __construct()
+    {
+	$this->configFile = __DIR__ . '/../../../tests/config.json';
+	$this->schema = __DIR__ . '/../../../schema/config-schema.json';
+    }
+
+
     /**
      * 
      * @param type $projet
      * @throws \Exception
      */
-    public function valid($config = null)
+    public function valid($configFile = null)
     {
 
 	$validator = new \JsonSchema\Validator();
-	//errors
 	$errors = "";
-	
+
 	//check file
 	$schemaFile = $this->getOptionSchemaValidation();
 	if (!file_exists($schemaFile)) {
@@ -41,10 +50,12 @@ class ConfigValidation implements ValidationInterface
 	    throw new \Exception("schema $basename no exist in app directory");
 	}
 
-	$configFile = $this->getOption();
-	if (!file_exists($configFile)) {
-	    $basename = basename($configFile);
-	    throw new \Exception("schema $basename no exist");
+	if (is_null($configFile)) {
+	    $configFile = $this->getConfigFile();
+	    if (!file_exists($configFile)) {
+		$basename = basename($configFile);
+		throw new \Exception("schema $basename no exist");
+	    }
 	}
 
 	//shema valid
@@ -62,11 +73,19 @@ class ConfigValidation implements ValidationInterface
 		}
 	    }
 	    throw new \Exception("JSON config does not validate. Violations:\n $errors");
-
 	}
-	
     }
-    
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function setOptionSchemaValidation($schema)
+    {
+	$this->schema = $schema;
+	return $this;
+    }
 
 
     /**
@@ -75,7 +94,19 @@ class ConfigValidation implements ValidationInterface
      */
     public function getOptionSchemaValidation()
     {
-	return __DIR__ . '/../../../schema/config-schema.json';
+	return $this->schema;
+    }
+
+
+    /**
+     * 
+     * @param type $file
+     * @return \Nespresso\Builder\ConfigBuilder
+     */
+    public function setConfigFile($file)
+    {
+	$this->configFile = $file;
+	return $this;
     }
 
 
@@ -83,9 +114,9 @@ class ConfigValidation implements ValidationInterface
      * 
      * @return type
      */
-    public function getOption()
+    private function getConfigFile()
     {
-	return __DIR__ . '/../../../tests/config.json';
+	return $this->configFile;
     }
 
 }

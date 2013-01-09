@@ -27,6 +27,12 @@ class ConfigBuilder implements BuilderInterface
     protected $group;
 
 
+    public function __construct()
+    {
+	$this->configFile = __DIR__ . '/../../../tests/config.json';
+    }
+
+
     /**
      * 
      * @return \Nespresso\Mapping\Config
@@ -34,7 +40,7 @@ class ConfigBuilder implements BuilderInterface
      */
     public function build()
     {
-	$configFile = $this->getConfig();
+	$configFile = $this->getConfigFile();
 	if (!file_exists($configFile)) {
 	    $basename = basename($configFile);
 	    throw new \Exception("schema $basename no exist");
@@ -61,11 +67,23 @@ class ConfigBuilder implements BuilderInterface
 
     /**
      * 
+     * @param type $file
+     * @return \Nespresso\Builder\ConfigBuilder
+     */
+    public function setConfigFile($file)
+    {
+	$this->configFile = $file;
+	return $this;
+    }
+
+
+    /**
+     * 
      * @return type
      */
-    private function getConfig()
+    private function getConfigFile()
     {
-	return __DIR__ . '/../../../tests/config.json';
+	return $this->configFile;
     }
 
 }

@@ -1,0 +1,21 @@
+{
+    "repositories":  { 
+	"testing": 
+	{    
+	    "user": "gerardtoko" ,
+	    "domain": "gerardtoko.com",
+	    "port": "3041",
+	    "deploy_to": "/home/gerardtoko/testing/nespresso-test"
+	}
+    }, 
+    "source" :{
+	"type" : "git",
+	"scm": "git@github.com:gerardtoko/nespresso-test.git"
+    },   
+    "shared_directory": [ "var","web/uploads","app/logs","app/session", "app/lib/symfony/config/yaml/dumper"],
+    "cache" : "app/cache",
+    "cache_mode" : "777",
+    "common_tasks": {		    	
+	"post": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+    }
+}

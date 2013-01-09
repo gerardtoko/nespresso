@@ -14,19 +14,29 @@
   "repositories":  {
   "testing":
   {
-  "user": "www-data" ,
+  "user": "gerardtoko" ,
   "domain": "gerardtoko.com",
-  "port": "22",
-  "deployTo": "/home/www-data/testing/nespresso-test",
+  "port": "3041",
+  "deploy_to": "/home/gerardtoko/testing/nespresso-test",
   "tasks": {
   "pre": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
   "post": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
   }
   }
   },
-  "git": "git@github.com:gerardtoko/nespresso-test.git",
-  "keepRelease": "3",
-  "cache" : "var/cache",
+  "source" : {
+  "type" : "git",
+  "scm": "git@github.com:gerardtoko/nespresso-test.git"
+  },
+  "keep_release": "3",
+  "shared_directory": [ "var","web/uploads","app/logs","app/session", "app/lib/symfony/config/yaml/dumper"],
+  "shared_file": [ "var","web/uploads","app/logs","app/session", "app/lib/symfony/config/yaml/dumper"],
+  "cache" : "app/cache",
+  "cache_mode" : "777",
+  "common_tasks": {
+  "pre": [ "cd web && git add . && git checkouf -f", "rm -rf cache/*","chmod -R 777 cache" ],
+  "post": ["cd web","rm -rf cache/*","chmod -R 777 cache"]
+  },
   "groups":  {
   "testing_cluster": ["testing"]
   }
@@ -34,6 +44,9 @@
  */
 
 namespace Nespresso\Mapping;
+
+use Nespresso\Mapping\Project\Source;
+use Nespresso\Mapping\Project\Common\Task;
 
 /**
  * Description of Repository
@@ -43,12 +56,13 @@ namespace Nespresso\Mapping;
 class Project
 {
 
-    protected $git;
+    protected $source;
     protected $keepRelease;
     protected $repositories;
     protected $cache;
     protected $cacheMode;
-    protected $shared;
+    protected $sharedDirectory;
+    protected $sharedFile;
     protected $commonTasks;
 
 
@@ -76,12 +90,12 @@ class Project
 
     /**
      * 
-     * @param type $git
+     * @param type $source
      * @return \Nespresso\Mapping\Project
      */
-    public function setGit($git)
+    public function setSource(Source $source)
     {
-	$this->git = $git;
+	$this->source = $source;
 	return $this;
     }
 
@@ -90,9 +104,9 @@ class Project
      * 
      * @return type
      */
-    public function getGit()
+    public function getSource()
     {
-	return $this->git;
+	return $this->source;
     }
 
 
@@ -101,9 +115,9 @@ class Project
      * @param type $keepRelease
      * @return \Nespresso\Mapping\Project
      */
-    public function setKeepRelease($keepRelease)
+    public function setKeepRelease($keepRelease = 5)
     {
-	$this->keepRelease = $keepRelease;
+	$this->keepRelease = (int) $keepRelease;
 	return $this;
     }
 
@@ -165,9 +179,9 @@ class Project
      * @param type $cache
      * @return \Nespresso\Mapping\Project
      */
-    public function setCacheMode($cache)
+    public function setCacheMode($cache = 777)
     {
-	$this->cacheMode = $cache;
+	$this->cacheMode = (int) $cache;
 	return $this;
     }
 
@@ -184,12 +198,12 @@ class Project
 
     /**
      * 
-     * @param type $shared
+     * @param type $sharedDirectory
      * @return \Nespresso\Mapping\Project
      */
-    public function setShared($shared)
+    public function setSharedDirectory($sharedDirectory)
     {
-	$this->shared = $shared;
+	$this->sharedDirectory = $sharedDirectory;
 	return $this;
     }
 
@@ -198,9 +212,9 @@ class Project
      * 
      * @return type
      */
-    public function isShared()
+    public function isSharedDirectory()
     {
-	return !empty($this->shared) ? TRUE : FALSE;
+	return !empty($this->sharedDirectory) ? TRUE : FALSE;
     }
 
 
@@ -208,9 +222,41 @@ class Project
      * 
      * @return type
      */
-    public function getShared()
+    public function getSharedDirectory()
     {
-	return $this->shared;
+	return $this->sharedDirectory;
+    }
+
+
+    /**
+     * 
+     * @param type $sharedFile
+     * @return \Nespresso\Mapping\Project
+     */
+    public function setSharedFile($sharedFile)
+    {
+	$this->sharedFile = $sharedFile;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function isSharedFile()
+    {
+	return !empty($this->sharedFile) ? TRUE : FALSE;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getSharedFile()
+    {
+	return $this->sharedFile;
     }
 
 
@@ -219,7 +265,7 @@ class Project
      * @param type $commonTask
      * @return \Nespresso\Mapping\Project
      */
-    public function setCommonTasks($commonTask)
+    public function setCommonTasks(Task $commonTask)
     {
 	$this->commonTasks = $commonTask;
 	return $this;

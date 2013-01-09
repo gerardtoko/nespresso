@@ -10,22 +10,36 @@
 	},
 	"keep_release": {
 	    "type": "integer",
-	    "description": "number of deployement guarded",
-	    "required": true
+	    "description": "number of deployement guarded"
 	},
-	"git": {
-	    "type": "string",
-	    "description": "repository git",
-	    "required": true
+	"source": {
+	    "type": "object",
+	    "description": "source config",
+	    "required": true,
+	    "additionalProperties": false,
+	    "properties": {
+		"type": {
+		    "type": "string",
+		    "description": "source type",
+		    "required": true
+		},
+		"scm": {
+		    "type": "string",
+		    "description": "repository scm",
+		    "required": true
+		}   
+	    }
 	},
 	"cache": {
 	    "type": "string"
 	},
 	"cache_mode": {
 	    "type": "string"
+	},	
+	"shared_directory": {
+	    "type": "array"
 	},
-	
-	"shared": {
+	"shared_file": {
 	    "type": "array"
 	},
 	"groups": {
