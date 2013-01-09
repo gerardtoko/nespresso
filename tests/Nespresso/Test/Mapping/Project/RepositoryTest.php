@@ -1,9 +1,10 @@
 <?php
 
-namespace Nespresso\Test\Mapping\Project; 
+namespace Nespresso\Test\Mapping\Project;
 
 use Nespresso\Mapping\Project\Repository;
 use Nespresso\Mapping\Project\Repository\Task;
+
 /*
  * This file is part of Nespresso.
  *
@@ -21,31 +22,37 @@ use Nespresso\Mapping\Project\Repository\Task;
 class RepositoryTest extends \PHPUnit_Framework_TestCase
 {
 
+
     public function testMapping()
     {
 	$project = new Repository();
-	
+
 	$project->setDeployTo("/var/nespresso");
 	$this->assertEquals($project->getDeployTo(), "/var/nespresso");
-	
+
 	$project->setDomain("google.fr");
 	$this->assertEquals($project->getDomain(), "google.fr");
-	
+
 	$project->setName("testing");
 	$this->assertEquals($project->getName(), "testing");
-	
+
 	$project->setPort();
 	$this->assertEquals($project->getPort(), 22);
-	
+
 	$project->setPort(234);
 	$this->assertEquals($project->getPort(), 234);
-	
+
 	$project->setTasks(new Task());
 	$this->assertEquals($project->getTasks(), new Task());
-	
+	$this->assertEquals($project->hasTasks(), TRUE);
+
 	$project->setUser("gerardtoko");
 	$this->assertEquals($project->getUser(), "gerardtoko");
-	
+
+	$this->assertFalse($project->hasConnection());
+	$project->setConnection("aeez");
+	$this->assertEquals($project->getConnection(), "aeez");
+	$this->assertTrue($project->hasConnection());
     }
 
 }

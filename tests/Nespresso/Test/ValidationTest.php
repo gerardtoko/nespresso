@@ -20,7 +20,7 @@ class ValidationTest extends \PHPUnit_Framework_TestCase
     public function testValid()
     {
 	$validation = new Validation();
-	
+
 	$json = __DIR__ . '/../../nespresso.min.json';
 	$project_json = file_get_contents($json);
 	$this->assertNull($validation->valid($project_json));
@@ -28,11 +28,14 @@ class ValidationTest extends \PHPUnit_Framework_TestCase
 	$json = __DIR__ . '/../../nespresso.person.json';
 	$project_json = file_get_contents($json);
 	$this->assertNull($validation->valid($project_json));
-	
+
 	$json = __DIR__ . '/../../nespresso.full.json';
 	$project_json = file_get_contents($json);
 	$this->assertNull($validation->valid($project_json));
 
+	$this->assertEquals($validation->isValidRelease(".."), 0);
+	$this->assertEquals($validation->isValidRelease("72-23-23-23-34-34"), 1);
+	$this->assertEquals($validation->isValidRelease("72-23-23-23-D4-3Z"), 0);
     }
 
 }

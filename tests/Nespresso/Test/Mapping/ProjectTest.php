@@ -37,14 +37,17 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 	$project->setCacheMode(644);
 	$this->assertEquals($project->getCacheMode(), 644);
 		
+	$this->assertFalse($project->hasCommonTasks());
 	$project->setCommonTasks(new Task());
 	$this->assertEquals($project->getCommonTasks(), new Task());
+	$this->assertTrue($project->hasCommonTasks());
 	
 	$project->setKeepRelease();
 	$this->assertEquals($project->getKeepRelease(), 5);
 	
 	$project->setKeepRelease(10);
-	$this->assertEquals($project->getKeepRelease(), 10);
+	$this->assertEquals($project->getKeepRelease(), 10);	
+	$this->assertEquals($project->hasKeepRelease(), TRUE);
 	
 	$project->setRepositories(array("foorepo"));
 	$this->assertEquals($project->getRepositories(), array("foorepo"));

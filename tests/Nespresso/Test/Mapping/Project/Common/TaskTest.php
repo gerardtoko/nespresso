@@ -27,9 +27,11 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 	
 	$project->setPre(array(new Command(), new Command(), new Command()));
 	$this->assertEquals($project->getPre(), array(new Command(), new Command(), new Command()));
+	$this->assertTrue($project->hasPre());
 	
 	$project->setPost(array(new Command(), new Command(), new Command()));
 	$this->assertEquals($project->getPost(), array(new Command(), new Command(), new Command()));
+	$this->assertTrue($project->hasPost());
 	
 	
     }

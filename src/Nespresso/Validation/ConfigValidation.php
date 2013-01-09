@@ -45,23 +45,16 @@ class ConfigValidation implements ValidationInterface
 
 	//check file
 	$schemaFile = $this->getOptionSchemaValidation();
-	if (!file_exists($schemaFile)) {
-	    $basename = basename($schemaFile);
-	    throw new \Exception("schema $basename no exist in app directory");
-	}
 
 	if (is_null($configFile)) {
 	    $configFile = $this->getConfigFile();
-	    if (!file_exists($configFile)) {
-		$basename = basename($configFile);
-		throw new \Exception("schema $basename no exist");
-	    }
 	}
+	$this->isExistFile($schemaFile);
+	$this->isExistFile($configFile);
 
 	//shema valid
 	$schemaJson = file_get_contents($schemaFile);
 	$configJson = file_get_contents($configFile);
-
 	$objSchema = json_decode($schemaJson);
 	$objJson = json_decode($configJson);
 
@@ -73,6 +66,19 @@ class ConfigValidation implements ValidationInterface
 		}
 	    }
 	    throw new \Exception("JSON config does not validate. Violations:\n $errors");
+	}
+    }
+
+
+    /**
+     * 
+     * @param type $file
+     * @throws \Exception
+     */
+    public function isExistFile($file)
+    {
+	if (!file_exists($file)) {
+	    throw new \Exception("$file no exist");
 	}
     }
 
@@ -114,7 +120,7 @@ class ConfigValidation implements ValidationInterface
      * 
      * @return type
      */
-    private function getConfigFile()
+    public function getConfigFile()
     {
 	return $this->configFile;
     }

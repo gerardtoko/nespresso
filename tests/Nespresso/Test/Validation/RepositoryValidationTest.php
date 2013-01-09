@@ -30,12 +30,14 @@ class RepositoryValidationTest extends \PHPUnit_Framework_TestCase
 	$project_json = file_get_contents($json);
 	$objJson = json_decode($project_json);
 	$this->assertNull($validation->valid($objJson));
-	
+
 	$json = __DIR__ . '/../../../nespresso.full.json';
 	$project_json = file_get_contents($json);
 	$objJson = json_decode($project_json);
 	$this->assertNull($validation->valid($objJson));
-
+	
+	$validation->setRepositorySchemaValidation(array("fooshareddirectory.json"));
+	$this->assertEquals($validation->getRepositorySchemaValidation(), array("fooshareddirectory.json"));
     }
 
 }

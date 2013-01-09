@@ -1,9 +1,10 @@
 <?php
 
-namespace Nespresso\Test\Mapping\Project\Repository; 
+namespace Nespresso\Test\Mapping\Project\Repository;
 
 use Nespresso\Mapping\Project\Repository\Task;
 use Nespresso\Mapping\Project\Repository\Task\Command;
+
 /*
  * This file is part of Nespresso.
  *
@@ -21,17 +22,18 @@ use Nespresso\Mapping\Project\Repository\Task\Command;
 class TaskTest extends \PHPUnit_Framework_TestCase
 {
 
+
     public function testMapping()
     {
-	$project = new Task();
-	
-	$project->setPre(array(new Command(), new Command(), new Command()));
-	$this->assertEquals($project->getPre(), array(new Command(), new Command(), new Command()));
-	
-	$project->setPost(array(new Command(), new Command(), new Command()));
-	$this->assertEquals($project->getPost(), array(new Command(), new Command(), new Command()));
-	
-	
+	$task = new Task();
+
+	$task->setPre(array(new Command(), new Command(), new Command()));
+	$this->assertEquals($task->getPre(), array(new Command(), new Command(), new Command()));
+
+	$task->setPost(array(new Command(), new Command(), new Command()));
+	$this->assertEquals($task->getPost(), array(new Command(), new Command(), new Command()));
+	$this->assertTrue($task->hasPre());
+	$this->assertTrue($task->hasPost());
     }
 
 }
