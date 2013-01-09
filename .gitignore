@@ -16,5 +16,5 @@ ehthumbs.db
 Thumbs.db
 composer.phar
 vendor
-/tests/nespresso.json
-/tests/option.json
+/tests/*.json
+/tests/*.json
