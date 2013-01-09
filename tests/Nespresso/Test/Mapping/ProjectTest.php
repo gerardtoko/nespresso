@@ -28,7 +28,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 	$project = new Project();
 	
 	$project->setCache("/app/cache");
-	$this->assertEquals($project->getCache(), "/app/cache");
+	$this->assertEquals($project->getCache(), "/app/cache");	
+	$this->assertEquals($project->hasCache(), TRUE);
 	
 	$project->setCacheMode();
 	$this->assertEquals($project->getCacheMode(), 777);
@@ -50,9 +51,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 	
 	$project->setSharedDirectory(array("fooshareddirectory"));
 	$this->assertEquals($project->getSharedDirectory(), array("fooshareddirectory"));
+	$this->assertEquals($project->isSharedDirectory(), TRUE);
 	
 	$project->setSharedFile(array("foosharedfile"));
 	$this->assertEquals($project->getSharedFile(), array("foosharedfile"));
+	$this->assertEquals($project->isSharedFile(), TRUE);
 	
 	$project->setSource(new Source());
 	$this->assertEquals($project->getSource(), new Source());
