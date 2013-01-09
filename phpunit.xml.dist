@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
-         bootstrap="tests/bootstrap.php"
+	 backupStaticAttributes="false"
+	 colors="true"
+	 convertErrorsToExceptions="true"
+	 convertNoticesToExceptions="true"
+	 convertWarningsToExceptions="true"
+	 processIsolation="false"
+	 stopOnFailure="false"
+	 syntaxCheck="false"
+	 bootstrap="tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="Nespresso Test Suite">
-            <directory>./tests/Nespresso/</directory>
-        </testsuite>
+	<testsuite name="Nespresso Test Suite">
+	    <directory>./tests/Nespresso/</directory>
+	</testsuite>
     </testsuites>
-
     <groups>
-        <exclude>
-            <group>slow</group>
-        </exclude>
+	<exclude>
+	    <group>slow</group>
+	</exclude>
     </groups>
-
     <filter>
-        <whitelist>
-            <directory>./src/Nespresso/</directory>
-        </whitelist>
+	<whitelist>
+	    <directory>./src/Nespresso/</directory>
+	</whitelist>
     </filter>
+    <logging>	      
+	<log type="coverage-html" target="./tests/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50" highLowerBound="80" />	    
+	<log type="testdox" target="./tests/testdox.html" />      
+    </logging>
 </phpunit>

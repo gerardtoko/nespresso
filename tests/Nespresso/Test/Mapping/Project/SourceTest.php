@@ -1,6 +1,6 @@
 <?php
 
-namespace Nespresso\Test\Mapping\Project; 
+namespace Nespresso\Test\Mapping\Project;
 
 use Nespresso\Mapping\Project\Source;
 
@@ -21,16 +21,22 @@ use Nespresso\Mapping\Project\Source;
 class SourceTest extends \PHPUnit_Framework_TestCase
 {
 
+
     public function testMapping()
     {
 	$project = new Source();
-	
+
 	$project->setType("git");
 	$this->assertEquals($project->getType(), "git");
-	
-	$project->setScm("/app/symfony/.git");
-	$this->assertEquals($project->getScm(), "/app/symfony/.git");
-	
+
+	$project->setScm("git@github.com:gerardtoko/nespresso.git");
+	$this->assertEquals($project->getScm(), "git@github.com:gerardtoko/nespresso.git");
+
+	$project->setType("mercurial");
+	$this->assertEquals($project->getType(), "mercurial");
+
+	$project->setScm("git@github.com:gerardtoko/nespresso.hg");
+	$this->assertEquals($project->getScm(), "git@github.com:gerardtoko/nespresso.hg");
     }
 
 }

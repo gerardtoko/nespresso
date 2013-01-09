@@ -27,6 +27,15 @@ class Command extends BaseCommand
 {
 
     protected $container;
+    protected $directoryApp;
+    protected $directoryProjet;
+
+
+    public function __construct()
+    {
+	$this->directoryProjet = __DIR__ . '/../../../tests/';
+	$this->directoryApp = __DIR__ . '/../../../app/';
+    }
 
 
     /**
@@ -132,11 +141,35 @@ class Command extends BaseCommand
 
     /**
      * 
+     * @param type $dir
+     * @return \Nespresso\Command\Command
+     */
+    public function setDirectoryProject($dir)
+    {
+	$this->directoryProjet = $dir;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @param type $dir
+     * @return \Nespresso\Command\Command
+     */
+    public function setDirectoryApp($dir)
+    {
+	$this->directoryApp = $dir;
+	return $this;
+    }
+
+
+    /**
+     * 
      * @return type
      */
     public function getDirectoryProject()
     {
-	return __DIR__ . '/../../../tests/';
+	return $this->directoryProjet;
     }
 
 
@@ -146,7 +179,7 @@ class Command extends BaseCommand
      */
     public function getDirectoryApp()
     {
-	return __DIR__ . '/../../../app/';
+	return $this->directoryApp;
     }
 
 }
