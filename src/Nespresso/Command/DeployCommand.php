@@ -35,7 +35,7 @@ class DeployCommand extends Command
 
     protected function configure()
     {
-	$this->setName('deploy')
+	$this->setName('nespresso:deploy')
 		->setDescription('Deploy a project specific')
 		->addArgument(
 			'project', InputArgument::REQUIRED, 'Specific project with a repository or group repository. Example nespresso:production'

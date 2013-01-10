@@ -97,7 +97,7 @@ class Source
     public function hasCommit($commit)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->hasCommitCommand($commit, $this->local);
+	    $command = $this->source->hasCommitCommand($commit);
 	    return $this->exec($command);
 	}
     }
@@ -111,7 +111,7 @@ class Source
     public function hasTag($tag)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->hasTagCommand($tag, $this->local);
+	    $command = $this->source->hasTagCommand($tag);
 	    return $this->exec($command);
 	}
     }
@@ -125,7 +125,7 @@ class Source
     public function hasBranch($branch)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->hasBranchCommand($branch, $this->local);
+	    $command = $this->source->hasBranchCommand($branch);
 	    return $this->exec($command);
 	}
     }
@@ -159,7 +159,7 @@ class Source
     public function checkoutCommit($commit)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->checkoutCommit($commit, $this->local);
+	    $command = $this->source->checkoutCommit($commit);
 	    $this->exec($command);
 	    return $this->getLastCommit();
 	}
@@ -174,7 +174,7 @@ class Source
     public function checkoutTag($tag)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->checkoutTag($tag, $this->local);
+	    $command = $this->source->checkoutTag($tag);
 	    $this->exec($command);
 	    return $this->getLastCommit();
 	}
@@ -189,7 +189,7 @@ class Source
     public function checkoutBranch($branch)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->checkoutBranch($branch, $this->local);
+	    $command = $this->source->checkoutBranch($branch);
 	    $this->exec($command);
 	    return $this->getLastCommit();
 	}
@@ -255,7 +255,8 @@ class Source
     public function hasExclude()
     {
 	if ($this->isCloned()) {
-	    return $this->source->hasExclude($this->local);
+	    $excludeFile = $this->source->getExclude();
+	    return file_exists(sprintf("%s/%s", $this->local, $excludeFile)) ? TRUE : FALSE;
 	}
     }
 
@@ -268,15 +269,13 @@ class Source
     {
 
 	$excluded = array();
-	if ($this->isCloned()) {
-	    $excludeFile = $this->source->hasExclude($this->local);
-	    if (file_exists($excludeFile)) {
-		$excludeData = explode("\n", file_get_contents($excludeFile));
-		foreach ($excludeData as $exclude) {
-		    $exclude = trim($exclude);
-		    if (!preg_match("#^\##", $exclude)) {
-			$excluded[] = $exclude;
-		    }
+	if ($this->isCloned() && $this->hasExclude()) {
+	    $excludeFile = $this->source->getExclude();
+	    $excludeData = explode("\n", file_get_contents($excludeFile));
+	    foreach ($excludeData as $exclude) {
+		$exclude = trim($exclude);
+		if (!preg_match("#^\##", $exclude)) {
+		    $excluded[] = $exclude;
 		}
 	    }
 	}

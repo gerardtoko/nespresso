@@ -11,6 +11,8 @@
 
 namespace Nespresso;
 
+use Nespresso\Mercurial;
+
 /**
  * Description of Mercurial
  *
@@ -24,9 +26,9 @@ class Mercurial implements SourceInterface
      * 
      * @return type
      */
-    public function cloneScmCommand()
+    public function cloneScmCommand($local)
     {
-	
+	return sprintf(Mercurial::CLONE_SCM, $local);
     }
 
 
@@ -35,9 +37,9 @@ class Mercurial implements SourceInterface
      * @param type $commit
      * @return boolean
      */
-    public function hasCommitCommand($commit, $local)
+    public function hasCommitCommand($commit)
     {
-	
+	return sprintf(Mercurial::HAS_COMMIT, $commit);
     }
 
 
@@ -46,9 +48,9 @@ class Mercurial implements SourceInterface
      * @param type $tag
      * @return boolean
      */
-    public function hasTagCommand($tag, $local)
+    public function hasTagCommand($tag)
     {
-	
+	return sprintf(Mercurial::HAS_TAG, $tag);
     }
 
 
@@ -57,9 +59,9 @@ class Mercurial implements SourceInterface
      * @param type $branch
      * @return boolean
      */
-    public function hasBranchCommand($branch, $local)
+    public function hasBranchCommand($branch)
     {
-	
+	return sprintf(Mercurial::HAS_BRANCH, $branch);
     }
 
 
@@ -68,9 +70,9 @@ class Mercurial implements SourceInterface
      * @param type $commit
      * @param type $type
      */
-    public function checkoutCommit($commit, $local)
+    public function checkoutCommit($commit)
     {
-	
+	return sprintf(Mercurial::CHECKOUT_COMMIT, $commit);
     }
 
 
@@ -79,9 +81,9 @@ class Mercurial implements SourceInterface
      * @param type $tag
      * @param type $type
      */
-    public function checkoutTag($tag, $local)
+    public function checkoutTag($tag)
     {
-	
+	return sprintf(Mercurial::CHECKOUT_TAG, $tag);
     }
 
 
@@ -90,9 +92,9 @@ class Mercurial implements SourceInterface
      * @param type $branch
      * @param type $type
      */
-    public function checkoutBranch($branch, $local)
+    public function checkoutBranch($branch)
     {
-	
+	return sprintf(Mercurial::CHECKOUT_BRANCH, $branch);
     }
 
 
@@ -103,17 +105,7 @@ class Mercurial implements SourceInterface
      */
     public function getLastCommit()
     {
-	
-    }
-
-
-    /**
-     * 
-     * @return type
-     */
-    public function hasExclude($local)
-    {
-	
+	return sprintf(Mercurial::LAST_COMMIT);
     }
 
 
@@ -123,7 +115,7 @@ class Mercurial implements SourceInterface
      */
     public function getExclude()
     {
-	
+	return Mercurial::EXCLUDE;
     }
 
 }

@@ -12,6 +12,7 @@
 namespace Nespresso;
 
 use Nespresso\Source\SourceInterface;
+use Nespresso\Git;
 
 /**
  * Description of Git
@@ -26,9 +27,9 @@ class Git implements SourceInterface
      * 
      * @return type
      */
-    public function cloneScmCommand()
+    public function cloneScmCommand($local)
     {
-	
+	return sprintf(Git::CLONE_SCM, $local);
     }
 
 
@@ -37,9 +38,9 @@ class Git implements SourceInterface
      * @param type $commit
      * @return boolean
      */
-    public function hasCommitCommand($commit, $local)
+    public function hasCommitCommand($commit)
     {
-	
+	return sprintf(Git::HAS_COMMIT, $commit);
     }
 
 
@@ -48,9 +49,9 @@ class Git implements SourceInterface
      * @param type $tag
      * @return boolean
      */
-    public function hasTagCommand($tag, $local)
+    public function hasTagCommand($tag)
     {
-	
+	return sprintf(Git::HAS_TAG, $tag);
     }
 
 
@@ -59,9 +60,9 @@ class Git implements SourceInterface
      * @param type $branch
      * @return boolean
      */
-    public function hasBranchCommand($branch, $local)
+    public function hasBranchCommand($branch)
     {
-	
+	return sprintf(Git::HAS_BRANCH, $branch);
     }
 
 
@@ -70,9 +71,9 @@ class Git implements SourceInterface
      * @param type $commit
      * @param type $type
      */
-    public function checkoutCommit($commit, $local)
+    public function checkoutCommit($commit)
     {
-	
+	return sprintf(Git::CHECKOUT_COMMIT, $commit);
     }
 
 
@@ -81,9 +82,9 @@ class Git implements SourceInterface
      * @param type $tag
      * @param type $type
      */
-    public function checkoutTag($tag, $local)
+    public function checkoutTag($tag)
     {
-	
+	return sprintf(Git::CHECKOUT_TAG, $tag);
     }
 
 
@@ -92,9 +93,9 @@ class Git implements SourceInterface
      * @param type $branch
      * @param type $type
      */
-    public function checkoutBranch($branch, $local)
+    public function checkoutBranch($branch)
     {
-	
+	return sprintf(Git::CHECKOUT_BRANCH, $branch);
     }
 
 
@@ -105,17 +106,7 @@ class Git implements SourceInterface
      */
     public function getLastCommit()
     {
-	
-    }
-
-
-    /**
-     * 
-     * @return type
-     */
-    public function hasExclude($local)
-    {
-	
+	return sprintf(Git::LAST_COMMIT);
     }
 
 
@@ -125,7 +116,7 @@ class Git implements SourceInterface
      */
     public function getExclude()
     {
-	
+	return Git::EXCLUDE;
     }
 
 }

@@ -29,7 +29,7 @@ class SetupCommand extends Command
 
     protected function configure()
     {
-	$this->setName('setup')
+	$this->setName('nespresso:setup')
 		->setDescription('setup project')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'

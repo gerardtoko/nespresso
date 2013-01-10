@@ -31,7 +31,7 @@ class RollbackCommand extends Command
     
     protected function configure()
     {
-	$this->setName('rollback')
+	$this->setName('nespresso:rollback')
 		->setDescription('apply a return on a release specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'

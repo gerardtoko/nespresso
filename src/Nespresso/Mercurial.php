@@ -11,7 +11,6 @@
 
 namespace Nespresso;
 
-
 /**
  * Description of Task
  *
@@ -19,15 +18,16 @@ namespace Nespresso;
  */
 class Mercurial
 {
-    static $SOURCE = "Mercurial";     
-    static $CLONE = "hg clone %s %s";
-    static $HAS_COMMIT = "show %s";
-    static $HAS_TAG = "ls-tree %s";
-    static $HAS_BRANCH = "show-branch origin/%s";
-    static $CHECKOUT_COMMIT = "hg checkout %s";
-    static $CHECKOUT_TAG = "hg checkout %s";
-    static $CHECKOUT_BRANCH = "hg checkout %s";
-    static $EXCLUDE = ".hgignore";
-    static $LAST_COMMIT = 'hg log -1 --format="%H"';
+
+    const SOURCE = "Mercurial";
+    const CLONE_SCM = "hg clone %s %s";
+    const HAS_COMMIT = "show %s";
+    const HAS_TAG = "ls-tree %s";
+    const HAS_BRANCH = "show-branch origin/%s";
+    const CHECKOUT_COMMIT = "hg checkout %s";
+    const CHECKOUT_TAG = "hg checkout %s";
+    const CHECKOUT_BRANCH = "hg checkout %s";
+    const EXCLUDE = ".hgignore";
+    const LAST_COMMIT = 'hg log -1 --format="%H"';
 
 }

@@ -19,15 +19,15 @@ namespace Nespresso;
 class Git
 {
 
-    static $SOURCE = "Git";
-    static $CLONE = "git clone %s %s";
-    static $HAS_COMMIT = "show %s";
-    static $HAS_TAG = "ls-tree %s";
-    static $HAS_BRANCH = "show-branch origin/%s";
-    static $CHECKOUT_COMMIT = "git checkout %s";
-    static $CHECKOUT_TAG = "git checkout %s";
-    static $CHECKOUT_BRANCH = "git checkout %s";
-    static $EXCLUDE = ".gitignore";
-    static $LAST_COMMIT = 'git log -1 --format="%H"';
+    const SOURCE = "Git";
+    const CLONE_SCM = "git clone %s %s";
+    const HAS_COMMIT = "show %s";
+    const HAS_TAG = "ls-tree %s";
+    const HAS_BRANCH = "show-branch origin/%s";
+    const CHECKOUT_COMMIT = "git checkout %s";
+    const CHECKOUT_TAG = "git checkout %s";
+    const CHECKOUT_BRANCH = "git checkout %s";
+    const EXCLUDE = ".gitignore";
+    const LAST_COMMIT = 'git log -1 --format="%H"';
 
 }

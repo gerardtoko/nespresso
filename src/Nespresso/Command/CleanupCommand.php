@@ -30,7 +30,7 @@ class CleanupCommand extends Command
 
     protected function configure()
     {
-	$this->setName('cleanup')
+	$this->setName('nespresso:cleanup')
 		->setDescription('remove all releases except release current on the project specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'

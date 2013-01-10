@@ -18,7 +18,7 @@ namespace Nespresso\Source;
 interface SourceInterface
 {
 
-   
+
     /**
      * 
      * @return type
@@ -31,7 +31,7 @@ interface SourceInterface
      * @param type $commit
      * @return boolean
      */
-    public function hasCommitCommand($commit, $local);
+    public function hasCommitCommand($commit);
 
 
     /**
@@ -39,7 +39,7 @@ interface SourceInterface
      * @param type $tag
      * @return boolean
      */
-    public function hasTagCommand($tag, $local);
+    public function hasTagCommand($tag);
 
 
     /**
@@ -47,7 +47,7 @@ interface SourceInterface
      * @param type $branch
      * @return boolean
      */
-    public function hasBranchCommand($branch, $local);
+    public function hasBranchCommand($branch);
 
 
     /**
@@ -55,7 +55,7 @@ interface SourceInterface
      * @param type $commit
      * @param type $type
      */
-    public function checkoutCommit($commit, $local);
+    public function checkoutCommit($commit);
 
 
     /**
@@ -63,14 +63,15 @@ interface SourceInterface
      * @param type $tag
      * @param type $type
      */
-    public function checkoutTag($tag, $local);
+    public function checkoutTag($tag);
+
 
     /**
      * 
      * @param type $branch
      * @param type $type
      */
-    public function checkoutBranch($branch,$local);
+    public function checkoutBranch($branch);
 
 
     /**
@@ -81,14 +82,6 @@ interface SourceInterface
     public function getLastCommit();
 
 
-
-    /**
-     * 
-     * @return type
-     */
-    public function hasExclude($local);
-
-
     /**
      * 
      * @return type
@@ -96,3 +89,5 @@ interface SourceInterface
     public function getExclude();
 
 }
+
+

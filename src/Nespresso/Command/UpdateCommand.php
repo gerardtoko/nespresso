@@ -29,7 +29,7 @@ class UpdateCommand extends Command
 
     protected function configure()
     {
-	$this->setName('update')
+	$this->setName('nespresso:update')
 		->setDescription('create new release on a projet specific')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'
