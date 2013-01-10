@@ -55,7 +55,7 @@ class ConfigBuilder implements BuilderInterface
 	    throw new \Exception("key in config.json is undefined or incorrect");
 	}
 
-	$optionRsync = !empty($configJson->option_rsync) ? trim($configJson->option_rsync, "-") : "azv";
+	$optionRsync = !empty($configJson->option_rsync) ? trim($configJson->option_rsync, "-") : "az";
 	$configObject->setOptionRsync($optionRsync);
 
 	$tmp = !empty($configJson->tmp) ? rtrim($configJson->tmp, "/") : "/tmp";

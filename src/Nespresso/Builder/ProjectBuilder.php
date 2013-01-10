@@ -18,6 +18,7 @@ use Nespresso\Mapping\Project\Repository\Task\Command as CommandTaskRepositoryMa
 use Nespresso\Mapping\Project\Common\Task as CommonTaskMapping;
 use Nespresso\Mapping\Project\Common\Task\Command as CommonCommandTaskMapping;
 use Nespresso\Builder\BuilderInterface;
+use Nespresso\Mapping\Project\Source as SourceMapping;
 
 /**
  * Description of Deploy
@@ -55,7 +56,8 @@ class ProjectBuilder implements BuilderInterface
 
 	$projectObject = new ProjectMapping();
 	if (!empty($projectFromJson->source)) {
-	    $projectObject->setGit($projectFromJson->source);
+	    $SourceObject = $this->getSource($projectFromJson->source);
+	    $projectObject->getSource($SourceObject);
 	} else {
 	    throw new \Exception("repository git is undefined or incorrect");
 	}
@@ -65,20 +67,24 @@ class ProjectBuilder implements BuilderInterface
 	$projectObject->setRepositories($repositories);
 
 	//common tasks
-	$taskObject = $this->getCommandTasks($projectFromJson);
-	$projectObject->setCommonTasks($taskObject);
+	if (!empty($projectFromJson->common_tasks)) {
+	    $taskObject = $this->getCommandTasks($projectFromJson);
+	    $projectObject->setCommonTasks($taskObject);
+	}
 
 	//other
-	if (!empty($projectFromJson->keepRelease)) {
-	    $projectObject->setKeepRelease($projectFromJson->keepRelease);
+	if (!empty($projectFromJson->keep_release)) {
+	    $projectObject->setKeepRelease($projectFromJson->keep_release);
 	} else {
 	    $projectObject->setKeepRelease(5);
 	}
 
 	if (!empty($projectFromJson->shared_directory)) {
-	    $projectObject->setShared($projectFromJson->shared_directory);
-	} else {
-	    $projectObject->setShared(true);
+	    $projectObject->setSharedDirectory($projectFromJson->shared_directory);
+	}
+
+	if (!empty($projectFromJson->shared_file)) {
+	    $projectObject->setSharedFile($projectFromJson->shared_file);
 	}
 
 	if (!empty($projectFromJson->cache)) {
@@ -101,29 +107,25 @@ class ProjectBuilder implements BuilderInterface
      */
     protected function getCommandTasks($projectFromJson)
     {
-	if (!empty($projectFromJson->common_tasks)) {
-	    $taskObject = New CommonTaskMapping();
-	    if (!empty($projectFromJson->common_tasks->pre)) {
-		foreach ($projectFromJson->common_tasks->pre as $command) {
-		    $commandObject = New CommonCommandTaskMapping();
-		    $commandObject->setCommand($command);
-		    $commandPre[] = $commandObject;
-		}
-		$taskObject->setPre($commandPre);
+	$taskObject = New CommonTaskMapping();
+	if (!empty($projectFromJson->common_tasks->pre)) {
+	    foreach ($projectFromJson->common_tasks->pre as $command) {
+		$commandObject = New CommonCommandTaskMapping();
+		$commandObject->setCommand($command);
+		$commandPre[] = $commandObject;
 	    }
-
-	    if (!empty($projectFromJson->common_tasks->post)) {
-		foreach ($projectFromJson->common_tasks->post as $command) {
-		    $commandObject = New CommonCommandTaskMapping();
-		    $commandObject->setCommand($command);
-		    $commandPost[] = $commandObject;
-		}
-		$taskObject->setPost($commandPost);
-	    }
-	    return $taskObject;
-	} else {
-	    return NULL;
+	    $taskObject->setPre($commandPre);
 	}
+
+	if (!empty($projectFromJson->common_tasks->post)) {
+	    foreach ($projectFromJson->common_tasks->post as $command) {
+		$commandObject = New CommonCommandTaskMapping();
+		$commandObject->setCommand($command);
+		$commandPost[] = $commandObject;
+	    }
+	    $taskObject->setPost($commandPost);
+	}
+	return $taskObject;
     }
 
 
@@ -183,7 +185,7 @@ class ProjectBuilder implements BuilderInterface
      */
     protected function getRepositoryObject($repo)
     {
-	$repositoryObject = New RepositoryMapping();	
+	$repositoryObject = New RepositoryMapping();
 	$repositoryObject->setUser($repo->user);
 	$repositoryObject->setDomain($repo->domain);
 	$repositoryObject->setDeployTo($repo->deploy_to);
@@ -218,6 +220,20 @@ class ProjectBuilder implements BuilderInterface
 	}
 
 	return $repositoryObject;
+    }
+
+
+    /**
+     * 
+     * @param type $source
+     * @return \Nespresso\Mapping\Project\Source
+     */
+    public function getSource($source)
+    {
+	$sourceObject = new SourceMapping();
+	$sourceObject->setScm($source->scm);
+	$sourceObject->setType($source->type);
+	return $sourceObject;
     }
 
 }

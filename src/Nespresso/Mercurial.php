@@ -11,23 +11,23 @@
 
 namespace Nespresso;
 
+
 /**
  * Description of Task
  *
  * @author gerardtoko
  */
-class Git
+class Mercurial
 {
-
-    static $SOURCE = "Git";
-    static $CLONE = "git clone %s %s";
+    static $SOURCE = "Mercurial";     
+    static $CLONE = "hg clone %s %s";
     static $HAS_COMMIT = "show %s";
     static $HAS_TAG = "ls-tree %s";
     static $HAS_BRANCH = "show-branch origin/%s";
-    static $CHECKOUT_COMMIT = "git checkout %s";
-    static $CHECKOUT_TAG = "git checkout %s";
-    static $CHECKOUT_BRANCH = "git checkout %s";
-    static $EXCLUDE = ".gitignore";
-    static $LAST_COMMIT = 'git log -1 --format="%H"';
+    static $CHECKOUT_COMMIT = "hg checkout %s";
+    static $CHECKOUT_TAG = "hg checkout %s";
+    static $CHECKOUT_BRANCH = "hg checkout %s";
+    static $EXCLUDE = ".hgignore";
+    static $LAST_COMMIT = 'hg log -1 --format="%H"';
 
 }

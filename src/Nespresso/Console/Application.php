@@ -66,7 +66,8 @@ class Application
     public function run()
     {
 	$application = new BaseApplication();
-	$application->addCommands($this->getCommands());
+	$commands = $this->getCommands();
+	$application->addCommands($commands);
 	return $application->run();
     }
 
