@@ -64,6 +64,7 @@ class DeployCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
+	$this->getContainer()->get("io")->init($input, $output);
 	$output->writeln("<info>Starting nespresso...</info>");
 
 	//get Data from the request
@@ -73,7 +74,6 @@ class DeployCommand extends Command
 	$tag = $input->getOption('tag');
 	$branch = $input->getOption('branch');
 	$group = $input->getOption('group');
-
 
 	if ($repository == NULL) {
 	    throw new \Exception("repository undefined");

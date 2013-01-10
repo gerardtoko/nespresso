@@ -68,7 +68,7 @@ class Mercurial implements SourceInterface
      * @param type $commit
      * @param type $type
      */
-    public function ckeckoutCommit($commit, $local)
+    public function checkoutCommit($commit, $local)
     {
 	
     }
@@ -79,7 +79,7 @@ class Mercurial implements SourceInterface
      * @param type $tag
      * @param type $type
      */
-    public function ckeckoutTag($tag, $local)
+    public function checkoutTag($tag, $local)
     {
 	
     }
@@ -90,7 +90,7 @@ class Mercurial implements SourceInterface
      * @param type $branch
      * @param type $type
      */
-    public function ckeckoutBranch($branch, $local)
+    public function checkoutBranch($branch, $local)
     {
 	
     }

@@ -156,10 +156,10 @@ class Source
      * @param type $commit
      * @param type $type
      */
-    public function ckeckoutCommit($commit)
+    public function checkoutCommit($commit)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->ckeckoutCommit($commit, $this->local);
+	    $command = $this->source->checkoutCommit($commit, $this->local);
 	    $this->exec($command);
 	    return $this->getLastCommit();
 	}
@@ -171,10 +171,10 @@ class Source
      * @param type $tag
      * @param type $type
      */
-    public function ckeckoutTag($tag)
+    public function checkoutTag($tag)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->ckeckoutTag($tag, $this->local);
+	    $command = $this->source->checkoutTag($tag, $this->local);
 	    $this->exec($command);
 	    return $this->getLastCommit();
 	}
@@ -186,10 +186,10 @@ class Source
      * @param type $branch
      * @param type $type
      */
-    public function ckeckoutBranch($branch)
+    public function checkoutBranch($branch)
     {
 	if ($this->isCloned()) {
-	    $command = $this->source->ckeckoutBranch($branch, $this->local);
+	    $command = $this->source->checkoutBranch($branch, $this->local);
 	    $this->exec($command);
 	    return $this->getLastCommit();
 	}
