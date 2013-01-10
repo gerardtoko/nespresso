@@ -21,9 +21,9 @@ class Git
 
     const SOURCE = "Git";
     const CLONE_SCM = "git clone %s %s";
-    const HAS_COMMIT = "show %s";
-    const HAS_TAG = "ls-tree %s";
-    const HAS_BRANCH = "show-branch origin/%s";
+    const HAS_COMMIT = "git show %s";
+    const HAS_TAG = "git ls-tree %s";
+    const HAS_BRANCH = "git show-branch origin/%s";
     const CHECKOUT_COMMIT = "git checkout %s";
     const CHECKOUT_TAG = "git checkout %s";
     const CHECKOUT_BRANCH = "git checkout %s";

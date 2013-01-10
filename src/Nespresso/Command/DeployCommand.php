@@ -64,7 +64,7 @@ class DeployCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-	$this->getContainer()->get("io")->init($input, $output);
+	$this->getContainer()->get("IO")->init($input, $output);
 	$output->writeln("<info>Starting nespresso...</info>");
 
 	//get Data from the request

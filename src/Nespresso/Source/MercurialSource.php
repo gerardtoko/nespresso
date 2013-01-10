@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso;
+namespace Nespresso\Source;
 
 use Nespresso\Mercurial;
 
@@ -18,17 +18,19 @@ use Nespresso\Mercurial;
  *
  * @author gerardtoko
  */
-class Mercurial implements SourceInterface
+class MercurialSource implements SourceInterface
 {
 
 
     /**
      * 
+     * @param type $scm
+     * @param type $local
      * @return type
      */
-    public function cloneScmCommand($local)
+    public function cloneScmCommand($scm, $local)
     {
-	return sprintf(Mercurial::CLONE_SCM, $local);
+	return sprintf(Mercurial::CLONE_SCM, $scm, $local);
     }
 
 

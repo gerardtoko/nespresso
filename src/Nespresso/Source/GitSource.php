@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nespresso;
+namespace Nespresso\Source;
 
 use Nespresso\Source\SourceInterface;
 use Nespresso\Git;
@@ -19,17 +19,19 @@ use Nespresso\Git;
  *
  * @author gerardtoko
  */
-class Git implements SourceInterface
+class GitSource implements SourceInterface
 {
 
 
     /**
      * 
+     * @param type $scm
+     * @param type $local
      * @return type
      */
-    public function cloneScmCommand($local)
+    public function cloneScmCommand($scm, $local)
     {
-	return sprintf(Git::CLONE_SCM, $local);
+	return sprintf(Git::CLONE_SCM, $scm, $local);
     }
 
 

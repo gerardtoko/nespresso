@@ -8,5 +8,5 @@ services:
         class: Nespresso\Validation
     nespresso.manager:
         class: Nespresso\Manager
-    io:
+    IO:
         class: Nespresso\IO

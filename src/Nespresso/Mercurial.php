@@ -21,9 +21,9 @@ class Mercurial
 
     const SOURCE = "Mercurial";
     const CLONE_SCM = "hg clone %s %s";
-    const HAS_COMMIT = "show %s";
-    const HAS_TAG = "ls-tree %s";
-    const HAS_BRANCH = "show-branch origin/%s";
+    const HAS_COMMIT = "hg show %s";
+    const HAS_TAG = "hg ls-tree %s";
+    const HAS_BRANCH = "hg show-branch origin/%s";
     const CHECKOUT_COMMIT = "hg checkout %s";
     const CHECKOUT_TAG = "hg checkout %s";
     const CHECKOUT_BRANCH = "hg checkout %s";

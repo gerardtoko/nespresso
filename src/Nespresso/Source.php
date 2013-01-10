@@ -32,19 +32,19 @@ class Source
      * 
      * @param type $container
      */
-    public function __construct($container, $scm, $output)
+    public function __construct($container, $scm)
     {
 	if (empty($scm::$source)) {
 	    throw new Exception("source is undefined in $scm");
 	}
 
-	if (!in_array($scm::$source, $this->source)) {
+	if (!in_array($scm::SOURCE, $this->source)) {
 	    throw new Exception("source $scm is inconning");
 	}
 
-	$class = $scm::$SOURCE;
+	$class = $scm::SOURCE;
 	$this->source = new $class();
-	$this->output = $output;
+	$this->output = $this->container->get("IO")->output();
 	$this->container = $container;
     }
 
@@ -63,7 +63,7 @@ class Source
 	$this->local = sprintf("%s/%s", $tmp, $this->uniqid);
 
 	$this->output->writeln("<comment>Cloning project...</comment> [<info>$scm</info>]");
-	$command = $this->source->cloneScmCommand($this->uniqid);
+	$command = $this->source->cloneScmCommand($scm, $this->uniqid);
 	$this->exec($command);
 
 	$this->output->writeln(sprintf("Project cloned in [<info></info>]", $this->local));
