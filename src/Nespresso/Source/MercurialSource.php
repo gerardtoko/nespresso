@@ -107,7 +107,7 @@ class MercurialSource implements SourceInterface
      */
     public function getLastCommit()
     {
-	return sprintf(Mercurial::LAST_COMMIT);
+	return Mercurial::LAST_COMMIT;
     }
 
 
