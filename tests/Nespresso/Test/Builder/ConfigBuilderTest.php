@@ -43,7 +43,7 @@ class ConfigBuilderTest extends \PHPUnit_Framework_TestCase
 	$builder->build();
 	$this->assertEquals($object->getKey(), "/Users/gerardtoko/.ssh/id_rsa");
 	$this->assertEquals($object->getTmp(), "/tmp");
-	$this->assertEquals($object->getOptionRsync(), "az");
+	$this->assertEquals($object->getOptionRsyncDeploy(), "az");
 
 	try {
 	    $file = __DIR__ . '/../../../config.error.json';

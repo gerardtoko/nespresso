@@ -23,7 +23,7 @@ class Rsync
 
     protected $container;
     protected $output;
-    protected $releaseId;
+    protected $release;
 
 
     /**
@@ -32,11 +32,11 @@ class Rsync
      * @param type $output
      * @param type $releaseId
      */
-    public function __construct($container, $output, $releaseId)
+    public function __construct($container, $releaseId = null)
     {
 	$this->container = $container;
-	$this->output = $output;
-	$this->releaseId = $releaseId;
+	$this->output = $container->get("IO")->output();
+	$this->release = $releaseId;
     }
 
 
@@ -54,10 +54,40 @@ class Rsync
 
 	$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
-	    $rsyncDeployBuilder = new RsyncDeployBuilder($this->container, $repository, $this->releaseId);
+	    $rsyncDeployBuilder = new RsyncDeployBuilder($this->container, $repository, $this->release);
 	    $command = $rsyncDeployBuilder->build();
 	    $name = $repository->getName();
 	    $this->output->writeln("<comment>Deployement on</comment> <info>$name</info><comment>...</comment>");
+	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
+	    $this->ckeckReturn($code);
+	}
+	return true;
+    }
+
+
+    /**
+     * 
+     * @return boolean
+     */
+    public function diff($controller)
+    {
+	$manager = $this->container->get("nespresso.manager");
+	$repositories = $manager->getProject()->getRepositories();
+	$tmp = $manager->getConfig()->getTmp();
+	$code = null;
+	$outputExec = null;
+
+	$this->output->writeln("Control repositories");
+	foreach ($repositories as $repository) {
+
+	    $this->release = $controller->getLastRelease($repository);
+	    $this->output->writeln(sprintf("diff compare with <info>%s</info>", $this->release));
+
+	    $rsyncDeployBuilder = new RsyncDiffBuilder($this->container, $repository, $this->release);
+	    $command = $rsyncDeployBuilder->build();
+	    $name = $repository->getName();
+	    
+	    $this->output->writeln("<comment>Diff on</comment> <info>$name</info><comment>...</comment>");
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
 	    $this->ckeckReturn($code);
 	}

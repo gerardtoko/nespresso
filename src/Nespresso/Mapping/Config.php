@@ -21,7 +21,8 @@ class Config
 
     protected $key;
     protected $tmp;
-    protected $optionRsync;
+    protected $optionRsyncDeploy;
+    protected $optionRsyncDiff;
 
 
     /**
@@ -73,9 +74,9 @@ class Config
      * @param type $tmp
      * @return \Nespresso\Mapping\Config
      */
-    public function setOptionRsync($optionRsync = "az")
+    public function setOptionRsyncDeploy($optionRsyncDeploy = "az")
     {
-	$this->optionRsync = $optionRsync;
+	$this->optionRsyncDeploy = $optionRsyncDeploy;
 	return $this;
     }
 
@@ -84,9 +85,31 @@ class Config
      * 
      * @return type
      */
-    public function getOptionRsync()
+    public function getOptionRsyncDeploy()
     {
-	return $this->optionRsync;
+	return $this->optionRsyncDeploy;
+    }
+
+
+    /**
+     * 
+     * @param type $tmp
+     * @return \Nespresso\Mapping\Config
+     */
+    public function setOptionRsyncDiff($optionRsyncDiff = "avhn")
+    {
+	$this->optionRsyncDiff = $optionRsyncDiff;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getOptionRsyncDiff()
+    {
+	return $this->optionRsyncDiff;
     }
 
 }

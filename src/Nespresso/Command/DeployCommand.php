@@ -115,21 +115,21 @@ class DeployCommand extends Command
 	$source->cloneScm();
 
 	//control repositories
-	$releaseController = new ReleaseController($this->container, $output);
+	$releaseController = new ReleaseController($this->container);
 	$releaseController->controlAction();
 	$newRelease = $releaseController->createNewReleaseAction();
 
 	//control shared
-	$sharedController = new SharedController($this->container, $output, $newRelease);
+	$sharedController = new SharedController($this->container, $newRelease);
 	$sharedController->controlAction();
 
-	$taskController = new TaskController($this->container, $output, $newRelease);
+	$taskController = new TaskController($this->container, $newRelease);
 	$taskController->executePreCommand();
 
 	$commitCheckout = $this->checkout($source, $commit, $tag, $branch);
 
 	//deployement
-	$rsync = new Rsync($this->container, $output, $newRelease);
+	$rsync = new Rsync($this->container, $newRelease);
 	$rsync->deploy();
 
 	//task post deployement

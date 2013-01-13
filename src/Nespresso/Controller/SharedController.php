@@ -33,10 +33,10 @@ class SharedController extends BaseController
      * @param type $output
      * @param type $releaseId
      */
-    public function __construct($container, $output, $releaseId)
+    public function __construct($container, $releaseId)
     {
 	$this->container = $container;
-	$this->output = $output;
+	$this->output = $container->get("IO")->output();
 	$this->newRelease = $releaseId;
     }
 

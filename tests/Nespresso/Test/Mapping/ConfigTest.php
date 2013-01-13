@@ -27,11 +27,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 	$config->setKey("/home/gerardtoko/.ssh/id_key.pub");
 	$this->assertEquals($config->getKey(), "/home/gerardtoko/.ssh/id_key.pub");
 	
-	$config->setOptionRsync();
-	$this->assertEquals($config->getOptionRsync(), "az");
+	$config->setOptionRsyncDeploy();
+	$this->assertEquals($config->getOptionRsyncDeploy(), "az");
 	
-	$config->setOptionRsync("azs");
-	$this->assertEquals($config->getOptionRsync(), "azs");
+	$config->setOptionRsyncDeploy("azs");
+	$this->assertEquals($config->getOptionRsyncDeploy(), "azs");
 	
 	$config->setTmp();
 	$this->assertEquals($config->getTmp(), "/tmp");

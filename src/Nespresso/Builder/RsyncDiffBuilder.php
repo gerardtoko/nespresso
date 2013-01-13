@@ -19,7 +19,7 @@ use Nespresso\Builder\RsyncBuilder;
  *
  * @author gerardtoko
  */
-class RsyncDeployBuilder extends RsyncBuilder implements BuilderInterface
+class RsyncBuilder extends RsyncBuilder implements BuilderInterface
 {
 
     protected $container;
@@ -27,11 +27,11 @@ class RsyncDeployBuilder extends RsyncBuilder implements BuilderInterface
     protected $releaseId;
 
 
-    public function __construct($container, $repository, $releaseId)
+    public function __construct($container, $repository, $release)
     {
 	$this->container = $container;
 	$this->repository = $repository;
-	$this->releaseId = $releaseId;
+	$this->releaseId = $release;
     }
 
 
@@ -43,7 +43,7 @@ class RsyncDeployBuilder extends RsyncBuilder implements BuilderInterface
     public function build()
     {
 	$manager = $this->container->get("nespresso.manager");
-	$rsync = sprintf("rsync -%s -e'ssh -p %s'", $manager->getConfig()->getOptionRsyncDeploy(), $this->repository->getPort());
+	$rsync = sprintf("rsync -%s -e'ssh -p %s'", $manager->getConfig()->getOptionRsyncDiff(), $this->repository->getPort());
 	$repoSource = sprintf("%s/", $manager->getSource()->getLocal());
 
 	$repoRemote = sprintf("%s@%s:%s/releases/%s/", $this->repository->getUser(), $this->repository->getDomain(), $this->repository->getDeployTo(), $this->releaseId);

@@ -19,7 +19,7 @@ use Nespresso\Controller\Controller as BaseController;
  *
  * @author gerardtoko
  */
-class ReleaseController extends BaseController 
+class ReleaseController extends BaseController
 {
 
     protected $container;
@@ -32,10 +32,10 @@ class ReleaseController extends BaseController
      * @param type $container
      * @param type $output
      */
-    public function __construct($container, $output)
+    public function __construct($container)
     {
 	$this->container = $container;
-	$this->output = $output;
+	$this->output = $container->get("IO")->output();
     }
 
 
@@ -65,7 +65,6 @@ class ReleaseController extends BaseController
     }
 
 
-    
     public function updateSymbolinkAction()
     {
 	$manager = $this->container->get("nespresso.manager");
@@ -132,16 +131,16 @@ class ReleaseController extends BaseController
 	$project = $manager->getProject();
 	$repositories = $project->getRepositories();
 	$connection = null;
-	
-	foreach ($repositories as $repository) {	    
+
+	foreach ($repositories as $repository) {
 	    $deployTo = $repository->getDeployTo();
-	    $connection = $this->getConnection($repository);	   
+	    $connection = $this->getConnection($repository);
 	    $outputSsh = trim($connection->exec(sprintf("echo %s > %s/releases/%s/nespresso.lock", $commit, $deployTo, $this->newRelease)));
 	    $this->ckeckReturn($outputSsh);
-
 	}
     }
-    
+
+
     /**
      * 
      * @return type
@@ -195,7 +194,29 @@ class ReleaseController extends BaseController
      * @param type $repository
      * @return type
      */
-    protected function getLastRelease($repository)
+    public function getLastRelease($repository)
+    {
+
+	$connection = $this->getConnection($repository);
+	$deployTo = $repository->getDeployTo();
+	$outputSsh = trim($connection->exec(sprintf("ls -l %s/current | cut -d' ' -f11", $deployTo)));
+
+	$release = basename($outputSsh);
+	$validation = $this->container->get("validation");
+	if (!$validation->isValidRelease($release)) {
+	    throw new \Exception("Release $release is invalid");
+	}
+
+	return $release;
+    }
+
+
+    /**
+     * 
+     * @param type $repository
+     * @return type
+     */
+    public function getAllRelease($repository)
     {
 
 	$connection = $this->getConnection($repository);
@@ -203,16 +224,17 @@ class ReleaseController extends BaseController
 	$outputSsh = trim($connection->exec(sprintf("ls %s/releases", $deployTo)));
 	$releases = array_reverse(explode("\n", $outputSsh));
 	$validation = $this->container->get("validation");
-	$lastRelease = NULL;
+	$releasesValid = array();
+
 
 	//validation release
 	foreach ($releases as $release) {
 	    if ($validation->isValidRelease($release)) {
-		$lastRelease = $release;
-		break;
+		$releasesValid[] = $release;
 	    }
 	}
-	return $lastRelease;
+
+	return $releasesValid;
     }
 
 
@@ -240,7 +262,7 @@ class ReleaseController extends BaseController
 	    $releases = array_reverse(explode("\n", $outputSsh));
 	    $validation = $this->container->get("validation");
 	    $AllReleases = array();
-	    
+
 	    //validation release
 	    foreach ($releases as $release) {
 		if ($validation->isValidRelease($release)) {
@@ -260,6 +282,45 @@ class ReleaseController extends BaseController
 		    $this->output->writeln(sprintf("<comment>deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
 		    $outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
 		    $this->ckeckReturn($outputSsh);
+		}
+	    }
+	}
+    }
+
+
+    /**
+     * 
+     * @param type $release
+     */
+    public function checkoutAction($release)
+    {
+
+	$manager = $this->container->get("nespresso.manager");
+	$validation = $this->container->get("validation");
+	$repositories = $manager->getProject()->getRepositories();
+	$this->output->writeln("Control repositories");
+	foreach ($repositories as $repository) {
+
+	    $lastCommit = $this->getLastRelease($repository);
+	    $releases = $this->getAllRelease($repository);
+	    if ($validation->isValidRelease($release)) {
+		$this->newRelease = $release;
+		return $this->updateSymbolinkAction();
+	    } else {
+
+		$positionLastcommit = (int) array_search($lastCommit, $releases);
+		if ($release == 0) {
+		    $this->newRelease = $releases[0];
+		    return $this->updateSymbolinkAction();
+		} else {
+		    $newPosition = $positionLastcommit - $release;
+
+		    if (empty($releases[$newPosition])) {
+			throw new \Exception("Undefined position release");
+		    }
+
+		    $this->newRelease = $releases[$newPosition];
+		    return $this->updateSymbolinkAction();
 		}
 	    }
 	}
