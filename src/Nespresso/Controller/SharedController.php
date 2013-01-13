@@ -111,7 +111,7 @@ class SharedController extends BaseController
 
 		    // control releases directory
 		    $outputSsh = trim($connection->exec(sprintf("cd %s/shared/%s", $deployTo, $sharedDirectoryClean)));
-		    if ($this->ckeckReturn($outputSsh)) {
+		    if (!$this->ckeckReturn($outputSsh)) {
 			$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/shared/%s", $deployTo, $sharedDirectoryClean)));
 			$this->ckeckReturn($outputSsh);
 		    }
