@@ -366,7 +366,7 @@ class ReleaseController extends BaseController
 	foreach ($repositories as $repository) {
 
 	    $lastCommit = $this->getLastRelease($repository);
-	    $releases = $this->getAllRelease($repository);	    
+	    $releases = $this->getAllRelease($repository);
 
 	    foreach ($releases as $key => $release) {
 		if ($release == $lastCommit) {
@@ -377,5 +377,7 @@ class ReleaseController extends BaseController
 	    }
 	}
     }
+
+
 
 }
