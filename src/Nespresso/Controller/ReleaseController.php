@@ -242,7 +242,7 @@ class ReleaseController extends BaseController
      * 
      * @return null
      */
-    public function ckeckRelease()
+    public function checkKeepRelease()
     {
 
 	$manager = $this->container->get("nespresso.manager");
@@ -321,6 +321,58 @@ class ReleaseController extends BaseController
 
 		    $this->newRelease = $releases[$newPosition];
 		    return $this->updateSymbolinkAction();
+		}
+	    }
+	}
+    }
+
+
+    public function cleanupAction()
+    {
+
+	$manager = $this->container->get("nespresso.manager");
+	$repositories = $manager->getProject()->getRepositories();
+	$connection = null;
+
+	$this->output->writeln("cleanup repositories");
+	foreach ($repositories as $repository) {
+
+	    $deployTo = $repository->getDeployTo();
+	    $lastCommit = $this->getLastRelease($repository);
+	    $releases = $this->getAllRelease($repository);
+
+	    if (($key = array_search($lastCommit, $releases)) !== false) {
+		unset($releases[$key]);
+	    } else {
+		throw new \Exception("Undefined symbolic current");
+	    }
+
+	    foreach ($releases as $removing) {
+		$this->output->writeln(sprintf("<comment>deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
+		$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
+		$this->ckeckReturn($outputSsh);
+	    }
+	}
+    }
+
+
+    public function checkAction()
+    {
+
+	$manager = $this->container->get("nespresso.manager");
+	$repositories = $manager->getProject()->getRepositories();
+
+	$this->output->writeln("cleanup repositories");
+	foreach ($repositories as $repository) {
+
+	    $lastCommit = $this->getLastRelease($repository);
+	    $releases = $this->getAllRelease($repository);	    
+
+	    foreach ($releases as $key => $release) {
+		if ($release == $lastCommit) {
+		    $this->output->writeln(sprintf("[%s] %s <comment>(current)</comment>", $key, $release));
+		} else {
+		    $this->output->writeln(sprintf("[%s] %s", $key, $release));
 		}
 	    }
 	}

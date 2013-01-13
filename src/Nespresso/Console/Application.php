@@ -12,7 +12,7 @@
 namespace Nespresso\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use Nespresso\Command\CkeckCommand;
+use Nespresso\Command\CheckCommand;
 use Nespresso\Command\CleanupCommand;
 use Nespresso\Command\DeployCommand;
 use Nespresso\Command\DiffCommand;
@@ -51,7 +51,7 @@ class Application
 	$commands[] = new UpdateCommand();
 	$commands[] = new DiffCommand();
 	$commands[] = new CleanupCommand();
-	$commands[] = new CkeckCommand();
+	$commands[] = new CheckCommand();
 	$commands[] = new JsonCommand();
 	$commands[] = new SetupCommand();
 

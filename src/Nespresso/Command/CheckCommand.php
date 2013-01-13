@@ -21,11 +21,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Description of CleanupCommand
+ * Description of CheckCommand
  *
  * @author gerardtoko
  */
-class CleanupCommand extends Command
+class CheckCommand extends Command
 {
 
 
@@ -41,8 +41,8 @@ class CleanupCommand extends Command
 
     protected function configure()
     {
-	$this->setName('cleanup')
-		->setDescription('Cleanup a project specific')
+	$this->setName('check')
+		->setDescription('Check a project specific')
 		->addArgument(
 			'project', InputArgument::REQUIRED, 'Specific project with a repository or group repository. Example nespresso:production'
 		)
@@ -66,7 +66,7 @@ class CleanupCommand extends Command
 
 	//get Data from the request
 	$project = $this->getProjectArg("project", $input);
-	$repository = $this->getRepositoryArg("project", $input);	
+	$repository = $this->getRepositoryArg("project", $input);
 	$group = $input->getOption('group');
 
 	if ($repository == NULL) {
@@ -92,9 +92,9 @@ class CleanupCommand extends Command
 
 	//control repositories
 	$releaseController = new ReleaseController($this->container);
-	$releaseController->cleanupAction();
+	$releaseController->checkAction();
 
-	$output->writeln("<info>Cleanup finish!</info>");
+	$output->writeln("<info>Check finish!</info>");
     }
 
 }

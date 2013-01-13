@@ -90,6 +90,10 @@ class Rsync
 	    $this->output->writeln("<comment>Diff on</comment> <info>$name</info><comment>...</comment>");
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
 	    $this->ckeckReturn($code);
+	    	    
+	    $log = file_get_contents($tmp . "/nespresso.log");
+	    $this->output->writeln($log);
+	    
 	}
 	return true;
     }

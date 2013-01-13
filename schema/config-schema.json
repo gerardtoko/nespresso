@@ -12,9 +12,11 @@
 	    "type": "string",
 	    "description": "key"
 	},
-	"option_rsync": {
-	    "type": "string",
-	    "description": "key"
+	"option_rsync_diff": {
+	    "type": "string"	    
+	},
+	"option_rsync_deploy": {
+	    "type": "string"	    
 	}
     }
 }

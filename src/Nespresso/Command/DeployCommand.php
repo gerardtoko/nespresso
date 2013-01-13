@@ -138,7 +138,7 @@ class DeployCommand extends Command
 	$releaseController->pushCommitFileAction($commitCheckout);
 	$releaseController->updateSymbolinkAction();
 	$source->removeScm();
-	$releaseController->ckeckRelease();
+	$releaseController->checkKeepRelease();
 
 	$output->writeln("<info>Deployement finish!</info>");
     }
