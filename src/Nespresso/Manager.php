@@ -21,7 +21,7 @@ class Manager implements Manager\ManagerInterface
 
     protected $project;
     private $config;
-    private $git;
+    private $source;
 
 
     /**
@@ -73,9 +73,9 @@ class Manager implements Manager\ManagerInterface
      * @param type $git
      * @return \Nespresso\Manager
      */
-    public function setGit($git)
+    public function setSource($git)
     {
-	$this->git = $git;
+	$this->source = $git;
 	return $this;
     }
 
@@ -84,9 +84,9 @@ class Manager implements Manager\ManagerInterface
      * 
      * @return type
      */
-    public function getGit()
+    public function getSource()
     {
-	return $this->git;
+	return $this->source;
     }
 
 }

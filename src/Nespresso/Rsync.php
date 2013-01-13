@@ -77,7 +77,7 @@ class Rsync
 	    $manager = $this->container->get("nespresso.manager");
 	    $tmp = $manager->getConfig()->getTmp();
 	    $log = file_get_contents($tmp . "/nespresso.log");
-	    $manager->getGit()->removeCloneGit();
+	    $manager->getSource()->removeScm();
 	    throw new \Exception("Error Rsync processing... code($code) \n $log");
 	}
     }

@@ -29,7 +29,7 @@ class CkeckCommand extends Command
 
     protected function configure()
     {
-	$this->setName('nespresso:check')
+	$this->setName('check')
 		->setDescription('control total release on a node project')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:node'

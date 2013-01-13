@@ -55,7 +55,7 @@ class Controller
     {
 	if ($outputSsh) {
 	    $manager = $this->container->get("nespresso.manager");
-	    $manager->getGit()->removeCloneGit();
+	    $manager->getSource()->removeScm();
 	    $this->output->writeln("<error>Error Ssh processing... $outputSsh</error>");
 	    return TRUE;
 	} else {

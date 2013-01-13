@@ -55,11 +55,11 @@ class ProjectBuilder implements BuilderInterface
 	$group = $this->group;
 
 	$projectObject = new ProjectMapping();
-	if (!empty($projectFromJson->source)) {
+	if (!empty($projectFromJson->source)) {	
 	    $SourceObject = $this->getSource($projectFromJson->source);
-	    $projectObject->getSource($SourceObject);
+	    $projectObject->setSource($SourceObject);
 	} else {
-	    throw new \Exception("repository git is undefined or incorrect");
+	    throw new \Exception("repository source is undefined or incorrect");
 	}
 
 	//repositories
@@ -225,14 +225,14 @@ class ProjectBuilder implements BuilderInterface
 
     /**
      * 
-     * @param type $source
+     * @param type $json
      * @return \Nespresso\Mapping\Project\Source
      */
-    public function getSource($source)
+    public function getSource($json)
     {
 	$sourceObject = new SourceMapping();
-	$sourceObject->setScm($source->scm);
-	$sourceObject->setType($source->type);
+	$sourceObject->setScm($json->scm);
+	$sourceObject->setType($json->type);
 	return $sourceObject;
     }
 

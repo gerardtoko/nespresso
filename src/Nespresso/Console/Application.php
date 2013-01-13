@@ -12,13 +12,13 @@
 namespace Nespresso\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use \Nespresso\Command\CkeckCommand;
-use \Nespresso\Command\CleanupCommand;
-use \Nespresso\Command\DeployCommand;
-use \Nespresso\Command\DiffCommand;
-use \Nespresso\Command\JsonCommand;
-use \Nespresso\Command\UpdateCommand;
-use \Nespresso\Command\RollbackCommand;
+use Nespresso\Command\CkeckCommand;
+use Nespresso\Command\CleanupCommand;
+use Nespresso\Command\DeployCommand;
+use Nespresso\Command\DiffCommand;
+use Nespresso\Command\JsonCommand;
+use Nespresso\Command\UpdateCommand;
+use Nespresso\Command\RollbackCommand;
 use Nespresso\Command\SetupCommand;
 
 /**

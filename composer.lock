@@ -1,5 +1,5 @@
 {
-    "hash": "792be9967ca597036a15e77c78004688",
+    "hash": "a5fa636736b22e35d944ba6ae8486108",
     "packages": [
         {
             "name": "justinrainbow/json-schema",
@@ -179,12 +179,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config",
-                "reference": "28cdd4825abcabcecdfc8e1764c36f7f929cfc65"
+                "reference": "v2.2.0-BETA1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Config/archive/28cdd4825abcabcecdfc8e1764c36f7f929cfc65.zip",
-                "reference": "28cdd4825abcabcecdfc8e1764c36f7f929cfc65",
+                "url": "https://github.com/symfony/Config/archive/v2.2.0-BETA1.zip",
+                "reference": "v2.2.0-BETA1",
                 "shasum": ""
             },
             "require": {
@@ -227,18 +227,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console",
-                "reference": "6b315730ff75ed0e78e3780bfa6e95a263478d3d"
+                "reference": "v2.2.0-BETA1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Console/archive/6b315730ff75ed0e78e3780bfa6e95a263478d3d.zip",
-                "reference": "6b315730ff75ed0e78e3780bfa6e95a263478d3d",
+                "url": "https://github.com/symfony/Console/archive/v2.2.0-BETA1.zip",
+                "reference": "v2.2.0-BETA1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-05 15:33:05",
+            "time": "2013-01-08 18:17:41",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -275,12 +275,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/DependencyInjection",
-                "reference": "db1634cac5d6d50d9007140f7864801e0314b710"
+                "reference": "c4016466a8632f27d72d4ecfc89b472d4050a2ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/DependencyInjection/archive/db1634cac5d6d50d9007140f7864801e0314b710.zip",
-                "reference": "db1634cac5d6d50d9007140f7864801e0314b710",
+                "url": "https://github.com/symfony/DependencyInjection/archive/c4016466a8632f27d72d4ecfc89b472d4050a2ca.zip",
+                "reference": "c4016466a8632f27d72d4ecfc89b472d4050a2ca",
                 "shasum": ""
             },
             "require": {
@@ -294,7 +294,7 @@
                 "symfony/yaml": "2.2.*",
                 "symfony/config": "2.2.*"
             },
-            "time": "2013-01-05 18:24:35",
+            "time": "2013-01-11 17:38:19",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -325,164 +325,18 @@
             "homepage": "http://symfony.com"
         },
         {
-            "name": "symfony/event-dispatcher",
-            "version": "2.1.x-dev",
-            "target-dir": "Symfony/Component/EventDispatcher",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher",
-                "reference": "1018313ea65428d645cd778bc354932d64a0f4e9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/symfony/EventDispatcher/archive/1018313ea65428d645cd778bc354932d64a0f4e9.zip",
-                "reference": "1018313ea65428d645cd778bc354932d64a0f4e9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "symfony/dependency-injection": "2.1.*"
-            },
-            "suggest": {
-                "symfony/dependency-injection": "2.1.*",
-                "symfony/http-kernel": "2.1.*"
-            },
-            "time": "2013-01-04 17:00:54",
-            "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\EventDispatcher": ""
-                }
-            },
-            "notification-url": "http://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony EventDispatcher Component",
-            "homepage": "http://symfony.com"
-        },
-        {
-            "name": "symfony/finder",
-            "version": "dev-master",
-            "target-dir": "Symfony/Component/Finder",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Finder",
-                "reference": "f6def71f171a9c897d4abcbb653919f9bd01dc9d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/symfony/Finder/archive/f6def71f171a9c897d4abcbb653919f9bd01dc9d.zip",
-                "reference": "f6def71f171a9c897d4abcbb653919f9bd01dc9d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "time": "2013-01-04 16:58:00",
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2-dev"
-                }
-            },
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\Finder\\": ""
-                }
-            },
-            "notification-url": "http://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Finder Component",
-            "homepage": "http://symfony.com"
-        },
-        {
-            "name": "symfony/serializer",
-            "version": "dev-master",
-            "target-dir": "Symfony/Component/Serializer",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Serializer",
-                "reference": "2c77ccb3ac94d0bdaf6caf4e26c78e868f70dc92"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/symfony/Serializer/archive/2c77ccb3ac94d0bdaf6caf4e26c78e868f70dc92.zip",
-                "reference": "2c77ccb3ac94d0bdaf6caf4e26c78e868f70dc92",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "time": "2013-01-04 16:58:00",
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2-dev"
-                }
-            },
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\Serializer\\": ""
-                }
-            },
-            "notification-url": "http://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Serializer Component",
-            "homepage": "http://symfony.com"
-        },
-        {
             "name": "symfony/yaml",
             "version": "dev-master",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml",
-                "reference": "edec5d74dff258a3af1734c9870f3e7d7700e6a0"
+                "reference": "v2.2.0-BETA1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Yaml/archive/edec5d74dff258a3af1734c9870f3e7d7700e6a0.zip",
-                "reference": "edec5d74dff258a3af1734c9870f3e7d7700e6a0",
+                "url": "https://github.com/symfony/Yaml/archive/v2.2.0-BETA1.zip",
+                "reference": "v2.2.0-BETA1",
                 "shasum": ""
             },
             "require": {
@@ -526,12 +380,9 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "symfony/dependency-injection": 20,
-        "symfony/event-dispatcher": 20,
         "symfony/yaml": 20,
-        "symfony/finder": 20,
         "symfony/config": 20,
         "symfony/console": 20,
-        "symfony/serializer": 20,
         "seld/jsonlint": 20
     }
 }

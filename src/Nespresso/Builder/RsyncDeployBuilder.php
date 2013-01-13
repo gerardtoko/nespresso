@@ -43,10 +43,10 @@ class RsyncDeployBuilder implements BuilderInterface
     {
 	$manager = $this->container->get("nespresso.manager");
 	$rsync = sprintf("rsync -%s -e'ssh -p %s'", $manager->getConfig()->getOptionRsync(), $this->repository->getPort());
-	$repoGit = sprintf("%s/", $manager->getGit()->getTmpGit());
+	$repoSource = sprintf("%s/", $manager->getSource()->getLocal());
 
 	$repoRemote = sprintf("%s@%s:%s/releases/%s/", $this->repository->getUser(), $this->repository->getDomain(), $this->repository->getDeployTo(), $this->releaseId);
-	return sprintf("%s %s %s %s", $rsync, $this->getExclude(), $repoGit, $repoRemote);
+	return sprintf("%s %s %s %s", $rsync, $this->getExclude(), $repoSource, $repoRemote);
     }
 
 
@@ -58,11 +58,12 @@ class RsyncDeployBuilder implements BuilderInterface
     {
 	$manager = $this->container->get("nespresso.manager");
 	$project = $manager->getProject();
+	$source = $manager->getSource();
 	$excludes = " --exclude='.git' ";
 	$excludes .= " --exclude='.gitignore' ";
 
-	if ($manager->getProject()->isShared()) {
-	    $shared = $manager->getProject()->getShared();
+	if ($manager->getProject()->hasSharedDirectory()) {
+	    $shared = $manager->getProject()->getSharedDirectory();
 	    foreach ($shared as $value) {
 		$excludes .= sprintf(" --exclude='%s' ", $value);
 	    }
@@ -70,11 +71,11 @@ class RsyncDeployBuilder implements BuilderInterface
 
 	if ($project->hasCache()) {
 	    $excludes .= sprintf(" --exclude='%s' ", $project->getCache());
-	} 
+	}
 
-	if ($manager->getGit()->hasGitignore()) {
-	    $gitignoreArray = $manager->getGit()->getGitignore();
-	    foreach ($gitignoreArray as $value) {
+	if ($source->hasExclude()) {
+	    $ExcludedArray = $source->getExclude();
+	    foreach ($ExcludedArray as $value) {
 		$excludes .= sprintf(" --exclude='%s' ", $value);
 	    }
 	}

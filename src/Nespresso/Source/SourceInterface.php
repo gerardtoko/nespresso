@@ -23,7 +23,7 @@ interface SourceInterface
      * 
      * @return type
      */
-    public function cloneScmCommand();
+    public function cloneScmCommand($scm, $local);
 
 
     /**

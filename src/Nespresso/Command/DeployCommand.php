@@ -11,8 +11,8 @@
 
 namespace Nespresso\Command;
 
-use Nespresso\Git;
 use Nespresso\Rsync;
+use Nespresso\Source;
 use Nespresso\Command\Command;
 use Nespresso\Builder\ProjectBuilder;
 use Nespresso\Builder\ConfigBuilder;
@@ -33,9 +33,19 @@ class DeployCommand extends Command
 {
 
 
+    /**
+     * 
+     * @param type $name
+     */
+    public function __construct($name = null)
+    {
+	parent::__construct(null);
+    }
+
+
     protected function configure()
     {
-	$this->setName('nespresso:deploy')
+	$this->setName('deploy')
 		->setDescription('Deploy a project specific')
 		->addArgument(
 			'project', InputArgument::REQUIRED, 'Specific project with a repository or group repository. Example nespresso:production'
@@ -91,17 +101,18 @@ class DeployCommand extends Command
 	$builderProject = new ProjectBuilder($projectFromJson, $repository, $group);
 	$projectObject = $builderProject->build();
 
-	//git init
-	$git = new Git($this->container, $output);
+	// init source
+	$scm = $this->getScm($projectObject);
+	$source = new Source($this->getContainer(), $scm);
 
 	//manager service
 	$manager = $this->getContainer()->get("nespresso.manager");
 	$manager->setProject($projectObject);
 	$manager->setConfig($optionObject);
-	$manager->setGit($git);
+	$manager->setSource($source);
 
-	//cloning git
-	$git->cloneGit();
+	//cloning 
+	$source->cloneScm();
 
 	//control repositories
 	$releaseController = new ReleaseController($this->container, $output);
@@ -115,7 +126,7 @@ class DeployCommand extends Command
 	$taskController = new TaskController($this->container, $output, $newRelease);
 	$taskController->executePreCommand();
 
-	$commitCheckout = $this->Checkout($git, $commit, $tag, $branch);
+	$commitCheckout = $this->checkout($source, $commit, $tag, $branch);
 
 	//deployement
 	$rsync = new Rsync($this->container, $output, $newRelease);
@@ -126,31 +137,31 @@ class DeployCommand extends Command
 
 	$releaseController->pushCommitFileAction($commitCheckout);
 	$releaseController->updateSymbolinkAction();
-	$git->removeCloneGit();
+	$source->removeScm();
 	$releaseController->ckeckRelease();
-	
+
 	$output->writeln("<info>Deployement finish!</info>");
     }
 
 
-    public function Checkout($git, $commit = null, $tag = null, $branch = null)
+    public function checkout($source, $commit = null, $tag = null, $branch = null)
     {
 	//from commit
-	if (NULL != $commit && $git->isCommitExist($commit)) {
-	    return $git->ckeckout($commit, "commit");
+	if (NULL != $commit && $source->hasCommit($commit)) {
+	    return $source->checkoutCommit($commit);
 	}
 
 	//from tag
-	if ($tag != NULL && $git->isTagExist($tag)) {
-	    return $git->ckeckout($tag, "tag");
+	if ($tag != NULL && $source - hasTag($tag)) {
+	    return $source->checkoutTag($tag);
 	}
 
 	//from branch
-	if ($branch != NULL && $git->isBranchExist($branch)) {
-	    return $git->ckeckout($branch, "branch");
+	if ($branch != NULL && $source->hasBranch($branch)) {
+	    return $source->checkoutBranch($branch);
 	}
 
-	return $git->ckeckout("master", "branch");
+	return $source->checkoutBranch("master");
     }
 
 }

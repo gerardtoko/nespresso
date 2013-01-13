@@ -108,7 +108,7 @@ class GitSource implements SourceInterface
      */
     public function getLastCommit()
     {
-	return sprintf(Git::LAST_COMMIT);
+	return Git::LAST_COMMIT;
     }
 
 

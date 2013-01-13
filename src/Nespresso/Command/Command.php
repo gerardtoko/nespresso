@@ -11,6 +11,9 @@
 
 namespace Nespresso\Command;
 
+use Nespresso\Git;
+use Nespresso\Mercurial;
+use Nespresso\Mapping\Project;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -30,8 +33,9 @@ class Command extends BaseCommand
     protected $directoryProjet;
 
 
-    public function __construct()
+    public function __construct($name = null)
     {
+	parent::__construct(null);
 	$this->directoryProjet = __DIR__ . '/../../../tests/';
 	$this->directoryApp = __DIR__ . '/../../../app/';
     }
@@ -179,6 +183,28 @@ class Command extends BaseCommand
     public function getDirectoryApp()
     {
 	return $this->directoryApp;
+    }
+
+
+    /**
+     * 
+     * @param \Nespresso\Mapping\Project $projectObject
+     * @return \Nespresso\Git
+     */
+    public function getScm(Project $projectObject)
+    {
+	switch (strtolower($projectObject->getSource()->getType())) {
+	    case "git":
+		$scm = new Git();
+		break;
+	    case "mercurial":
+		$scm = new Mercurial();
+		break;
+	    default :
+		$scm = new Git();
+		break;
+	}
+	return $scm;
     }
 
 }

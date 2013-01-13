@@ -28,7 +28,7 @@ class IO
      * @param type $output
      * @param type $input
      */
-    public function init($output, $input)
+    public function init($input, $output)
     {
 	$this->output = $output;
 	$this->input = $input;

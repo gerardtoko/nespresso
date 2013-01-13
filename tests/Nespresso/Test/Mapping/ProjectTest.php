@@ -54,11 +54,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 	
 	$project->setSharedDirectory(array("fooshareddirectory"));
 	$this->assertEquals($project->getSharedDirectory(), array("fooshareddirectory"));
-	$this->assertEquals($project->isSharedDirectory(), TRUE);
+	$this->assertEquals($project->hasSharedDirectory(), TRUE);
 	
 	$project->setSharedFile(array("foosharedfile"));
 	$this->assertEquals($project->getSharedFile(), array("foosharedfile"));
-	$this->assertEquals($project->isSharedFile(), TRUE);
+	$this->assertEquals($project->hasSharedFile(), TRUE);
 	
 	$project->setSource(new Source());
 	$this->assertEquals($project->getSource(), new Source());

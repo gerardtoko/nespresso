@@ -47,16 +47,16 @@ class SharedController extends BaseController
 	$repositories = $manager->getProject()->getRepositories();
 	$connection = null;
 
-	if ($manager->getProject()->isShared()) {
+	if ($manager->getProject()->hasSharedDirectory()) {
 
-	    $shared = $manager->getProject()->getShared();
+	    $shared = $manager->getProject()->getSharedDirectory();
 
 	    $this->output->writeln("Control shared");
 	    foreach ($repositories as $repository) {
 
 		$name = $repository->getName();
 		$connection = $this->getConnection($repository);
-		$this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $repository->getName(), $this->newRelease));
+		$this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->newRelease));
 		$deployTo = $repository->getDeployTo();
 
 		// control releases directory

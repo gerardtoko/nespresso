@@ -30,4 +30,10 @@ interface ManagerInterface
 
     public function setProject($project);
 
+
+    public function getSource();
+
+
+    public function setSource($source);
+
 }

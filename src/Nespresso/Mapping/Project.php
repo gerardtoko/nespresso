@@ -212,7 +212,7 @@ class Project
      * 
      * @return type
      */
-    public function isSharedDirectory()
+    public function hasSharedDirectory()
     {
 	return !empty($this->sharedDirectory) ? TRUE : FALSE;
     }
@@ -244,7 +244,7 @@ class Project
      * 
      * @return type
      */
-    public function isSharedFile()
+    public function hasSharedFile()
     {
 	return !empty($this->sharedFile) ? TRUE : FALSE;
     }

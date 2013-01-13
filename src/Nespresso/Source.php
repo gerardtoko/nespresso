@@ -11,6 +11,9 @@
 
 namespace Nespresso;
 
+use Nespresso\Source\GitSource;
+use Nespresso\Source\MercurialSource;
+
 /**
  * Description of Task
  *
@@ -34,17 +37,19 @@ class Source
      */
     public function __construct($container, $scm)
     {
-	if (empty($scm::$source)) {
-	    throw new Exception("source is undefined in $scm");
+
+	if (empty($scm)) {
+	    throw new \Exception("source is undefined");
 	}
 
-	if (!in_array($scm::SOURCE, $this->source)) {
-	    throw new Exception("source $scm is inconning");
+	if (!in_array($scm::SOURCE, $this->sources)) {
+	    throw new \Exception("source $scm is inconning");
 	}
 
-	$class = $scm::SOURCE;
+
+	$class = sprintf("Nespresso\\Source\\%sSource", $scm::SOURCE);
 	$this->source = new $class();
-	$this->output = $this->container->get("IO")->output();
+	$this->output = $container->get("IO")->output();
 	$this->container = $container;
     }
 
@@ -59,15 +64,18 @@ class Source
 	$manager = $this->container->get("nespresso.manager");
 	$scm = $manager->getProject()->getSource()->getScm();
 	$tmp = $manager->getConfig()->getTmp();
+	$code = null;
+	$output = null;
 	$this->uniqid = uniqid();
 	$this->local = sprintf("%s/%s", $tmp, $this->uniqid);
 
 	$this->output->writeln("<comment>Cloning project...</comment> [<info>$scm</info>]");
 	$command = $this->source->cloneScmCommand($scm, $this->uniqid);
-	$this->exec($command);
 
-	$this->output->writeln(sprintf("Project cloned in [<info></info>]", $this->local));
+	exec(sprintf("cd %s && %s 2>%s/nespresso.log", $tmp, $command, $tmp), $output, $code);
+	$this->ckeckReturn($code);
 	$this->isCloned = TRUE;
+	$this->output->writeln(sprintf("Project cloned in [<info>%s</info>]", $this->local));
 
 	return $this->isCloned;
     }
@@ -80,7 +88,7 @@ class Source
     public function removeScm()
     {
 	if ($this->isCloned()) {
-	    $this->output->writeln(sprintf("<comment>remove clone...</comment> [<info>%s</info>]", $this->getTmpGit()));
+	    $this->output->writeln(sprintf("<comment>remove clone...</comment> [<info>%s</info>]", $this->getLocal()));
 	    $this->exec(sprintf("rm -rf %s", $this->local));
 	    $this->output->writeln("<comment>Clone removed!</comment>");
 	    $this->local = NULL;
@@ -280,6 +288,28 @@ class Source
 	    }
 	}
 	return $excluded;
+    }
+
+
+    /**
+     * 
+     * @param type $local
+     * @return \Nespresso\Source
+     */
+    public function setLocal($local)
+    {
+	$this->local = $local;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getLocal()
+    {
+	return $this->local;
     }
 
 }

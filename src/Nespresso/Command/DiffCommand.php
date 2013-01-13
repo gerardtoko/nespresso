@@ -29,7 +29,7 @@ class DiffCommand extends Command
 
     protected function configure()
     {
-	$this->setName('nespresso:diff')
+	$this->setName('diff')
 		->setDescription('compare diff on a node')
 		->addArgument(
 			'node', InputArgument::REQUIRED, 'specific node, example projectname:on_production'

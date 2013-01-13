@@ -27,7 +27,7 @@ class JsonCommand extends Command
 
     protected function configure()
     {
-	$this->setName('nespresso:json')
+	$this->setName('json')
 		->setDescription('control json on a project specific')
 		->addArgument(
 			'project', InputArgument::REQUIRED, 'specific project, example nespresso'
