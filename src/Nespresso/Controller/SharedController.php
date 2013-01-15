@@ -220,6 +220,7 @@ class SharedController extends BaseController
 
 	foreach ($repositories as $repository) {
 
+	    $name = $repository->getName();
 	    $connection = $this->getConnection($repository);
 	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->release));
 	    $deployTo = $repository->getDeployTo();

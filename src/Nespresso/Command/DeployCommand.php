@@ -118,7 +118,7 @@ class DeployCommand extends Command
 	}
 
 	//from tag
-	if ($tag != NULL && $source - hasTag($tag)) {
+	if ($tag != NULL && $source->hasTag($tag)) {
 	    return $source->checkoutTag($tag);
 	}
 

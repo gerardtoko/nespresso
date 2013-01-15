@@ -21,12 +21,12 @@ class Mercurial
 
     const SOURCE = "Mercurial";
     const CLONE_SCM = "hg clone %s %s";
-    const HAS_COMMIT = "hg show %s";
-    const HAS_TAG = "hg ls-tree %s";
-    const HAS_BRANCH = "hg show-branch origin/%s";
-    const CHECKOUT_COMMIT = "hg checkout %s";
-    const CHECKOUT_TAG = "hg checkout %s";
-    const CHECKOUT_BRANCH = "hg checkout %s";
+    const HAS_COMMIT = "hg log -r %s -p";
+    const HAS_TAG = "hg log -r %s -p";
+    const HAS_BRANCH = "hg log -r %s -p";
+    const CHECKOUT_COMMIT = "hg update -c %s";
+    const CHECKOUT_TAG = "hg update -c %s";
+    const CHECKOUT_BRANCH = "hg update -c %s";
     const EXCLUDE = ".hgignore";
     const LAST_COMMIT = 'hg log -1 --format="%H"';
 

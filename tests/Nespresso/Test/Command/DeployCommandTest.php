@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Nespresso\Test\Command;
+
 use Nespresso\Command\DeployCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
