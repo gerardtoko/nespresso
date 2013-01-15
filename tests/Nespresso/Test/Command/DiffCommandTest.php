@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-use Nespresso\Command\DeployCommand;
+use Nespresso\Command\DiffCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class DeployCommandTest extends \PHPUnit_Framework_TestCase
+class DiffCommandTest extends \PHPUnit_Framework_TestCase
 {
 
 
-    public function testDeployCommand()
+    public function testCommand()
     {
-	$command = new DeployCommand();
+	$command = new DiffCommand();
 	$commandTester = new CommandTester($command);
 	$commandTester->execute(array('project' => 'nespresso:testing'), array('branch' => "v2"));
 	$commandTester->execute(array('project' => 'nespresso:testing'), array('tag' => "v2.1"));

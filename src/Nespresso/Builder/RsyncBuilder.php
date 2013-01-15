@@ -44,9 +44,18 @@ class RsyncBuilder
 	$excludes = " --exclude='.git' ";
 	$excludes .= " --exclude='.gitignore' ";
 	$excludes .= " --exclude='.hgtignore' ";
+	$excludes .= " --exclude='nespresso.lock' ";
 
 	if ($manager->getProject()->hasSharedDirectory()) {
 	    $shared = $manager->getProject()->getSharedDirectory();
+	    foreach ($shared as $value) {
+		$excludes .= sprintf(" --exclude='%s' ", $value);
+	    }
+	}
+
+
+	if ($manager->getProject()->hasSharedFile()) {
+	    $shared = $manager->getProject()->getSharedFile();
 	    foreach ($shared as $value) {
 		$excludes .= sprintf(" --exclude='%s' ", $value);
 	    }

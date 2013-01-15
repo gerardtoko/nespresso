@@ -11,6 +11,7 @@
 
 namespace Nespresso;
 
+use Nespresso\Builder\RsyncDiffBuilder;
 use Nespresso\Builder\RsyncDeployBuilder;
 
 /**
@@ -75,7 +76,7 @@ class Rsync
 	$repositories = $manager->getProject()->getRepositories();
 	$tmp = $manager->getConfig()->getTmp();
 	$code = null;
-	$outputExec = null;
+	$output = null;
 
 	$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
@@ -85,15 +86,17 @@ class Rsync
 
 	    $rsyncDeployBuilder = new RsyncDiffBuilder($this->container, $repository, $this->release);
 	    $command = $rsyncDeployBuilder->build();
+
 	    $name = $repository->getName();
-	    
 	    $this->output->writeln("<comment>Diff on</comment> <info>$name</info><comment>...</comment>");
-	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
+	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $output, $code);
 	    $this->ckeckReturn($code);
-	    	    
-	    $log = file_get_contents($tmp . "/nespresso.log");
-	    $this->output->writeln($log);
-	    
+
+	    foreach ($output as $value) {
+		if (preg_match("#^deleting#", $value)) {
+		    $this->output->writeln(substr($value, 8));
+		}
+	    }
 	}
 	return true;
     }

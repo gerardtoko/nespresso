@@ -340,7 +340,8 @@ class ReleaseController extends BaseController
 	    $deployTo = $repository->getDeployTo();
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
-
+	    $connection = $this->getConnection($repository);
+	    
 	    if (($key = array_search($lastCommit, $releases)) !== false) {
 		unset($releases[$key]);
 	    } else {
@@ -362,7 +363,7 @@ class ReleaseController extends BaseController
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
 
-	$this->output->writeln("cleanup repositories");
+	$this->output->writeln("check repositories");
 	foreach ($repositories as $repository) {
 
 	    $lastCommit = $this->getLastRelease($repository);

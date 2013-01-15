@@ -75,7 +75,6 @@ class DiffCommand extends Command
 	$branch = $input->getOption('branch');
 
 	$source = $this->getManager()->getSource();
-	$source->cloneScm();
  
 	$releaseController = new ReleaseController($this->container);
 	$releaseController->controlAction();
