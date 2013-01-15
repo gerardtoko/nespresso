@@ -23,7 +23,7 @@ class SharedController extends BaseController
 
     protected $container;
     protected $output;
-    protected $newRelease;
+    protected $release;
     protected $performanceShared;
 
 
@@ -31,13 +31,13 @@ class SharedController extends BaseController
      * 
      * @param type $container
      * @param type $output
-     * @param type $releaseId
+     * @param type $release
      */
-    public function __construct($container, $releaseId)
+    public function __construct($container, $release)
     {
 	$this->container = $container;
 	$this->output = $container->get("IO")->output();
-	$this->newRelease = $releaseId;
+	$this->release = $release;
     }
 
 
@@ -50,7 +50,7 @@ class SharedController extends BaseController
 	foreach ($repositories as $repository) {
 	    $name = $repository->getName();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->newRelease));
+	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->release));
 	    $deployTo = $repository->getDeployTo();
 
 	    // control releases directory
@@ -90,12 +90,11 @@ class SharedController extends BaseController
     public function sharedDirectory($repositories, $shared)
     {
 
-	$connection = null;
 	foreach ($repositories as $repository) {
 
 	    $name = $repository->getName();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->newRelease));
+	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->release));
 	    $deployTo = $repository->getDeployTo();
 
 	    //create directory shared
@@ -110,27 +109,27 @@ class SharedController extends BaseController
 		    $prefixDirectory = $pos == FALSE ? NULL : substr($sharedDirectoryClean, 0, $pos);
 
 		    // control releases directory
-		    $outputSsh = trim($connection->exec(sprintf("cd %s/shared/%s", $deployTo, $sharedDirectoryClean)));
-		    if (!$this->ckeckReturn($outputSsh)) {
-			$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/shared/%s", $deployTo, $sharedDirectoryClean)));
-			$this->ckeckReturn($outputSsh);
+		    $output = trim($connection->exec(sprintf("cd %s/shared/%s", $deployTo, $sharedDirectoryClean)));
+		    if (!$this->ckeckReturn($output)) {
+			$output = trim($connection->exec(sprintf("mkdir -p %s/shared/%s", $deployTo, $sharedDirectoryClean)));
+			$this->ckeckReturn($output);
 		    }
 
 		    if ($prefixDirectory != FALSE) {
 			//check sub directory
-			$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->newRelease, $prefixDirectory)));
-			$this->ckeckReturn($outputSsh);
+			$output = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->release, $prefixDirectory)));
+			$this->ckeckReturn($output);
 		    }
 
-		    $outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->newRelease, $sharedDirectoryClean)));
-		    if (!$this->ckeckReturn($outputSsh)) {
+		    $output = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->release, $sharedDirectoryClean)));
+		    if (!$this->ckeckReturn($output)) {
 			//create symbolink
 			if ($prefixDirectory == NULL) {
-			    $outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $this->newRelease, $deployTo, $sharedDirectoryClean, $directory)));
+			    $output = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $this->release, $deployTo, $sharedDirectoryClean, $directory)));
 			} else {
-			    $outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $this->newRelease, $prefixDirectory, $deployTo, $sharedDirectoryClean, $directory)));
+			    $output = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $this->release, $prefixDirectory, $deployTo, $sharedDirectoryClean, $directory)));
 			}
-			$this->ckeckReturn($outputSsh);
+			$this->ckeckReturn($output);
 		    }
 		}
 	    }
@@ -141,53 +140,51 @@ class SharedController extends BaseController
     /**
      * 
      * @param type $repositories
-     * @param type $shared
+     * @param type $files
      */
-    public function sharedFile($repositories, $shared)
+    public function sharedFile($repositories, $files)
     {
 
-
-	$connection = null;
 	foreach ($repositories as $repository) {
 
 	    $name = $repository->getName();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->newRelease));
+	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->release));
 	    $deployTo = $repository->getDeployTo();
 
 	    //create directory shared
-	    foreach ($shared as $sharedDirectory) {
+	    foreach ($files as $file) {
 
-		$sharedDirectoryClean = trim($sharedDirectory, "/");
-		if (!empty($sharedDirectoryClean)) {
+		$sharedfileClean = trim($file, "/");
+		if (!empty($sharedfileClean)) {
 
-		    $pos = strrpos($sharedDirectoryClean, '/');
+		    $pos = strrpos($sharedfileClean, '/');
 
-		    $file = $pos == FALSE ? $sharedDirectoryClean : substr($sharedDirectoryClean, $pos + 1);
-		    $prefixDirectory = $pos == FALSE ? NULL : substr($sharedDirectoryClean, 0, $pos);
+		    $file = $pos == FALSE ? $sharedfileClean : substr($sharedfileClean, $pos + 1);
+		    $prefixFile = $pos == FALSE ? NULL : substr($sharedfileClean, 0, $pos);
 
-		    if ($prefixDirectory != FALSE) {
-			//check sub directory
-			$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->newRelease, $prefixDirectory)));
-			$this->ckeckReturn($outputSsh);
+		    if ($prefixFile != NULL) {
+			$output = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $this->release, $prefixFile)));
+			$this->ckeckReturn($output);
+
+			$output = trim($connection->exec(sprintf("mkdir -p %s/shared/%s", $deployTo, $prefixFile)));
+			$this->ckeckReturn($output);
 		    }
 
-		    // control releases directory
-		    $outputSsh = trim($connection->exec(sprintf("touch %s/shared/%s", $deployTo, $sharedDirectoryClean)));
-		    if ($this->ckeckReturn($outputSsh)) {
-			$outputSsh = trim($connection->exec(sprintf("touch %s/shared/%s", $deployTo, $sharedDirectoryClean)));
-			$this->ckeckReturn($outputSsh);
+		    $output = trim($connection->exec(sprintf("touch %s/shared/%s", $deployTo, $sharedfileClean)));
+		    if ($this->ckeckReturn($output)) {
+			$output = trim($connection->exec(sprintf("touch %s/shared/%s", $deployTo, $sharedfileClean)));
+			$this->ckeckReturn($output);
 		    }
 
-		    $outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->newRelease, $sharedDirectoryClean)));
-		    if (!$this->ckeckReturn($outputSsh)) {
-			//create symbolink
-			if ($prefixDirectory == NULL) {
-			    $outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $this->newRelease, $deployTo, $sharedDirectoryClean, $file)));
+		    $output = trim($connection->exec(sprintf("rm -rf %s/releases/%s/%s", $deployTo, $this->release, $sharedfileClean)));
+		    if (!$this->ckeckReturn($output)) {			
+			if ($prefixFile == NULL) {
+			    $output = trim($connection->exec(sprintf("cd %s/releases/%s && ln -s %s/shared/%s %s", $deployTo, $this->release, $deployTo, $sharedfileClean, $file)));
 			} else {
-			    $outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $this->newRelease, $prefixDirectory, $deployTo, $sharedDirectoryClean, $file)));
+			    $output = trim($connection->exec(sprintf("cd %s/releases/%s/%s && ln -s %s/shared/%s %s", $deployTo, $this->release, $prefixFile, $deployTo, $sharedfileClean, $file)));
 			}
-			$this->ckeckReturn($outputSsh);
+			$this->ckeckReturn($output);
 		    }
 		}
 	    }
