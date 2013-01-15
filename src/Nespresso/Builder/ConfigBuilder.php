@@ -58,7 +58,7 @@ class ConfigBuilder implements BuilderInterface
 	$optionRsyncDeploy = !empty($configJson->option_rsync_deploy) ? trim($configJson->option_rsync_deploy, "-") : "az";
 	$configObject->setOptionRsyncDeploy($optionRsyncDeploy);
 	
-	$optionRsyncDiff = !empty($configJson->option_rsync_diff) ? trim($configJson->option_rsync_diff, "-") : "avhn";
+	$optionRsyncDiff = !empty($configJson->option_rsync_diff) ? trim($configJson->option_rsync_diff, "-") : "avhn --delete";
 	$configObject->setOptionRsyncDiff($optionRsyncDiff);
 
 	$tmp = !empty($configJson->tmp) ? rtrim($configJson->tmp, "/") : "/tmp";
