@@ -77,8 +77,9 @@ class DeployCommand extends Command
 	$tag = $input->getOption('tag');
 	$branch = $input->getOption('branch');
 
-	$source = $this->getManager()->getSource();	
+	$source = $this->getManager()->getSource();
 	$source->cloneScm();
+	$commitCheckout = $this->checkout($source, $commit, $tag, $branch);
 
 	//control repositories
 	$releaseController = new ReleaseController($this->container);
@@ -91,8 +92,6 @@ class DeployCommand extends Command
 
 	$taskController = new TaskController($this->container, $newRelease);
 	$taskController->executePreCommand();
-
-	$commitCheckout = $this->checkout($source, $commit, $tag, $branch);
 
 	//deployement
 	$rsync = new Rsync($this->container, $newRelease);
