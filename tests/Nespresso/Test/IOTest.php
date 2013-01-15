@@ -19,7 +19,8 @@ class IOTest extends \PHPUnit_Framework_TestCase
 
     public function testIO()
     {
-	$IO = new IO("input", "output");
+	$IO = new IO();
+	$IO->init("input", "output");
 	$this->assertEquals($IO->input(), "input");
 	$this->assertEquals($IO->output(), "output");
     }

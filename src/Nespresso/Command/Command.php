@@ -19,6 +19,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Console\Input\InputInterface;
+use Nespresso\Source;
+use Nespresso\Builder\ProjectBuilder;
+use Nespresso\Builder\ConfigBuilder;
 
 /**
  * Description of JsonCommand
@@ -205,6 +208,56 @@ class Command extends BaseCommand
 		break;
 	}
 	return $scm;
+    }
+
+
+    /**
+     * 
+     * @return type
+     * @throws \Exception
+     */
+    public function getManager()
+    {
+	//validation json schema
+	$input = $this->getContainer()->get("IO")->input();
+	$output = $this->getContainer()->get("IO")->output();
+	$project = $this->getProjectArg("project", $input);
+	$repository = $this->getRepositoryArg("project", $input);
+	$group = $input->getOption('group');
+
+	$output->writeln("<info>Starting nespresso...</info>");
+
+	if ($repository == NULL) {
+	    throw new \Exception("repository undefined");
+	}
+
+	$output->writeln("Validation <info>$project</info> project");
+	$this->jsonValidation($input);
+	$projectFromJson = json_decode($this->getJsonProject("project", $input));
+
+	//Builder
+	$builderOption = new ConfigBuilder();
+	$optionObject = $builderOption->build();
+
+	$builderProject = new ProjectBuilder($projectFromJson, $repository, $group);
+	$projectObject = $builderProject->build();
+
+	// init source
+	$scm = $this->getScm($projectObject);
+	$source = new Source($this->getContainer(), $scm);
+
+	//manager service
+	$manager = $this->getContainer()->get("nespresso.manager");
+	$manager->setProject($projectObject);
+	$manager->setConfig($optionObject);
+	$manager->setSource($source);
+	return $manager;
+    }
+
+
+    public function initManager()
+    {
+	$this->getManager();
     }
 
 }

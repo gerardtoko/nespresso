@@ -55,7 +55,7 @@ class ProjectBuilder implements BuilderInterface
 	$group = $this->group;
 
 	$projectObject = new ProjectMapping();
-	if (!empty($projectFromJson->source)) {	
+	if (!empty($projectFromJson->source)) {
 	    $SourceObject = $this->getSource($projectFromJson->source);
 	    $projectObject->setSource($SourceObject);
 	} else {
@@ -110,22 +110,31 @@ class ProjectBuilder implements BuilderInterface
 	$taskObject = New CommonTaskMapping();
 	if (!empty($projectFromJson->common_tasks->pre)) {
 	    foreach ($projectFromJson->common_tasks->pre as $command) {
-		$commandObject = New CommonCommandTaskMapping();
-		$commandObject->setCommand($command);
-		$commandPre[] = $commandObject;
+		$commandPre[] = $this->getCommonCommandTaskMapping($command);
 	    }
 	    $taskObject->setPre($commandPre);
 	}
 
 	if (!empty($projectFromJson->common_tasks->post)) {
 	    foreach ($projectFromJson->common_tasks->post as $command) {
-		$commandObject = New CommonCommandTaskMapping();
-		$commandObject->setCommand($command);
-		$commandPost[] = $commandObject;
+		$commandPost[] = $this->getCommonCommandTaskMapping($command);
 	    }
 	    $taskObject->setPost($commandPost);
 	}
 	return $taskObject;
+    }
+
+
+    /**
+     * 
+     * @param type $command
+     * @return \Nespresso\Mapping\Project\Common\Task\Command
+     */
+    public function getCommonCommandTaskMapping($command)
+    {
+	$commandObject = New CommonCommandTaskMapping();
+	$commandObject->setCommand($command);
+	return $commandObject;
     }
 
 
@@ -189,37 +198,46 @@ class ProjectBuilder implements BuilderInterface
 	$repositoryObject->setUser($repo->user);
 	$repositoryObject->setDomain($repo->domain);
 	$repositoryObject->setDeployTo($repo->deploy_to);
-	$commandPre = array();
-	$commandPost = array();
 
 	if (!empty($repo->port)) {
 	    $repositoryObject->setPort($repo->port);
 	} else {
 	    $repositoryObject->setPort("22");
 	}
+
 	if (!empty($repo->tasks)) {
 	    $taskObject = New TaskRepositoryMapping();
 	    if (!empty($repo->tasks->pre)) {
-		foreach ($repo->tasks->pre as $command) {
-		    $commandObject = New CommandTaskRepositoryMapping();
-		    $commandObject->setCommand($command);
-		    $commandPre[] = $commandObject;
-		}
-		$taskObject->setPre($commandPre);
+		$commands = $this->getCommandTaskRepositoryMapping($repo->tasks->pre);
+		$taskObject->setPre($commands);
 	    }
 
 	    if (!empty($repo->tasks->post)) {
-		foreach ($repo->tasks->pre as $command) {
-		    $commandObject = New CommandTaskRepositoryMapping();
-		    $commandObject->setCommand($command);
-		    $commandPost[] = $commandObject;
-		}
-		$taskObject->setPost($commandPost);
+		$commands = $this->getCommandTaskRepositoryMapping($repo->tasks->post);
+		$taskObject->setPost($commands);
 	    }
 	    $repositoryObject->setTasks($taskObject);
 	}
 
 	return $repositoryObject;
+    }
+
+
+    /**
+     * 
+     * @param type $data
+     * @return \Nespresso\Mapping\Project\Repository\Task\Command
+     */
+    public function getCommandTaskRepositoryMapping($data)
+    {
+	$commands = array();
+	foreach ($data as $command) {
+	    $commandObject = New CommandTaskRepositoryMapping();
+	    $commandObject->setCommand($command);
+	    $commands[] = $commandObject;
+	}
+
+	return $commands;
     }
 
 

@@ -11,14 +11,12 @@
 
 namespace Nespresso\Builder;
 
-use Nespresso\Builder\BuilderInterface;
-
 /**
  * Description of Deploy
  *
  * @author gerardtoko
  */
-class RsyncDeployBuilder implements BuilderInterface
+class RsyncBuilder
 {
 
     protected $container;
@@ -65,6 +63,22 @@ class RsyncDeployBuilder implements BuilderInterface
 	    }
 	}
 	return $excludes;
+    }
+
+
+    /**
+     * 
+     * @param type $options
+     * @return type
+     */
+    public function getCommandBuild($options)
+    {
+	$manager = $this->container->get("nespresso.manager");
+	$rsync = sprintf("rsync -%s -e'ssh -p %s'", $options, $this->repository->getPort());
+	$repoSource = sprintf("%s/", $manager->getSource()->getLocal());
+
+	$repoRemote = sprintf("%s@%s:%s/releases/%s/", $this->repository->getUser(), $this->repository->getDomain(), $this->repository->getDeployTo(), $this->releaseId);
+	return sprintf("%s %s %s %s", $rsync, $this->getExclude(), $repoSource, $repoRemote);
     }
 
 }

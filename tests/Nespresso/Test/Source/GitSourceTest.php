@@ -14,7 +14,7 @@ namespace Nespresso\Test\Source;
 use Nespresso\Git;
 use Nespresso\Source\GitSource;
 
-class GitTest extends \PHPUnit_Framework_TestCase
+class GitSourceTest extends \PHPUnit_Framework_TestCase
 {
 
 
@@ -38,10 +38,10 @@ class GitTest extends \PHPUnit_Framework_TestCase
 	$this->assertEquals($gitSource->checkoutBranch("master"), "git checkout master");
 	$this->assertEquals($gitSource->checkoutCommit("2sf092s3344q24"), "git checkout 2sf092s3344q24");
 	$this->assertEquals($gitSource->checkoutTag("v2.1"), "git checkout v2.1");
-	$this->assertEquals($gitSource->hasBranchCommand("master"), "git show master");
+	$this->assertEquals($gitSource->hasBranchCommand("master"), "git show-branch origin/master");
 	$this->assertEquals($gitSource->hasCommitCommand("2sf092s3344q24"), "git show 2sf092s3344q24");
 	$this->assertEquals($gitSource->hasTagCommand("v2.1"), "git ls-tree v2.1");
-	$this->assertEquals($gitSource->getExclude(), ".gitgnore");
+	$this->assertEquals($gitSource->getExclude(), ".gitignore");
 	$this->assertEquals($gitSource->getLastCommit(), 'git log -1 --format="%H"');
     }
 

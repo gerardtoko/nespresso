@@ -14,7 +14,7 @@ namespace Nespresso\Test\Source;
 use Nespresso\Mercurial;
 use Nespresso\Source\MercurialSource;
 
-class MercurialTest extends \PHPUnit_Framework_TestCase
+class MercurialSourceTest extends \PHPUnit_Framework_TestCase
 {
 
 
@@ -38,10 +38,10 @@ class MercurialTest extends \PHPUnit_Framework_TestCase
 	$this->assertEquals($hgSource->checkoutBranch("master"), "hg checkout master");
 	$this->assertEquals($hgSource->checkoutCommit("2sf092s3344q24"), "hg checkout 2sf092s3344q24");
 	$this->assertEquals($hgSource->checkoutTag("v2.1"), "hg checkout v2.1");
-	$this->assertEquals($hgSource->hasBranchCommand("master"), "hg show master");
+	$this->assertEquals($hgSource->hasBranchCommand("master"), "hg show-branch origin/master");
 	$this->assertEquals($hgSource->hasCommitCommand("2sf092s3344q24"), "hg show 2sf092s3344q24");
 	$this->assertEquals($hgSource->hasTagCommand("v2.1"), "hg ls-tree v2.1");
-	$this->assertEquals($hgSource->getExclude(), ".hggnore");
+	$this->assertEquals($hgSource->getExclude(), ".hgignore");
 	$this->assertEquals($hgSource->getLastCommit(), 'hg log -1 --format="%H"');
     }
 

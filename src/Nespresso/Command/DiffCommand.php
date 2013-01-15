@@ -12,10 +12,7 @@
 namespace Nespresso\Command;
 
 use Nespresso\Rsync;
-use Nespresso\Source;
 use Nespresso\Command\Command;
-use Nespresso\Builder\ProjectBuilder;
-use Nespresso\Builder\ConfigBuilder;
 use Nespresso\Controller\ReleaseController;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -73,44 +70,13 @@ class DiffCommand extends Command
     {
 
 	$this->getContainer()->get("IO")->init($input, $output);
-	$output->writeln("<info>Starting nespresso...</info>");
-
-	//get Data from the request
-	$project = $this->getProjectArg("project", $input);
-	$repository = $this->getRepositoryArg("project", $input);
 	$commit = $input->getOption('commit');
 	$tag = $input->getOption('tag');
 	$branch = $input->getOption('branch');
-	$group = $input->getOption('group');
 
-	if ($repository == NULL) {
-	    throw new \Exception("repository undefined");
-	}
-
-	//validation json schema
-	$output->writeln("validation <info>$project</info> project");
-	$this->jsonValidation($input);
-	$projectFromJson = json_decode($this->getJsonProject("project", $input));
-
-	//Builder
-	$builderOption = new ConfigBuilder();
-	$optionObject = $builderOption->build();
-
-	$builderProject = new ProjectBuilder($projectFromJson, $repository, $group);
-	$projectObject = $builderProject->build();
-
-	// init source
-	$scm = $this->getScm($projectObject);
-	$source = new Source($this->getContainer(), $scm);
-
-	//manager service
-	$manager = $this->getContainer()->get("nespresso.manager");
-	$manager->setProject($projectObject);
-	$manager->setConfig($optionObject);
-	$manager->setSource($source);
-
-	//cloning 
-	//control repositories
+	$source = $this->getManager()->getSource();
+	$source->cloneScm();
+ 
 	$releaseController = new ReleaseController($this->container);
 	$releaseController->controlAction();
 
