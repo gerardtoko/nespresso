@@ -66,6 +66,7 @@ class UpdateCommand extends Command
 	$releaseController->controlAction();
 	$releaseController->updateAction();
 	$releaseController->checkKeepRelease();
+	$releaseController->updateSymbolinkAction();
 
 	$output->writeln("<info>Updateement finish!</info>");
     }

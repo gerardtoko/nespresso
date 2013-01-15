@@ -311,5 +311,3 @@ class SharedController extends BaseController
     }
 
 }
-
-
