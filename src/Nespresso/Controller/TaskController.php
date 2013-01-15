@@ -47,7 +47,7 @@ class TaskController extends BaseController
 	$project = $manager->getProject();
 	$repositories = $project->getRepositories();
 	$connection = null;
-	$this->output->writeln("<comment>Executing tasks pre...</comment>");
+	$this->output->writeln("Executing tasks pre...");
 
 	
 	foreach ($repositories as $repository) {
@@ -59,12 +59,11 @@ class TaskController extends BaseController
 	    if ($project->hasCommonTasks()) {
 		$commonTasks = $manager->getProject()->getCommonTasks();
 		if ($commonTasks->hasPre()) {
-		    $this->output->writeln("Executing common tasks");
 		    $commonTasksPre = $commonTasks->getPre();
 		    foreach ($commonTasksPre as $commonCommandTaskPre) {
 			$command = $commonCommandTaskPre->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("[<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
@@ -74,11 +73,10 @@ class TaskController extends BaseController
 		$tasks = $repository->getTasks();
 		if ($tasks->hasPre()) {
 		    $tasksPre = $tasks->getPre();
-		    $this->output->writeln("Executing specific tasks ");
 		    foreach ($tasksPre as $commandTaskPre) {
 			$command = $commandTaskPre->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("[<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
@@ -93,7 +91,7 @@ class TaskController extends BaseController
 	$project = $manager->getProject();
 	$repositories = $project->getRepositories();
 	$connection = null;
-	$this->output->writeln("<comment>Executing tasks post...");
+	$this->output->writeln("Executing tasks post...");
 
 
 	foreach ($repositories as $repository) {
@@ -104,13 +102,12 @@ class TaskController extends BaseController
 	    //executing common command
 	    if ($project->hasCommonTasks()) {
 		$commonTasks = $manager->getProject()->getCommonTasks();
-		if ($commonTasks->hasPost()) {
-		    $this->output->writeln("Executing common tasks");
+		if ($commonTasks->hasPost()) {		    
 		    $commonTasksPost = $commonTasks->getPost();
 		    foreach ($commonTasksPost as $commonCommandTaskPost) {
 			$command = $commonCommandTaskPost->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("[<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
@@ -119,16 +116,16 @@ class TaskController extends BaseController
 	    if ($repository->hasTasks()) {
 		$tasks = $repository->getTasks();
 		if ($tasks->hasPost()) {
-		    $tasksPost = $tasks->getPost();
-		    $this->output->writeln("Executing specific tasks ");
+		    $tasksPost = $tasks->getPost();		    
 		    foreach ($tasksPost as $commandTaskPost) {
 			$command = $commandTaskPost->getCommand();
 			$outputSsh = trim($connection->exec(sprintf("cd %s/releases/%s && %s", $deployTo, $this->releaseId, $command)));
-			$this->output->writeln(sprintf("[<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
+			$this->output->writeln(sprintf("    - [<info>%s</info>][<comment>%s</comment>] <error>%s</error>", $repository->getName(), $command, $outputSsh));
 		    }
 		}
 	    }
 	}
+	
     }
 
 }

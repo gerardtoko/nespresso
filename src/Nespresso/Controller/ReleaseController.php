@@ -44,12 +44,10 @@ class ReleaseController extends BaseController
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
 	$connection = null;
-	$this->output->writeln("Control repositories");
 
 	foreach ($repositories as $repository) {
 
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Control repository <info>%s</info>", $repository->getName()));
 	    $deployTo = $repository->getDeployTo();
 
 	    // control releases directory
@@ -90,14 +88,13 @@ class ReleaseController extends BaseController
     {
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
-	$connection = null;
-	$this->output->writeln("Toggle release");
+	$connection = null;	
 
 	foreach ($repositories as $repository) {
 
 	    $deployTo = $repository->getDeployTo();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("toggle <info>%s</info> on <comment>%s</comment>", $repository->getName(), $this->newRelease));
+	    $this->output->writeln(sprintf("Toggle <info>%s</info> on <comment>%s</comment>", $repository->getName(), $this->newRelease));
 	    $this->ckeckReturn(trim($connection->exec(sprintf("rm -rf %s/current", $deployTo))));
 	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s && ln -s %s/releases/%s current", $deployTo, $deployTo, $this->newRelease))));
 	}
@@ -176,7 +173,6 @@ class ReleaseController extends BaseController
 	$releaseId = $dateTime->format('y-m-d-H-i-s');
 	$this->newRelease = $releaseId;
 
-	//$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
 
 	    $name = $repository->getName();
@@ -271,8 +267,6 @@ class ReleaseController extends BaseController
 	$keepRelease = $manager->getProject()->getKeepRelease();
 	$connection = null;
 
-
-	//$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
 
 	    $this->output->writeln(sprintf("Checking releases on <info>%s</info>", $repository->getName()));
@@ -300,7 +294,7 @@ class ReleaseController extends BaseController
 	    if (count($AllReleases) > $keepRelease) {
 		$releasesRemove = array_slice($AllReleases, $keepRelease);
 		foreach ($releasesRemove as $removing) {
-		    $this->output->writeln(sprintf("<comment>deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
+		    $this->output->writeln(sprintf("<comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
 		    $outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
 		    $this->ckeckReturn($outputSsh);
 		}
@@ -319,7 +313,6 @@ class ReleaseController extends BaseController
 	$manager = $this->container->get("nespresso.manager");
 	$validation = $this->container->get("validation");
 	$repositories = $manager->getProject()->getRepositories();
-	$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
 
 	    $lastCommit = $this->getLastRelease($repository);
@@ -355,7 +348,7 @@ class ReleaseController extends BaseController
 	$repositories = $manager->getProject()->getRepositories();
 	$connection = null;
 
-	$this->output->writeln("cleanup repositories");
+	$this->output->writeln("Cleanup repositories");
 	foreach ($repositories as $repository) {
 
 	    $deployTo = $repository->getDeployTo();
@@ -370,7 +363,7 @@ class ReleaseController extends BaseController
 	    }
 
 	    foreach ($releases as $removing) {
-		$this->output->writeln(sprintf("<comment>deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
+		$this->output->writeln(sprintf("    - <comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
 		$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
 		$this->ckeckReturn($outputSsh);
 	    }

@@ -50,7 +50,6 @@ class SharedController extends BaseController
 	foreach ($repositories as $repository) {
 	    $name = $repository->getName();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->release));
 	    $deployTo = $repository->getDeployTo();
 
 	    // control releases directory
@@ -68,14 +67,12 @@ class SharedController extends BaseController
 	}
 
 	if ($manager->getProject()->hasSharedFile()) {
-	    $this->output->writeln("Control shared File");
-	    $shared = $manager->getProject()->getSharedFile();
+	   $shared = $manager->getProject()->getSharedFile();
 	    $this->sharedFile($repositories, $shared);
 	}
 
 	if ($manager->getProject()->hasSharedDirectory()) {
 
-	    $this->output->writeln("Control shared Directory");
 	    $shared = $manager->getProject()->getSharedDirectory();
 	    $this->sharedDirectory($repositories, $shared);
 	}
@@ -167,7 +164,6 @@ class SharedController extends BaseController
 
 	    $name = $repository->getName();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->release));
 	    $deployTo = $repository->getDeployTo();
 
 	    //create directory shared
@@ -222,7 +218,6 @@ class SharedController extends BaseController
 
 	    $name = $repository->getName();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Control shared of repository <info>%s</info> [<comment>Release:%s</comment>]", $name, $this->release));
 	    $deployTo = $repository->getDeployTo();
 
 	    //create directory shared

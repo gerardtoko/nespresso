@@ -53,7 +53,6 @@ class Rsync
 	$code = null;
 	$outputExec = null;
 
-	$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
 	    $rsyncDeployBuilder = new RsyncDeployBuilder($this->container, $repository, $this->release);
 	    $command = $rsyncDeployBuilder->build();
@@ -78,7 +77,6 @@ class Rsync
 	$code = null;
 	$output = null;
 
-	$this->output->writeln("Control repositories");
 	foreach ($repositories as $repository) {
 
 	    $this->release = $controller->getLastRelease($repository);

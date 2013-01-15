@@ -20,6 +20,7 @@ use Nespresso\Command\JsonCommand;
 use Nespresso\Command\UpdateCommand;
 use Nespresso\Command\RollbackCommand;
 use Nespresso\Command\SetupCommand;
+use Nespresso\Command\InstallCommand;
 
 /**
  * Description of Application
@@ -54,6 +55,7 @@ class Application
 	$commands[] = new CheckCommand();
 	$commands[] = new JsonCommand();
 	$commands[] = new SetupCommand();
+	$commands[] = new InstallCommand();
 
 	return $commands;
     }
@@ -66,6 +68,9 @@ class Application
     public function run()
     {
 	$application = new BaseApplication();
+	$application->setName("Nespresso");
+	$application->setVersion("1.0.0-DEV-2.1");
+	
 	$commands = $this->getCommands();
 	$application->addCommands($commands);
 	return $application->run();

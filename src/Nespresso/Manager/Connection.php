@@ -26,7 +26,7 @@ class Connection
     {
 
 	if (!is_null($output)) {
-	    $output->writeln("<comment>connecting server...</comment> [<info>$user</info>][<info>$domain</info>][<info>$port</info>]");
+	    $output->writeln("<comment>Connecting server...</comment> [<info>$user</info>][<info>$domain</info>][<info>$port</info>]");
 	}
 
 	$ssh = new \Net_SSH2($domain, $port);

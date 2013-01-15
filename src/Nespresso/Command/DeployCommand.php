@@ -81,7 +81,6 @@ class DeployCommand extends Command
 	$source->cloneScm();
 	$commitCheckout = $this->checkout($source, $commit, $tag, $branch);
 
-	//control repositories
 	$releaseController = new ReleaseController($this->container);
 	$releaseController->controlAction();
 	$newRelease = $releaseController->createNewReleaseAction();

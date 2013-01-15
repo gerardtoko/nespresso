@@ -231,7 +231,6 @@ class Command extends BaseCommand
 	    throw new \Exception("repository undefined");
 	}
 
-	$output->writeln("Validation <info>$project</info> project");
 	$this->jsonValidation($input);
 	$projectFromJson = json_decode($this->getJsonProject("project", $input));
 

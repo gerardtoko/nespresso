@@ -69,7 +69,7 @@ class Source
 	$this->uniqid = uniqid();
 	$this->local = sprintf("%s/%s", $tmp, $this->uniqid);
 
-	$this->output->writeln("<comment>Cloning project...</comment> [<info>$scm</info>]");
+	$this->output->writeln("Clone <info>$scm</info>...");
 	$command = $this->source->cloneScmCommand($scm, $this->uniqid);
 
 	exec(sprintf("cd %s && %s 2>%s/nespresso.log", $tmp, $command, $tmp), $output, $code);
@@ -88,9 +88,8 @@ class Source
     public function removeScm()
     {
 	if ($this->isCloned()) {
-	    $this->output->writeln(sprintf("<comment>remove clone...</comment> [<info>%s</info>]", $this->getLocal()));
-	    $this->exec(sprintf("rm -rf %s", $this->local));
-	    $this->output->writeln("<comment>Clone removed!</comment>");
+	    $this->output->writeln(sprintf("Remove clone... [<info>%s</info>]", $this->getLocal()));
+	    $this->exec(sprintf("rm -rf %s", $this->local));	    
 	    $this->local = NULL;
 	    return TRUE;
 	}
