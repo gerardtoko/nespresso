@@ -65,12 +65,13 @@ class SetupCommand extends Command
 
 	//control repositories
 	$releaseController = new ReleaseController($this->container);
-	$releaseController->controlAction();
+	$releaseController->setupAction();
 	$release = $releaseController->createNewReleaseAction();
 
 	//control shared
 	$sharedController = new SharedController($this->container, $release);
-	$sharedController->controlAction();
+	$sharedController->setupAction();
+	$releaseController->updateSymbolinkAction();
 
 	$output->writeln("<info>Setup finish!</info>");
     }

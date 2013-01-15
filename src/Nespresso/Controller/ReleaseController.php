@@ -53,14 +53,35 @@ class ReleaseController extends BaseController
 	    $deployTo = $repository->getDeployTo();
 
 	    // control releases directory
-	    $outputSsh = trim($connection->exec("cd $deployTo/releases"));
-	    if ($this->ckeckReturn($outputSsh)) {
-		$outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases", $deployTo)));
-		$this->ckeckReturn($outputSsh);
+	    $output = trim($connection->exec("cd $deployTo/releases"));
+	    if ($this->ckeckReturn($output)) {
+		$output = trim($connection->exec(sprintf("mkdir -p %s/releases", $deployTo)));
+		$this->ckeckReturn($output);
 	    }
+
 
 	    // control current symbolink
 	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s/current", $deployTo))));
+	}
+    }
+
+
+    public function setupAction()
+    {
+	$manager = $this->container->get("nespresso.manager");
+	$repositories = $manager->getProject()->getRepositories();
+	$connection = null;
+	$this->output->writeln("Setup repositories");
+
+	foreach ($repositories as $repository) {
+
+	    $connection = $this->getConnection($repository);
+	    $this->output->writeln(sprintf("Setup repository <info>%s</info>", $repository->getName()));
+	    $deployTo = $repository->getDeployTo();
+
+	    // control releases directory
+	    $output = trim($connection->exec(sprintf("mkdir -p %s/releases", $deployTo)));
+	    $this->ckeckReturn($output);
 	}
     }
 
@@ -341,7 +362,7 @@ class ReleaseController extends BaseController
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
 	    $connection = $this->getConnection($repository);
-	    
+
 	    if (($key = array_search($lastCommit, $releases)) !== false) {
 		unset($releases[$key]);
 	    } else {
@@ -378,7 +399,5 @@ class ReleaseController extends BaseController
 	    }
 	}
     }
-
-
 
 }

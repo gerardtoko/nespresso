@@ -93,9 +93,10 @@ class Rsync
 	    $this->ckeckReturn($code);
 
 	    foreach ($output as $value) {
-		if (preg_match("#^deleting#", $value)) {
-		    $this->output->writeln(substr($value, 8));
-		}
+		$this->output->writeln($value, 0);
+		//if (preg_match("#^deleting#", $value) && !preg_match("#\/$#", $value)) {
+		//    $this->output->writeln(substr($value, 9));
+		//}
 	    }
 	}
 	return true;

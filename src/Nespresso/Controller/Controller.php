@@ -48,15 +48,15 @@ class Controller
 
     /**
      * 
-     * @param type $outputSsh
+     * @param type $output
      * @return boolean
      */
-    protected function ckeckReturn($outputSsh)
+    protected function ckeckReturn($output)
     {
-	if ($outputSsh) {
+	if ($output) {
 	    $manager = $this->container->get("nespresso.manager");
 	    $manager->getSource()->removeScm();
-	    $this->output->writeln("<error>Error Ssh processing... $outputSsh</error>");
+	    $this->output->writeln("<error>Error Ssh processing... $output</error>");
 	    return TRUE;
 	} else {
 	    return FALSE;

@@ -229,11 +229,7 @@ class Source
      */
     protected function isCloned()
     {
-	if (empty($this->isCloned)) {
-	    throw new \Exception("Repository uncloned");
-	} else {
-	    return TRUE;
-	}
+	return !empty($this->isCloned) ? TRUE : FALSE;
     }
 
 
