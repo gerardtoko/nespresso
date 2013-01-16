@@ -39,8 +39,8 @@ class Command extends BaseCommand
     public function __construct($name = null)
     {
 	parent::__construct(null);
-	$this->directoryProjet = __DIR__ . '/../../../tests/';
-	$this->directoryApp = __DIR__ . '/../../../app/';
+	$this->directoryProjet = 'projects/';			
+	$this->directoryApp = __DIR__ . '/../../../app/';	
     }
 
 
@@ -76,7 +76,7 @@ class Command extends BaseCommand
 	$project_file = $this->getDirectoryProject() . $project_name . '.json';
 
 	//check file
-	if (!file_exists($project_file)) {
+	if (!file_exists(realpath($project_file))) {
 	    $basename = basename($project_file);
 	    throw new \Exception("file $basename does not exist");
 	}

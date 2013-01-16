@@ -27,7 +27,7 @@ class ConfigValidation implements ValidationInterface
 
     public function __construct()
     {
-	$this->configFile = __DIR__ . '/../../../tests/config.json';
+	$this->configFile = 'config.json';
 	$this->schema = __DIR__ . '/../../../schema/config-schema.json';
     }
 
@@ -50,11 +50,17 @@ class ConfigValidation implements ValidationInterface
 	    $configFile = $this->getConfigFile();
 	}
 	$this->isExistFile($schemaFile);
-	$this->isExistFile($configFile);
+		
+	if (!file_exists(realpath($configFile))) {
+	    throw new \Exception("$configFile no exist");
+	}
 
+	
 	//shema valid
 	$schemaJson = file_get_contents($schemaFile);
 	$configJson = file_get_contents($configFile);
+	
+
 	$objSchema = json_decode($schemaJson);
 	$objJson = json_decode($configJson);
 

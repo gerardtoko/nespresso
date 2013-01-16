@@ -29,10 +29,14 @@ class Connection
 	    $output->writeln("<comment>Connecting server...</comment> [<info>$user</info>][<info>$domain</info>][<info>$port</info>]");
 	}
 
-	$ssh = new \Net_SSH2($domain, $port);
-	$key = new \Crypt_RSA();
-	$key->loadKey(file_get_contents($key_file));
-	if (!$ssh->login($user, $key)) {
+	try {
+	    $ssh = new \Net_SSH2($domain, $port);
+	    $key = new \Crypt_RSA();
+	    $key->loadKey(file_get_contents($key_file));
+	    if (!$ssh->login($user, $key)) {
+		throw new \Exception('Login Failed');
+	    }
+	} catch (\Exception $exc) {
 	    throw new \Exception('Login Failed');
 	}
 

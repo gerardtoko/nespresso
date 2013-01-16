@@ -69,7 +69,7 @@ class Application
     {
 	$application = new BaseApplication();
 	$application->setName("Nespresso");
-	$application->setVersion("1.0.0-DEV-2.1");
+	$application->setVersion("1.0.0-DEV-2.2");
 	
 	$commands = $this->getCommands();
 	$application->addCommands($commands);

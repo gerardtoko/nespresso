@@ -29,7 +29,8 @@ class ConfigBuilder implements BuilderInterface
 
     public function __construct()
     {
-	$this->configFile = __DIR__ . '/../../../tests/config.json';
+	$this->configFile = 'config.json';
+	//$this->configFile = __DIR__ . '/../../../tests/config.json';
     }
 
 
@@ -41,13 +42,14 @@ class ConfigBuilder implements BuilderInterface
     public function build()
     {
 	$configFile = $this->getConfigFile();
-	if (!file_exists($configFile)) {
+
+	if (!file_exists(realpath($configFile))) {
 	    $basename = basename($configFile);
 	    throw new \Exception("schema $basename no exist");
 	}
-
 	$configJson = json_decode(file_get_contents($configFile));
 	$configObject = new ConfigMapping();
+
 
 	if (!empty($configJson->key)) {
 	    $configObject->setKey($configJson->key);
@@ -57,7 +59,7 @@ class ConfigBuilder implements BuilderInterface
 
 	$optionRsyncDeploy = !empty($configJson->option_rsync_deploy) ? trim($configJson->option_rsync_deploy, "-") : "az";
 	$configObject->setOptionRsyncDeploy($optionRsyncDeploy);
-	
+
 	$optionRsyncDiff = !empty($configJson->option_rsync_diff) ? trim($configJson->option_rsync_diff, "-") : "avhn --delete";
 	$configObject->setOptionRsyncDiff($optionRsyncDiff);
 

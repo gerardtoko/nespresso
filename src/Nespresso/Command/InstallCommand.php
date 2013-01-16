@@ -27,7 +27,7 @@ class InstallCommand extends Command
 
     protected function configure()
     {
-	$this->setName('install')->setDescription('install directory nespresso');
+	$this->setName('install')->setDescription('install nespresso');
     }
 
 
@@ -43,23 +43,23 @@ class InstallCommand extends Command
 
 	$config = <<<CONFIG
 {
-    "key":  "/Users/gerardtoko/.ssh/id_rsa" // key ssh for nespresso 
+    "key":  "/Users/gerardtoko/.ssh/id_rsa" 
 }
 CONFIG;
 	
 	$start = <<<PROJECT
 {
-    "repositories": { //all repositories
-	"testing": //example testing repository
+    "repositories": { 
+	"testing": 
 	{    
-	    "user": "gerardtoko" , // user system for nespresso connection
-	    "domain": "gerardtoko.com",	//domain dns, ip   
-	    "deploy_to": "/home/gerardtoko/testing/nespresso-test" //directory on the server
+	    "user": "gerardtoko" , 
+	    "domain": "gerardtoko.com",	
+	    "deploy_to": "/home/gerardtoko/testing/nespresso-test" 
 	}
     }, 
     "source" : {
-	"type" : "git", // git, mercurial
-	"scm": "git@github.com:gerardtoko/nespresso.git" //scm source
+	"type" : "git", 
+	"scm": "git@github.com:gerardtoko/nespresso.git" 
     }
 }
 PROJECT;
