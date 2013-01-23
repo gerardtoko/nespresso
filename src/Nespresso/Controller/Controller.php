@@ -54,7 +54,7 @@ class Controller
     protected function ckeckReturn($output)
     {
 	if ($output) {	    	    
-	    $this->output->writeln("<error>Error Ssh processing... $output</error>");
+	    $this->output->writeln("<error>Error Ssh processing $output</error>");
 	    return TRUE;
 	} else {
 	    return FALSE;

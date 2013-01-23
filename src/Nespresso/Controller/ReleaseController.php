@@ -125,7 +125,7 @@ class ReleaseController extends BaseController
 		$lastRelease = $this->getLastRelease($repository);
 	    }
 
-	    $this->output->writeln("Create new release <info>$releaseId</info> on <info>$name</info>...");
+	    $this->output->writeln("Create new release <info>$releaseId</info> on <comment>$name</comment>");
 	    $outputSsh = trim($connection->exec(sprintf("mkdir -p %s/releases/%s", $deployTo, $releaseId)));
 	    $this->ckeckReturn($outputSsh);
 
@@ -196,7 +196,7 @@ class ReleaseController extends BaseController
 	$copies = $manager->getProject()->getCopyTo();
 	$connection = $this->getConnection($repository);
 	$deployTo = $repository->getDeployTo();
-	$this->output->writeln(sprintf("Copy data on <comment>%s</comment>", $newRelease));
+	$this->output->writeln(sprintf("Copy data on <info>%s</info>", $newRelease));
 
 	//create directory shared
 	foreach ($copies as $copy) {
@@ -261,7 +261,7 @@ class ReleaseController extends BaseController
 	    $connection = $this->getConnection($repository);
 
 	    if (!empty($LastReleaseId)) {
-		$this->output->writeln("Create new release <info>$releaseId</info> from <comment>$LastReleaseId</comment> on <info>$name</info>...");
+		$this->output->writeln("Create new release <info>$releaseId</info> from <info>$LastReleaseId</info> on <comment>$name</comment>");
 		$rsyncCopyReleaseBuilder = new RsyncCopyReleaseBuilder($this->container, $repository, $releaseId, $LastReleaseId);
 		$command = $rsyncCopyReleaseBuilder->build();
 
@@ -349,7 +349,7 @@ class ReleaseController extends BaseController
 
 	foreach ($repositories as $repository) {
 
-	    $this->output->writeln(sprintf("Checking the releases on <info>%s</info>", $repository->getName()));
+	    $this->output->writeln(sprintf("Checking the releases on <comment>%s</comment>", $repository->getName()));
 
 	    $connection = $this->getConnection($repository);
 	    $deployTo = $repository->getDeployTo();
@@ -374,7 +374,7 @@ class ReleaseController extends BaseController
 	    if (count($AllReleases) > $keepRelease) {
 		$releasesRemove = array_slice($AllReleases, $keepRelease);
 		foreach ($releasesRemove as $removing) {
-		    $this->output->writeln(sprintf("<comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
+		    $this->output->writeln(sprintf("Deleting release <info>%s</info> on <comment>%s</comment>", $removing, $repository->getName()));
 		    $outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
 		    $this->ckeckReturn($outputSsh);
 		}
@@ -443,7 +443,7 @@ class ReleaseController extends BaseController
 	    }
 
 	    foreach ($releases as $removing) {
-		$this->output->writeln(sprintf("        - <comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
+		$this->output->writeln(sprintf("        - <comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment><comment>", $removing, $repository->getName()));
 		$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
 		$this->ckeckReturn($outputSsh);
 	    }
@@ -457,7 +457,7 @@ class ReleaseController extends BaseController
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
 
-	$this->output->writeln("check repositories");
+	$this->output->writeln("Check repositories");
 	foreach ($repositories as $repository) {
 
 	    $lastCommit = $this->getLastRelease($repository);
@@ -465,7 +465,7 @@ class ReleaseController extends BaseController
 
 	    foreach ($releases as $key => $release) {
 		if ($release == $lastCommit) {
-		    $this->output->writeln(sprintf("[%s] %s <comment>(current)</comment>", $key, $release));
+		    $this->output->writeln(sprintf("[%s] %s <comment> --> (current)</comment>", $key, $release));
 		} else {
 		    $this->output->writeln(sprintf("[%s] %s", $key, $release));
 		}

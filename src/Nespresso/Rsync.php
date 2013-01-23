@@ -57,7 +57,7 @@ class Rsync
 	    $rsyncDeployBuilder = new RsyncDeployBuilder($this->container, $repository, $this->release);
 	    $command = $rsyncDeployBuilder->build();
 	    $name = $repository->getName();
-	    $this->output->writeln("<comment>Deployment on</comment> <info>$name</info><comment>...</comment>");
+	    $this->output->writeln("<comment>Deployment on</comment> <comment>$name</comment>");
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
 	    $this->ckeckReturn($code);
 	}
@@ -86,7 +86,7 @@ class Rsync
 	    $command = $rsyncDeployBuilder->build();
 
 	    $name = $repository->getName();
-	    $this->output->writeln("<comment>Diff on</comment> <info>$name</info><comment>...</comment>");
+	    $this->output->writeln("<comment>Diff on</comment> <info>$name</info><comment></comment>");
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $output, $code);
 	    $this->ckeckReturn($code);
 
@@ -114,7 +114,7 @@ class Rsync
 	    $tmp = $manager->getConfig()->getTmp();
 	    $log = file_get_contents($tmp . "/nespresso.log");
 	    $manager->getSource()->removeScm();
-	    throw new \Exception("Error Rsync processing... code($code) \n $log");
+	    throw new \Exception("Error Rsync processing code($code) \n $log");
 	}
     }
 

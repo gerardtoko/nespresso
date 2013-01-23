@@ -69,7 +69,7 @@ class Source
 	$this->uniqid = uniqid();
 	$this->local = sprintf("%s/%s", $tmp, $this->uniqid);
 
-	$this->output->writeln("Cloning repository <info>$scm</info>...");
+	$this->output->writeln("Cloning repository <info>$scm</info>");
 	$command = $this->source->cloneScmCommand($scm, $this->uniqid);
 
 	exec(sprintf("cd %s && %s 2>%s/nespresso.log", $tmp, $command, $tmp), $output, $code);
@@ -246,7 +246,7 @@ class Source
 	    if ($this->local) {
 		$this->removeScm();
 	    }
-	    throw new \Exception("Error processing... code($code) \n $log");
+	    throw new \Exception("Error processing code($code) \n $log");
 	}
     }
 

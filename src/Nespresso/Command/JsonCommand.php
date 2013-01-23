@@ -44,7 +44,7 @@ class JsonCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-	$output->writeln("<info>Starting nespresso...</info>");
+	$output->writeln("<info>Starting nespresso</info>");
 	$this->jsonValidation($input, $output);
 	return $output->writeln("<info>project is valided!</info>");
     }
