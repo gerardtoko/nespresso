@@ -92,7 +92,7 @@ class DeployCommand extends Command
 	$source->removeScm();
 	$releaseController->checkKeepRelease();
 
-	$output->writeln("<info>Deployement finish!</info>");
+	$output->writeln("<info>Deployment finish!</info>");
     }
 
 

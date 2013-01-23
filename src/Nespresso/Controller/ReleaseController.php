@@ -349,7 +349,7 @@ class ReleaseController extends BaseController
 
 	foreach ($repositories as $repository) {
 
-	    $this->output->writeln(sprintf("Checking releases on <info>%s</info>", $repository->getName()));
+	    $this->output->writeln(sprintf("Checking the releases on <info>%s</info>", $repository->getName()));
 
 	    $connection = $this->getConnection($repository);
 	    $deployTo = $repository->getDeployTo();

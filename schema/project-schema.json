@@ -5,12 +5,12 @@
     "properties": {
 	"repositories": {
 	    "type": "object",
-	    "description": "repositories for the deployement",
+	    "description": "repositories for the deployment",
 	    "required": true
 	},
 	"keep_release": {
 	    "type": "integer",
-	    "description": "number of deployement guarded"
+	    "description": "number of deployment guarded"
 	},
 	"source": {
 	    "type": "object",
@@ -47,7 +47,7 @@
 	},
 	"groups": {
 	    "type": "object",
-	    "description": "nodes connection for the deployement"
+	    "description": "nodes connection for the deployment"
 	},	
 	"common_tasks": {
 	    "type": "object"

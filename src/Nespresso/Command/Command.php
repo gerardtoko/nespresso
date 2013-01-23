@@ -225,10 +225,10 @@ class Command extends BaseCommand
 	$repository = $this->getRepositoryArg("project", $input);
 	$group = $input->getOption('group');
 
-	$output->writeln("<info>Starting nespresso...</info>");
+	$output->writeln("<info>Startup nespresso...</info>");
 
 	if ($repository == NULL) {
-	    throw new \Exception("repository undefined");
+	    throw new \Exception("Repository undefined");
 	}
 
 	$this->jsonValidation($input);

@@ -57,7 +57,7 @@ class Rsync
 	    $rsyncDeployBuilder = new RsyncDeployBuilder($this->container, $repository, $this->release);
 	    $command = $rsyncDeployBuilder->build();
 	    $name = $repository->getName();
-	    $this->output->writeln("<comment>Deployement on</comment> <info>$name</info><comment>...</comment>");
+	    $this->output->writeln("<comment>Deployment on</comment> <info>$name</info><comment>...</comment>");
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
 	    $this->ckeckReturn($code);
 	}
