@@ -11,6 +11,9 @@
 	    "type": "string",
 	    "required": true
 	},
+	"symbolic_link": {
+	    "type": "string"
+	},
 	"deploy_to": {
 	    "type": "string",
 	    "required": true

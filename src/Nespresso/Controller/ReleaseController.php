@@ -44,13 +44,14 @@ class ReleaseController extends BaseController
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
 	$connection = null;
-
+	
 	foreach ($repositories as $repository) {
 
 	    $connection = $this->getConnection($repository);
 	    $deployTo = $repository->getDeployTo();
 	    $current = $repository->getSymbolicLink();
-	    
+
+
 	    // control releases directory
 	    $output = trim($connection->exec("cd $deployTo/releases"));
 	    if ($this->ckeckReturn($output)) {
@@ -58,7 +59,6 @@ class ReleaseController extends BaseController
 		$this->ckeckReturn($output);
 	    }
 
-	    
 	    // control current symbolink
 	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s/%s", $deployTo, $current))));
 	}
@@ -436,7 +436,7 @@ class ReleaseController extends BaseController
 	foreach ($repositories as $repository) {
 
 	    $this->output->writeln(sprintf("Cleanup releases on <comment>%s</comment>", $repository->getName()));
-	
+
 	    $current = $repository->getSymbolicLink();
 	    $deployTo = $repository->getDeployTo();
 	    $lastCommit = $this->getLastRelease($repository);
@@ -469,7 +469,7 @@ class ReleaseController extends BaseController
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
 	    $current = $repository->getSymbolicLink();
-	    
+
 	    $this->output->writeln(sprintf("Check the releases on <comment>%s</comment>", $repository->getName()));
 	    foreach ($releases as $key => $release) {
 		if ($release == $lastCommit) {

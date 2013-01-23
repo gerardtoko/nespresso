@@ -26,6 +26,28 @@ class Repository
     protected $port;
     protected $tasks;
     protected $connection;
+   protected $symbolicLink;
+
+    /**
+     * 
+     * @param $symbolicLink
+     * @return \Nespresso\Mapping\Project
+     */
+    public function setSymbolicLink($symbolicLink = "current")
+    {
+	$this->symbolicLink = $symbolicLink;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getSymbolicLink()
+    {
+	return $this->symbolicLink;
+    }
 
 
     /**
@@ -138,7 +160,6 @@ class Repository
     }
 
 
-    
     /**
      * 
      * @return type
@@ -147,6 +168,7 @@ class Repository
     {
 	return !empty($this->tasks) ? TRUE : FALSE;
     }
+
 
     /**
      * 

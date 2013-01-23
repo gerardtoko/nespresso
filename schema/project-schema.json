@@ -33,9 +33,6 @@
 	"cache": {
 	    "type": "string"
 	},
-	"symbolic_link": {
-	    "type": "string"
-	},
 	"cache_mode": {
 	    "type": "string"
 	},	

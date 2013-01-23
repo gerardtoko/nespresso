@@ -72,14 +72,6 @@ class ProjectBuilder implements BuilderInterface
 	    $projectObject->setCommonTasks($taskObject);
 	}
 
-	//other
-
-	if (!empty($projectFromJson->symbolic_link)) {
-	    $projectObject->setSymbolicLink($projectFromJson->symbolic_link);
-	} else {
-	    $projectObject->setSymbolicLink("current");
-	}
-
 	if (!empty($projectFromJson->keep_release)) {
 	    $projectObject->setKeepRelease($projectFromJson->keep_release);
 	} else {
@@ -209,6 +201,15 @@ class ProjectBuilder implements BuilderInterface
 	$repositoryObject->setUser($repo->user);
 	$repositoryObject->setDomain($repo->domain);
 	$repositoryObject->setDeployTo($repo->deploy_to);
+
+
+	//other
+
+	if (!empty($repo->symbolic_link)) {
+	    $repositoryObject->setSymbolicLink($repo->symbolic_link);
+	} else {
+	    $repositoryObject->setSymbolicLink("current");
+	}
 
 	if (!empty($repo->port)) {
 	    $repositoryObject->setPort($repo->port);
