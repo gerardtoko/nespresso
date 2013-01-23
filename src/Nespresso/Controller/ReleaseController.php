@@ -430,8 +430,8 @@ class ReleaseController extends BaseController
 
 	foreach ($repositories as $repository) {
 
-	    $this->output->writeln("");
-	    $this->output->writeln("Cleanup releases on <comment>%s</comment>", $repository->getName());
+	    
+	    $this->output->writeln(sprint("Cleanup releases on <comment>%s</comment>", $repository->getName()));
 	
 	    $deployTo = $repository->getDeployTo();
 	    $lastCommit = $this->getLastRelease($repository);
@@ -463,13 +463,13 @@ class ReleaseController extends BaseController
 
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
-	    $this->output->writeln("");
-	    $this->output->writeln("Check the releases on <omment>%s<comment>", $repository->getName());
+	    
+	    $this->output->writeln(sprintf("Check the releases on <comment>%s</comment>", $repository->getName()));
 	    foreach ($releases as $key => $release) {
 		if ($release == $lastCommit) {
-		    $this->output->writeln(sprintf("        - [%s] %s <comment> --> (current)</comment>", $key, $release));
+		    $this->output->writeln(sprintf("        - [%s] <info>%s</info> <comment> --> (current)</comment>", $key, $release));
 		} else {
-		    $this->output->writeln(sprintf("        - [%s] %s", $key, $release));
+		    $this->output->writeln(sprintf("        - [%s] <info>%s<info>", $key, $release));
 		}
 	    }
 	}
