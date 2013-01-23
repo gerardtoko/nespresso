@@ -62,6 +62,7 @@ class Rsync
 	    exec(sprintf("%s 2>%s/nespresso.log", $command, $tmp), $outputExec, $code);
 	    $this->ckeckReturn($code);
 	}
+	$this->output->writeln("");
 	return true;
     }
 
