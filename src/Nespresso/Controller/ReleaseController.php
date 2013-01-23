@@ -94,7 +94,7 @@ class ReleaseController extends BaseController
 
 	    $deployTo = $repository->getDeployTo();
 	    $connection = $this->getConnection($repository);
-	    $this->output->writeln(sprintf("Toggle <info>%s</info> on <comment>%s</comment>", $repository->getName(), $this->newRelease));
+	    $this->output->writeln(sprintf("<comment>Toggle %s on</comment> <info>%s</info>", $repository->getName(), $this->newRelease));
 	    $this->ckeckReturn(trim($connection->exec(sprintf("rm -rf %s/current", $deployTo))));
 	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s && ln -s %s/releases/%s current", $deployTo, $deployTo, $this->newRelease))));
 	}
