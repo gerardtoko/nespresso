@@ -90,6 +90,7 @@ class ReleaseController extends BaseController
 	$repositories = $manager->getProject()->getRepositories();
 	$connection = null;
 
+	$this->output->writeln("");
 	foreach ($repositories as $repository) {
 
 	    $deployTo = $repository->getDeployTo();
@@ -98,6 +99,7 @@ class ReleaseController extends BaseController
 	    $this->ckeckReturn(trim($connection->exec(sprintf("rm -rf %s/current", $deployTo))));
 	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s && ln -s %s/releases/%s current", $deployTo, $deployTo, $this->newRelease))));
 	}
+	$this->output->writeln("");
     }
 
 
