@@ -65,6 +65,7 @@ class Project
     protected $sharedDirectory;
     protected $sharedFile;
     protected $commonTasks;
+    protected $symbolicLink;
 
 
     /**
@@ -87,6 +88,8 @@ class Project
     {
 	return $this->repositories;
     }
+
+
     /**
      * 
      * @param array $copyTo
@@ -109,7 +112,27 @@ class Project
     }
 
 
-    
+    /**
+     * 
+     * @param $symbolicLink
+     * @return \Nespresso\Mapping\Project
+     */
+    public function setSymbolicLink($symbolicLink = "current")
+    {
+	$this->symbolicLink = $symbolicLink;
+	return $this;
+    }
+
+
+    /**
+     * 
+     * @return type
+     */
+    public function getSymbolicLink()
+    {
+	return $this->symbolicLink;
+    }
+
 
     /**
      * 
@@ -119,7 +142,8 @@ class Project
     {
 	return !empty($this->copyTo) ? TRUE : FALSE;
     }
-    
+
+
     /**
      * 
      * @param type $source

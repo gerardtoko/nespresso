@@ -49,7 +49,8 @@ class ReleaseController extends BaseController
 
 	    $connection = $this->getConnection($repository);
 	    $deployTo = $repository->getDeployTo();
-
+	    $current = $repository->getSymbolicLink();
+	    
 	    // control releases directory
 	    $output = trim($connection->exec("cd $deployTo/releases"));
 	    if ($this->ckeckReturn($output)) {
@@ -57,9 +58,9 @@ class ReleaseController extends BaseController
 		$this->ckeckReturn($output);
 	    }
 
-
+	    
 	    // control current symbolink
-	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s/current", $deployTo))));
+	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s/%s", $deployTo, $current))));
 	}
     }
 
@@ -94,10 +95,11 @@ class ReleaseController extends BaseController
 	foreach ($repositories as $repository) {
 
 	    $deployTo = $repository->getDeployTo();
+	    $current = $repository->getSymbolicLink();
 	    $connection = $this->getConnection($repository);
 	    $this->output->writeln(sprintf("<comment>Toggle %s on</comment> <info>%s</info>", $repository->getName(), $this->newRelease));
-	    $this->ckeckReturn(trim($connection->exec(sprintf("rm -rf %s/current", $deployTo))));
-	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s && ln -s %s/releases/%s current", $deployTo, $deployTo, $this->newRelease))));
+	    $this->ckeckReturn(trim($connection->exec(sprintf("rm -rf %s/%s", $deployTo, $current))));
+	    $this->ckeckReturn(trim($connection->exec(sprintf("cd %s && ln -s %s/releases/%s %s", $deployTo, $deployTo, $this->newRelease, $current))));
 	}
 	$this->output->writeln("");
     }
@@ -296,9 +298,10 @@ class ReleaseController extends BaseController
     public function getLastRelease($repository)
     {
 
+	$current = $repository->getSymbolicLink();
 	$connection = $this->getConnection($repository);
 	$deployTo = $repository->getDeployTo();
-	$outputSsh = trim($connection->exec(sprintf("ls -l %s/current | cut -d' ' -f11", $deployTo)));
+	$outputSsh = trim($connection->exec(sprintf("ls -l %s/%s | cut -d' ' -f11", $deployTo, $current)));
 
 	$release = basename($outputSsh);
 	$validation = $this->container->get("validation");
@@ -434,6 +437,7 @@ class ReleaseController extends BaseController
 
 	    $this->output->writeln(sprintf("Cleanup releases on <comment>%s</comment>", $repository->getName()));
 	
+	    $current = $repository->getSymbolicLink();
 	    $deployTo = $repository->getDeployTo();
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
@@ -442,7 +446,7 @@ class ReleaseController extends BaseController
 	    if (($key = array_search($lastCommit, $releases)) !== false) {
 		unset($releases[$key]);
 	    } else {
-		throw new \Exception("Undefined symbolic current");
+		throw new \Exception("Undefined symbolic $current");
 	    }
 
 	    foreach ($releases as $removing) {
@@ -464,11 +468,12 @@ class ReleaseController extends BaseController
 
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
+	    $current = $repository->getSymbolicLink();
 	    
 	    $this->output->writeln(sprintf("Check the releases on <comment>%s</comment>", $repository->getName()));
 	    foreach ($releases as $key => $release) {
 		if ($release == $lastCommit) {
-		    $this->output->writeln(sprintf("        - [%s] <info>%s</info> <comment> --> (current)</comment>", $key, $release));
+		    $this->output->writeln(sprintf("        - [%s] <info>%s</info> <comment> --> (%s)</comment>", $key, $release, $current));
 		} else {
 		    $this->output->writeln(sprintf("        - [%s] <info>%s<info>", $key, $release));
 		}

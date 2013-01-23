@@ -73,6 +73,13 @@ class ProjectBuilder implements BuilderInterface
 	}
 
 	//other
+
+	if (!empty($projectFromJson->symbolic_link)) {
+	    $projectObject->setSymbolicLink($projectFromJson->symbolic_link);
+	} else {
+	    $projectObject->setSymbolicLink("current");
+	}
+
 	if (!empty($projectFromJson->keep_release)) {
 	    $projectObject->setKeepRelease($projectFromJson->keep_release);
 	} else {
@@ -86,7 +93,7 @@ class ProjectBuilder implements BuilderInterface
 	if (!empty($projectFromJson->shared_file)) {
 	    $projectObject->setSharedFile($projectFromJson->shared_file);
 	}
-	
+
 	if (!empty($projectFromJson->copy_to)) {
 	    $projectObject->setCopyTo($projectFromJson->copy_to);
 	}
