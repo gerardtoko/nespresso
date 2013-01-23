@@ -211,8 +211,8 @@ class ReleaseController extends BaseController
 		    $output = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $newRelease, $prefixFile)));
 		    $this->ckeckReturn($output);
 		}
-		$this->output->writeln(sprintf("	    - <info>%s</info>", $copy));
-		$output = trim($connection->exec(sprintf("cd %s/releases && cp %s/%s %s/%s", $deployTo, $lastRelease, $copy, $newRelease, $copy)));
+		$this->output->writeln(sprintf("        - <info>%s</info>", $eltClean));
+		$output = trim($connection->exec(sprintf("cd %s/releases && cp -R %s/%s %s/%s", $deployTo, $lastRelease, $eltClean, $newRelease, $eltClean)));
 		$this->ckeckReturn($output);
 	    }
 	}
@@ -443,7 +443,7 @@ class ReleaseController extends BaseController
 	    }
 
 	    foreach ($releases as $removing) {
-		$this->output->writeln(sprintf("    - <comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
+		$this->output->writeln(sprintf("        - <comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment>...<comment>", $removing, $repository->getName()));
 		$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
 		$this->ckeckReturn($outputSsh);
 	    }
