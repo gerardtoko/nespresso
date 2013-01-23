@@ -53,6 +53,7 @@ class Rsync
 	$code = null;
 	$outputExec = null;
 
+	$this->output->writeln("");
 	foreach ($repositories as $repository) {
 	    $rsyncDeployBuilder = new RsyncDeployBuilder($this->container, $repository, $this->release);
 	    $command = $rsyncDeployBuilder->build();

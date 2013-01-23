@@ -176,7 +176,7 @@ class ReleaseController extends BaseController
 		    $output = trim($connection->exec(sprintf("mkdir -p %s/releases/%s/%s", $deployTo, $newRelease, $prefixFile)));
 		    $this->ckeckReturn($output);
 		}
-		
+
 		$output = trim($connection->exec(sprintf("cd %s/releases && touch %s/%s", $deployTo, $newRelease, $copy)));
 		$this->ckeckReturn($output);
 	    }
@@ -428,9 +428,11 @@ class ReleaseController extends BaseController
 	$repositories = $manager->getProject()->getRepositories();
 	$connection = null;
 
-	$this->output->writeln("Cleanup repositories");
 	foreach ($repositories as $repository) {
 
+	    $this->output->writeln("");
+	    $this->output->writeln("Cleanup releases on <comment>%s</comment>", $repository->getName());
+	
 	    $deployTo = $repository->getDeployTo();
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
@@ -443,7 +445,7 @@ class ReleaseController extends BaseController
 	    }
 
 	    foreach ($releases as $removing) {
-		$this->output->writeln(sprintf("        - <comment>Deleting release<comment> <info>%s</info> <comment>on<comment> <info>%s</info><comment><comment>", $removing, $repository->getName()));
+		$this->output->writeln(sprintf("        - <comment>Deleting release<comment> <info>%s</info>", $removing));
 		$outputSsh = trim($connection->exec(sprintf("rm -rf %s/releases/%s", $deployTo, $removing)));
 		$this->ckeckReturn($outputSsh);
 	    }
@@ -457,17 +459,17 @@ class ReleaseController extends BaseController
 	$manager = $this->container->get("nespresso.manager");
 	$repositories = $manager->getProject()->getRepositories();
 
-	$this->output->writeln("Check repositories");
 	foreach ($repositories as $repository) {
 
 	    $lastCommit = $this->getLastRelease($repository);
 	    $releases = $this->getAllRelease($repository);
-
+	    $this->output->writeln("");
+	    $this->output->writeln("Check the releases on <omment>%s<comment>", $repository->getName());
 	    foreach ($releases as $key => $release) {
 		if ($release == $lastCommit) {
-		    $this->output->writeln(sprintf("[%s] %s <comment> --> (current)</comment>", $key, $release));
+		    $this->output->writeln(sprintf("        - [%s] %s <comment> --> (current)</comment>", $key, $release));
 		} else {
-		    $this->output->writeln(sprintf("[%s] %s", $key, $release));
+		    $this->output->writeln(sprintf("        - [%s] %s", $key, $release));
 		}
 	    }
 	}
