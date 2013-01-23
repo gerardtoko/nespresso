@@ -430,8 +430,7 @@ class ReleaseController extends BaseController
 
 	foreach ($repositories as $repository) {
 
-	    
-	    $this->output->writeln(sprint("Cleanup releases on <comment>%s</comment>", $repository->getName()));
+	    $this->output->writeln(sprintf("Cleanup releases on <comment>%s</comment>", $repository->getName()));
 	
 	    $deployTo = $repository->getDeployTo();
 	    $lastCommit = $this->getLastRelease($repository);

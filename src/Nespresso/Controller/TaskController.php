@@ -48,7 +48,7 @@ class TaskController extends BaseController
 	$connection = null;
 
 	if ($project->hasCommonTasks()) {
-	    $this->output->writeln("");
+	    
 	    $this->output->writeln("Executing the tasks before the deployment");
 	}
 
@@ -95,7 +95,7 @@ class TaskController extends BaseController
 	$connection = null;
 
 	if ($project->hasCommonTasks()) {
-	    $this->output->writeln("");
+	    
 	    $this->output->writeln("Executing the tasks after the deployment");
 	}
 
